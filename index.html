@@ -348,6 +348,44 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
  .profile .muted{font-size:11px!important}
 }
 
+
+/* V4.0 — distinct worlds, collection and celebration system */
+.gameView.theme-aztec{--world-a:#102c3b;--world-b:#4d2d18;--world-accent:#e7b45c}
+.gameView.theme-cyber{--world-a:#101d4c;--world-b:#3c1556;--world-accent:#45e4f3}
+.gameView.theme-dragon{--world-a:#12352d;--world-b:#40202b;--world-accent:#72e0a1}
+.gameView.theme-cosmic{--world-a:#25104b;--world-b:#52154d;--world-accent:#ff78d2}
+.gameView.theme-phoenix{--world-a:#4b1c13;--world-b:#632c18;--world-accent:#ff9c4d}
+.gameView.theme-ocean{--world-a:#0c344c;--world-b:#125c68;--world-accent:#69e4df}
+.gameView.theme-wildwest{--world-a:#49301d;--world-b:#633e25;--world-accent:#e5b66d}
+.gameView.theme-moon{--world-a:#1c2448;--world-b:#34305c;--world-accent:#c3c9ff}
+.gameView{background:radial-gradient(ellipse at 50% 0,var(--world-a,#18334a),transparent 58%),linear-gradient(140deg,#09111e,var(--world-b,#24213a) 65%,#080e18)!important}
+.gameView .machine{border-color:var(--world-accent,#c99a55)!important;box-shadow:0 0 0 4px #101b2b,0 0 35px color-mix(in srgb,var(--world-accent,#c99a55) 35%,transparent)!important}
+.gameView .machineInner{background:linear-gradient(160deg,color-mix(in srgb,var(--world-a,#18334a) 75%,#172235),#0b1422)!important}
+.gameView .symbol{background:linear-gradient(145deg,color-mix(in srgb,var(--world-a,#18334a) 70%,#27384d),#101a2b)!important;border-color:color-mix(in srgb,var(--world-accent,#c99a55) 42%,#41516a)!important}
+.themedGlyph{display:grid;place-items:center;width:100%;height:100%;font-size:clamp(30px,4.3vw,58px);line-height:1;filter:drop-shadow(0 5px 5px #000a);text-shadow:0 0 16px color-mix(in srgb,var(--world-accent,#c99a55) 65%,transparent)}
+#collectionBtn{background:linear-gradient(110deg,#6b2da7,#a83ab8)!important;color:white!important;border:1px solid #e2a2ff!important}
+#collectionModal,#featureModal{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:18px;background:#050711df;backdrop-filter:blur(9px)}
+.collectionPanel,.featurePanel{width:min(560px,100%);max-height:88vh;overflow:auto;border:3px solid #d78cff;border-radius:28px;padding:22px;background:radial-gradient(circle at 50% 0,#7124a5,#35105f 60%,#190b32);box-shadow:0 0 0 5px #6c2695,0 22px 80px #000c,0 0 45px #b44bff66;text-align:center}
+.featurePanel{border-color:#ffcf66;background:radial-gradient(circle at 50% 25%,#5c3b91,#25133e 72%);box-shadow:0 0 0 5px #8b4baf,0 22px 80px #000c,0 0 55px #ffbf4f55}
+.featureTitle{font-size:clamp(30px,7vw,54px);font-weight:1000;font-style:italic;color:#ffe36d;text-shadow:0 3px #a33a00,0 7px 0 #4e1b28,0 0 22px #ffbd3f}
+.featureRibbon{margin:10px -22px;padding:13px 8px;background:linear-gradient(90deg,#7d20bd,#d23ce7,#7d20bd);border-block:3px solid #f3a9ff;font-size:clamp(15px,3vw,21px);font-weight:900;text-shadow:0 2px #34104c}
+.collectCard{width:142px;margin:16px auto 20px;padding:9px;border:4px solid #ffe17a;border-radius:18px;background:linear-gradient(150deg,#e9ffff,#4bc5c5 48%,#075c71);box-shadow:0 0 0 3px #8d4a18,0 0 35px #ffd75d99;color:#17243a}
+.collectCard .cardGlyph{font-size:64px;line-height:1.25}
+.collectCard strong{display:block;background:#07566b;color:white;border-radius:8px;padding:7px;font-size:14px}
+.collectStars{color:#ffe65e;font-size:23px;letter-spacing:2px;text-shadow:0 2px 4px #8d3e00}
+.collectAction{min-width:210px;border-radius:28px!important;background:linear-gradient(#baff31,#40c900 55%,#168600)!important;color:white!important;border:3px solid #e6ff82!important;font-size:20px!important;font-weight:1000!important;text-shadow:0 2px 3px #286400}
+.albumTabs{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:12px 0}
+.albumTabs button{font-size:11px;padding:8px}
+.albumGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}
+.albumItem{padding:10px 5px;border-radius:13px;background:#170e30;border:1px solid #8752b5;color:#f7edff}
+.albumItem .cardGlyph{font-size:32px}.albumItem small{display:block;color:#d6b6ee;font-size:10px}
+.rewardItems{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.rewardItem{border-radius:13px;padding:14px 5px;background:linear-gradient(145deg,#f4d76c,#a75b19);color:#30182a;font-size:29px;box-shadow:inset 0 2px #fff8}
+.rewardItem small{display:block;font-size:11px;font-weight:900}
+@keyframes popIn{from{opacity:0;transform:translateY(22px) scale(.82)}to{opacity:1;transform:translateY(0) scale(1)}}
+.featurePanel,.collectionPanel{animation:popIn .35s cubic-bezier(.2,.8,.2,1)}
+@media(max-width:600px){.collectionPanel,.featurePanel{padding:16px;border-radius:20px}.albumGrid{grid-template-columns:repeat(2,1fr)}}
+
 </style>
 </head>
 <body>
@@ -404,6 +442,7 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
   <div class="infoBox"><b>👑 ROYAL JACKPOT</b><span id="bonusInfo">3+ jackpot crowns award a virtual prize</span></div>
   <div class="infoBox"><b>📊 LAST RESULT</b><span id="lastResult">No spins yet</span></div>
  </div>
+ <div style="max-width:980px;margin:10px auto;text-align:center"><button id="collectionBtn" onclick="openAlbum()">✦ CARD ALBUM · COLLECTION <span id="cardCount">0/8</span></button></div>
  <div id="rulesPanel" class="infoBox" style="display:none;max-width:980px;margin:12px auto">
   <b>AZTEC GOLD RICHES · HOW TO PLAY</b>
   <span>5 reels × 5 rows. Wins are evaluated left-to-right across adjacent reels. Any position on a reel can contribute. The Feathered Serpent is Wild and substitutes for regular symbols. 3+ Sun Calendar symbols anywhere award 3 free games. 3+ Respin Seals award 1 respin. 3+ Royal Crowns award a virtual jackpot: 10× bet for 3, 25× for 4, or 100× for 5+. Bonus symbols can land across different rows. Bonus turns do not deduct a bet. Bet tiers unlock by level. Virtual coins have no cash value.</span>
@@ -416,6 +455,10 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
    <p class="muted">One choice · one reveal · no purchase needed.</p>
   </div>
  </div>
+ 
+ <div id="featureModal"><div class="featurePanel"><div class="featureTitle" id="featureHeadline">WOW!</div><div class="featureRibbon" id="featureRibbon">A CARD TURNED FROM THE WILD!</div><div id="featureBody"></div><button class="collectAction" id="featureCollect" onclick="collectFeature()">COLLECT</button><div style="margin-top:12px"><button onclick="closeFeature()">CLOSE</button></div></div></div>
+ <div id="collectionModal"><div class="collectionPanel"><div class="featureTitle" style="font-size:34px">ROYAL ALBUM</div><p style="color:#f0d9ff">Collect original world cards as you explore. Every card is a virtual collectible.</p><div class="albumTabs"><button onclick="renderAlbum('all')">ALL WORLDS</button><button onclick="renderAlbum('owned')">COLLECTED</button><button onclick="renderAlbum('missing')">NOT YET OWNED</button></div><div class="albumGrid" id="albumGrid"></div><button class="collectAction" onclick="closeAlbum()">BACK TO GAME</button></div></div>
+
 </section>
 <footer>LUCKY SPIN ROYAL · ORIGINAL VIRTUAL-COIN ENTERTAINMENT · NO CASH VALUE · NO PURCHASE OR CASH-OUT</footer>
 </main><div class="toast" id="toast"></div>
@@ -444,7 +487,7 @@ const SYMBOLS=[
 ];
 const money=n=>Math.floor(n).toLocaleString('en-US');
 const STORE='lsRoyalDemoV2';
-const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0};
+const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0,cards:[],ingredients:0};
 const BET_TIERS=[{level:1,bet:5000},{level:3,bet:10000},{level:5,bet:20000},{level:8,bet:50000},{level:12,bet:100000},{level:18,bet:250000},{level:25,bet:500000},{level:35,bet:1000000}];
 let state;
 try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
@@ -522,6 +565,7 @@ function openGame(id){
  const selected=games.find(g=>g.id===id);if(!selected){toast('This game could not be found.');return}
  try{
   stopAuto();current=selected;
+  $('gameView').className='view gameView active theme-'+selected.id;
   $('lobby').classList.remove('active');$('gameView').classList.add('active');
   $('gameTitle').textContent=current.name.toUpperCase();
   $('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';
@@ -560,7 +604,11 @@ function symbolSvg(id){
  };
  return `<svg viewBox="0 0 100 100" aria-hidden="true">${defs}${paths[id]||paths.coin}</svg>`;
 }
-function symbolMarkup(id){return `<div class="symbol" data-symbol="${id}">${symbolSvg(id)}</div>`}
+function symbolMarkup(id){
+ const idx=SYMBOLS.findIndex(x=>x.id===id),base=current&&current.symbol?current.symbol:[];
+ const glyph=id==='serpent'?(base[6]||'🐍'):id==='calendar'?(base[7]||'✺'):id==='respin'?'⟳':id==='jackpot'?'👑':(base[Math.max(0,idx)]||SYMBOLS[idx]?.e||'✦');
+ return `<div class="symbol" data-symbol="${id}"><span class="themedGlyph">${glyph}</span></div>`
+}
 function buildReels(){
  const root=$('reels');root.innerHTML='';
  for(let c=0;c<5;c++){let reel=document.createElement('div');reel.className='reel';let track=document.createElement('div');track.className='reelTrack';
@@ -639,10 +687,18 @@ function spin(){
   if(result.respins>=3){state.respinSpins+=1;bonusMessages.push('1 RESPIN');playTone(760,.3,'triangle');}
   if(result.jackpots>=3){const multiplier=result.jackpots>=5?100:result.jackpots===4?25:10;const prize=Math.floor(state.bet*multiplier);state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('ROYAL JACKPOT +'+money(prize));playTone(1040,.45,'sine');}
   if(bonusMessages.length)message+=' · '+bonusMessages.join(' · ');
+  const wildCount=grid.flat().filter(x=>x==='serpent').length;
+  let showCardDrop=wildCount>=2 && (state.cards||[]).length<CARD_POOL.length;
+  let showIngredientDrop=result.jackpots>=3;
+  if(showCardDrop){bonusMessages.push('NEW CARD DISCOVERED');}
+  if(showIngredientDrop){bonusMessages.push('BONUS INGREDIENTS');}
+
   $('lastResult').textContent=result.total?('+'+money(result.total)+' · '+result.waysWon+' ways'):'No win';
   $('status').textContent=(usingFree?'FREE SPIN · ':'')+message+xpMessage;
   $('freeSpinInfo').textContent=[state.freeSpins?state.freeSpins+' free games':'',state.respinSpins?state.respinSpins+' respin'+(state.respinSpins===1?'':'s'):''].filter(Boolean).join(' · ')||'No bonus turns active';
-  save();updateQuestPanel();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=false;
+  save();updateQuestPanel();updateCardCount();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=false;
+  if(showCardDrop)setTimeout(()=>awardCard(),450);
+  else if(showIngredientDrop)setTimeout(()=>awardIngredients(),450);
   if(autoTimer!==null){if(autoRemaining>0)autoRemaining--;if(autoRemaining===0){stopAuto();$('status').textContent+=' · AUTO PLAY COMPLETE'}else{autoTimer=setTimeout(spin,1050)}}
  },totalDelay);
 }
@@ -684,9 +740,41 @@ async function importPlayerData(event){
  }catch(err){alert('Could not restore backup: '+err.message)}
  finally{event.target.value=''}
 }
+
+const CARD_POOL=[
+ {id:'aztec-card',name:'Sun Temple Relic',glyph:'☀️',world:'Aztec Gold Riches'},
+ {id:'cyber-card',name:'Neon Circuit',glyph:'💠',world:'Neon Cyber Quest'},
+ {id:'dragon-card',name:'Dragon Scale',glyph:'🐉',world:"Mystic Dragon's Lair"},
+ {id:'cosmic-card',name:'Starfruit Charm',glyph:'🌟',world:'Cosmic Fruits'},
+ {id:'phoenix-card',name:'Phoenix Feather',glyph:'🪶',world:'Phoenix Empire'},
+ {id:'ocean-card',name:'Pearl of the Deep',glyph:'🦪',world:'Ocean Treasure'},
+ {id:'west-card',name:'Frontier Badge',glyph:'⭐',world:'Wild West Gold'},
+ {id:'moon-card',name:'Moonlit Sapphire',glyph:'🌙',world:'Moonlight Fortune'}
+];
+let pendingFeature=null;
+function showFeature(headline,ribbon,body,action){pendingFeature=action;$('featureHeadline').textContent=headline;$('featureRibbon').textContent=ribbon;$('featureBody').innerHTML=body;$('featureModal').style.display='grid'}
+function closeFeature(){$('featureModal').style.display='none';pendingFeature=null}
+function collectFeature(){if(pendingFeature)pendingFeature();closeFeature();save()}
+function awardCard(){
+ const available=CARD_POOL.filter(c=>!(state.cards||[]).includes(c.id));if(!available.length)return false;
+ const card=available[Math.floor(Math.random()*available.length)];
+ showFeature('WOW!','A NEW WORLD CARD WAS DISCOVERED!',`<div class="collectStars">★★★★★</div><div class="collectCard"><div class="cardGlyph">${card.glyph}</div><strong>${card.name}</strong></div><b>${card.world}</b><p style="color:#e8d6fa">Added to your Royal Album when collected.</p>`,()=>{state.cards=state.cards||[];state.cards.push(card.id);updateCardCount();toast(card.name+' added to your album')});
+ return true;
+}
+function awardIngredients(){
+ showFeature('CONGRATULATIONS!','YOU FOUND BONUS TREASURES!',`<div class="rewardItems"><div class="rewardItem">💎<small>GEM ×1</small></div><div class="rewardItem">🪙<small>COIN ×1</small></div><div class="rewardItem">🧿<small>RELIC ×1</small></div></div><p style="color:#f3dcff">Three themed ingredients added to your collection.</p>`,()=>{state.ingredients=(Number(state.ingredients)||0)+3;toast('3 virtual ingredients collected')});
+}
+function updateCardCount(){if($('cardCount'))$('cardCount').textContent=(state.cards||[]).length+'/8'}
+function openAlbum(){$('collectionModal').style.display='grid';renderAlbum('all')}
+function closeAlbum(){$('collectionModal').style.display='none'}
+function renderAlbum(filter){
+ const owned=state.cards||[],list=CARD_POOL.filter(c=>filter==='owned'?owned.includes(c.id):filter==='missing'?!owned.includes(c.id):true);
+ $('albumGrid').innerHTML=list.map(c=>{let has=owned.includes(c.id);return `<div class="albumItem"><div class="cardGlyph">${has?c.glyph:'🔒'}</div><b>${has?c.name:'Mystery Card'}</b><small>${has?c.world:'Discover in a bonus event'}</small><small>${has?'★★★★★':'Not collected'}</small></div>`}).join('')||'<p>No cards in this view yet.</p>';
+}
+
 function chooseChest(index){$('bonusModal').style.display='none';let prizes=[state.bet*2,state.bet*3,state.bet*5],prize=prizes[index];state.balance+=prize;save();toast('Chest revealed: +'+money(prize)+' virtual coins!')}
 $('paytable').innerHTML=SYMBOLS.filter(s=>!['wild','scatter'].includes(s.id)).map(s=>`<div class="infoBox" style="padding:8px"><b>${s.e} ${s.name}</b><span>3: ${s.pay[2]}× · 4: ${s.pay[3]}× · 5: ${s.pay[4]}× (ways factor)</span></div>`).join('');
 // Reset per-day quest progress gently; it is a simple local demo counter.
-renderLobby();updateHUD();buildReels();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
+renderLobby();updateHUD();buildReels();updateCardCount();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
 </script>
 </body></html>
