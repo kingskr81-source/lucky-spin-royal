@@ -190,6 +190,51 @@ button:hover{border-color:#ffe3a0;box-shadow:0 8px 25px #000b,0 0 16px #e7bf7144
 #gameView .symbol[data-symbol="respin"]{box-shadow:inset 0 0 18px #8fe9df22,0 0 12px #8fe9df22}
 @media(max-width:700px){.betUnlockNote{font-size:7px}.betControl{padding-bottom:21px!important}}
 
+
+/* V3.6 — Bright fantasy arcade theme */
+:root{--bg:#edf4ff;--panel:#ffffff;--panel2:#eaf1ff;--gold:#f0a63c;--gold2:#ca762b;--violet:#7257e8;--cyan:#21b8c5;--pink:#ef65b6;--muted:#63708d;--line:rgba(84,105,155,.2)}
+html,body{background:#eef4ff!important;color:#17213c!important}
+body{background:radial-gradient(ellipse at 12% 0%,#c9f5f1 0,transparent 35%),radial-gradient(ellipse at 90% 8%,#f8d8f0 0,transparent 32%),linear-gradient(180deg,#f5f8ff,#eaf0ff 68%,#f8faff)!important}
+header,.top{background:rgba(255,255,255,.88)!important;border-bottom:1px solid #cbd8f0!important;box-shadow:0 5px 25px #647ca51a!important;backdrop-filter:blur(18px)}
+.brand,.logo{color:#35458b!important;text-shadow:none!important}
+main{color:#17213c}
+.heroMain,.profile,.infoBox,.questCard,.controlPanel,.pill,.topLevelWrap{background:linear-gradient(145deg,#ffffff,#edf3ff)!important;border:1px solid #cbd8f0!important;box-shadow:0 12px 30px #647ca51a,inset 0 1px #fff!important}
+.heroMain h1,.sectionhead h2,.gamehead h2{color:#273c77!important;text-shadow:none!important}
+.heroMain h1 span{color:#e18d36!important}
+.heroMain p,.profile .muted,.infoBox span,.gameinfo small,.sectionhead p,.muted{color:#64718d!important}
+.eyebrow{color:#179eaa!important}
+.level,.infoBox b,.questCard b{color:#a96924!important}
+.avatar{background:linear-gradient(135deg,#ffdc9a,#e9a8e4)!important}
+.gamecard.vipCard{background:linear-gradient(155deg,#fff,#e9efff 72%)!important;border:1px solid #c7d4ef!important;box-shadow:0 14px 30px #647ca52b!important}
+.gamecard.vipCard:hover{border-color:#8a7cf1!important;box-shadow:0 20px 38px #657be444,0 0 22px #8b75f533!important}
+.vipCard .tag{background:#fff!important;color:#6252bd!important;border-color:#b9b2ec!important}
+.vipCard .art{background:radial-gradient(ellipse at 50% 65%,#fff 0,#e3eaff 46%,#d7f3f1 100%)!important}
+.vipCard .art:before{border-color:#aab9eb!important;box-shadow:0 0 28px #8f9fe866!important}
+.artHalo{border-color:#7b8fe966!important;box-shadow:0 0 35px #8b91e644,inset 0 0 35px #b7c8f055!important}
+.artHalo:before,.artHalo:after{border-color:#8ca3d777!important}
+.artPedestal{background:radial-gradient(ellipse,#8e9eea66,transparent 70%)!important}
+.vipArtifact{filter:drop-shadow(0 8px 12px #6473a766)!important}
+.vipArtifact svg{filter:drop-shadow(0 5px 8px #6473a744)!important}
+.vipCard .artTitle{color:#65719a!important;text-shadow:none!important}
+.vipCard .gameinfo{background:linear-gradient(180deg,#fff,#f1f4ff)!important}
+.vipCard .gameinfo strong{color:#263762!important}
+.cardEnter{color:#6655c9!important;border-color:#d8ddf2!important}
+button{background:linear-gradient(135deg,#fff,#e9edff)!important;color:#334477!important;border:1px solid #c3cfee!important;box-shadow:0 5px 14px #6575a522!important}
+button:hover{border-color:#8978e8!important;box-shadow:0 8px 20px #7b6ce644!important}
+.goldbtn{background:linear-gradient(100deg,#ffe7a9,#ffbf72)!important;color:#392b44!important;border-color:#f0c27c!important}
+.spinbtn{background:linear-gradient(100deg,#8cebe1,#93b6ff 52%,#e5a7ed)!important;color:#26345e!important;border:1px solid #fff!important;box-shadow:0 8px 24px #7896e655!important}
+.xp span,.topXpTrack span,.questTrack span{background:linear-gradient(90deg,#22c4b7,#7b8cf3,#e58bd2)!important}
+.machine{background:linear-gradient(135deg,#b7d2ff,#9c8ce8 35%,#75d9d1)!important;border:2px solid #fff!important;box-shadow:0 0 0 3px #c9d6f4,0 22px 50px #5b6da533!important}
+.machineInner{background:radial-gradient(ellipse at 50% 15%,#f6fbff,#dfe8ff 72%)!important;border:2px solid #fff!important}
+.reel{background:linear-gradient(180deg,#dbe7ff,#fff 50%,#d9e5ff)!important;border-color:#bdccef!important;box-shadow:inset 0 0 15px #778fc322!important}
+.symbol{background:linear-gradient(145deg,#fff,#edf3ff)!important;border:1px solid #d6def2!important;box-shadow:inset 0 1px #fff,0 3px 8px #6d80a522!important}
+.symbol.win{outline:3px solid #f4b44d!important;background:#fff4c9!important;box-shadow:0 0 16px #f2b54d99!important}
+.machineFoot{color:#5e63a4!important}
+#status{color:#4b5c85!important}
+.levelToast{background:linear-gradient(135deg,#fff,#e7efff)!important;color:#26345e!important;border-color:#e5b65d!important;box-shadow:0 0 45px #91a5e677!important}
+.betUnlockNote{color:#6573a0!important}
+@media(max-width:760px){.hero{grid-template-columns:1fr!important}.games{grid-template-columns:repeat(2,minmax(0,1fr))!important}.reels{min-height:310px!important;gap:4px!important}.symbol{min-height:48px!important}}
+
 </style>
 </head>
 <body>
