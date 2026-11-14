@@ -538,12 +538,12 @@ button:hover{border-color:#e8c987;box-shadow:0 0 18px #d4b36b33}
 <main>
 <section id="lobby" class="view lobby active">
  <div class="hero">
-  <div class="heroMain"><div class="eyebrow">WELCOME TO YOUR PRIVATE ARCADE</div><h1>PLAY BOLD.<br><span style="color:#f7bd65">WIN IN STYLE.</span></h1><p>One featured world. One beautifully crafted machine. We are perfecting Crystalline Vault before introducing the next game.</p><button class="goldbtn" onclick="document.getElementById('gamesTitle').scrollIntoView({behavior:'smooth'})">ENTER THE VAULT　→</button></div>
+  <div class="heroMain"><div class="eyebrow">WELCOME TO YOUR PRIVATE ARCADE</div><h1>PLAY BOLD.<br><span style="color:#f7bd65">WIN IN STYLE.</span></h1><p>One featured world. One beautifully crafted machine. We are perfecting Crystalline Vault before introducing the next game.</p><button class="goldbtn" type="button" onclick="openGame('dragon')">ENTER THE VAULT　→</button></div>
   <div class="profile"><div class="profileHead"><div><div class="muted">PLAYER PROFILE</div><div class="level">LEVEL <span id="profileLevel">1</span> · ROOKIE</div></div><div class="avatar">👑</div></div><div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><b id="xpText">120 / 500 XP</b><span class="muted">NEXT LEVEL</span></div><div class="xp"><span id="xpBar"></span></div></div><div style="display:flex;justify-content:space-between"><div><div class="muted">TOTAL SPINS</div><b id="spinCount">0</b></div><div><div class="muted">TOTAL WINS</div><b id="winCount">0</b></div><div><div class="muted">BEST WIN</div><b id="bestWin">0</b></div></div></div>
  </div>
  <div class="sectionhead" id="gamesTitle"><div><h2>✦ FEATURED GAME</h2><p>Crystalline Vault is our focus while we perfect the symbols, reels and bonus experience.</p></div><span class="muted">1 GAME · QUALITY FIRST</span></div>
  <div class="games singleGameGrid" id="gameGrid">
-   <article class="gamecard vipCard" data-game-id="dragon" tabindex="0" role="button" aria-label="Play Crystalline Vault">
+   <article class="gamecard vipCard" data-game-id="dragon" tabindex="0" role="button" aria-label="Play Crystalline Vault" onclick="openGame('dragon')">
     <span class="tag">✦ FEATURED EXPERIENCE</span>
     <div class="art dragon"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">💎</div><span class="artTitle">CRYSTALLINE VAULT</span></div>
     <div class="gameinfo"><strong>Crystalline Vault</strong><small>Ancient subterranean treasury · Prismatic gems</small><span class="cardEnter">ENTER THE VAULT <b>↗</b></span></div>
