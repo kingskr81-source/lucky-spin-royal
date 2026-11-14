@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LUCKY SPIN ROYAL — Prototype 3.2 (GitHub Edition · Progression & Quests)</title>
+<title>LUCKY SPIN ROYAL — Prototype 3.3 (GitHub Edition · Royal XP & Aztec Artifacts)</title>
 <style>
 :root{--bg:#090713;--panel:#17102b;--panel2:#21143b;--gold:#f6cf72;--gold2:#a96b21;--violet:#9b5cff;--cyan:#53e7ff;--pink:#ff4fc8;--muted:#b9abcF;--line:rgba(226,190,255,.22)}
 *{box-sizing:border-box}body{margin:0;color:#fff;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at 50% -20%,#66321f 0,#211034 42%,#090713 78%);min-height:100vh}
@@ -115,12 +115,24 @@ main{padding:clamp(8px,1.4vh,16px) clamp(10px,2.4vw,36px) 12px}
 }
 @media(prefers-reduced-motion:reduce){#gameView .reelTrack{transition:none!important;animation:none!important}}
 
+
+/* V3.3 Royal progression + artifact finish */
+.topLevelWrap{min-width:170px;max-width:220px;padding:7px 10px;border:1px solid #e6bd6655;border-radius:13px;background:linear-gradient(135deg,#26143e,#100b20);box-shadow:inset 0 0 16px #a65cff18}
+.topLevelLine{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:11px;font-weight:900;color:var(--gold);margin-bottom:6px}
+.topLevelLine b:last-child{font-size:10px;color:#bcefff;white-space:nowrap}
+.topXpTrack{height:7px;border-radius:99px;background:#070510;border:1px solid #ffffff30;overflow:hidden}
+.topXpTrack span{display:block;width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#9b5cff,#39dfff,#ffe08a);box-shadow:0 0 12px #58dcff;transition:width .45s ease}
+.symbol{filter:drop-shadow(0 4px 5px #000b);transition:filter .2s,transform .2s}
+.symbol svg{overflow:visible}
+.symbol.win{filter:drop-shadow(0 0 9px #ffd86b) drop-shadow(0 0 18px #eeb54b);transform:scale(1.08)}
+@media(max-width:760px){.topLevelWrap{order:3;min-width:150px;flex:1}.topright{flex-wrap:wrap}}
+
 </style>
 </head>
 <body>
 <header class="top">
  <div class="brand">✦ LUCKY SPIN ROYAL <small>THE ROYAL NEON ARCADE</small></div>
- <div class="topright"><div class="pill">LEVEL <b id="topLevel">1</b></div><div class="pill">🪙 <b id="balance">5,000,000</b></div><button class="backupBtn" onclick="exportPlayerData()">⬇ BACK UP</button><button class="backupBtn" onclick="document.getElementById('importSaveFile').click()">⬆ RESTORE</button><input id="importSaveFile" type="file" accept="application/json,.json" hidden onchange="importPlayerData(event)"><button id="soundBtn" onclick="toggleSound()">🔊 SOUND ON</button></div>
+ <div class="topright"><div class="topLevelWrap"><div class="topLevelLine"><span>LEVEL <b id="topLevel">1</b></span><b id="topXpText">120 / 250 XP</b></div><div class="topXpTrack"><span id="topXpBar"></span></div></div><div class="pill">🪙 <b id="balance">5,000,000</b></div><button class="backupBtn" onclick="exportPlayerData()">⬇ BACK UP</button><button class="backupBtn" onclick="document.getElementById('importSaveFile').click()">⬆ RESTORE</button><input id="importSaveFile" type="file" accept="application/json,.json" hidden onchange="importPlayerData(event)"><button id="soundBtn" onclick="toggleSound()">🔊 SOUND ON</button></div>
 </header>
 <main>
 <section id="lobby" class="view lobby active">
@@ -160,7 +172,7 @@ main{padding:clamp(8px,1.4vh,16px) clamp(10px,2.4vw,36px) 12px}
  </div>
  <div id="rulesPanel" class="infoBox" style="display:none;max-width:980px;margin:12px auto">
   <b>AZTEC GOLD RICHES · HOW TO PLAY</b>
-  <span>5 reels × 5 rows. Wins are evaluated left-to-right across adjacent reels. Any position on a reel can contribute. Wild 🗿 substitutes for regular symbols. Three or more 🌞 scatters anywhere award 3 free spins. Free spins do not deduct a bet. Virtual coins have no cash value.</span>
+  <span>5 reels × 5 rows. Wins are evaluated left-to-right across adjacent reels. Any position on a reel can contribute. The Feathered Serpent is Wild and substitutes for regular symbols. Three or more Sun Calendar scatters anywhere award 3 free spins. Free spins do not deduct a bet. Virtual coins have no cash value.</span>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px" id="paytable"></div>
  </div>
  <div id="bonusModal" style="display:none;position:fixed;inset:0;background:#05030ddd;z-index:20;place-items:center;padding:20px">
@@ -175,7 +187,7 @@ main{padding:clamp(8px,1.4vh,16px) clamp(10px,2.4vw,36px) 12px}
 </main><div class="toast" id="toast"></div>
 <script>
 const games=[
- {id:'aztec',name:'Aztec Gold Riches',sub:'Temple treasure · Golden wilds',emoji:'🗿',art:'aztec',symbol:['🗿','🐍','🏺','💎','👑','🪙','🦜','🌞'],desc:'Explore a forgotten temple and uncover golden treasures.'},
+ {id:'aztec',name:'Aztec Gold Riches',sub:'Temple treasure · Golden wilds',emoji:'🗿',art:'aztec',symbol:['☀','🐆','🦅','🎭','🗿','🪙','🐍','✺'],desc:'Explore a forgotten temple and uncover golden treasures.'},
  {id:'cyber',name:'Neon Cyber Quest',sub:'Neon city · Digital wilds',emoji:'🤖',art:'cyber',symbol:['💠','🤖','🛸','🔮','⚡','👾','💿','🌐'],desc:'Enter a neon city of digital treasures and electric symbols.'},
  {id:'dragon',name:"Mystic Dragon's Lair",sub:'Fantasy cave · Dragon treasures',emoji:'🐉',art:'dragon',symbol:['🐉','🔥','🥚','🛡️','💰','👑','💎','🗝️'],desc:'Discover the dragon’s vault and its enchanted treasures.'},
  {id:'cosmic',name:'Cosmic Fruits',sub:'Galaxy fruits · Star multipliers',emoji:'🍒',art:'cosmic',symbol:['🍒','🍋','🍇','🔔','⭐','7️⃣','💫','🌙'],desc:'A colourful cosmic fruit machine among the stars.'},
@@ -185,19 +197,18 @@ const games=[
  {id:'moon',name:'Moonlight Fortune',sub:'Celestial realm · Lunar magic',emoji:'🌙',art:'moon',symbol:['🌙','✨','🪐','🌟','🔮','🦉','💎','👑'],desc:'A celestial night journey through a realm of lunar magic.'}
 ];
 const SYMBOLS=[
- {id:'idol',e:'🗿',name:'Idol',weight:10,pay:[0,0,1.1,2.2,5]},
- {id:'snake',e:'🐍',name:'Serpent',weight:12,pay:[0,0,.9,1.8,4]},
- {id:'vase',e:'🏺',name:'Vase',weight:14,pay:[0,0,.75,1.5,3.5]},
- {id:'gem',e:'💎',name:'Gem',weight:16,pay:[0,0,.6,1.2,3]},
- {id:'crown',e:'👑',name:'Crown',weight:18,pay:[0,0,.5,1,2.5]},
- {id:'coin',e:'🪙',name:'Coin',weight:20,pay:[0,0,.4,.8,2]},
- {id:'parrot',e:'🦜',name:'Parrot',weight:22,pay:[0,0,.35,.7,1.8]},
- {id:'wild',e:'🌞',name:'Wild',weight:7,pay:[0,0,0,0,0]},
- {id:'scatter',e:'✨',name:'Scatter',weight:5,pay:[0,0,0,0,0]}
+ {id:'sunstone',e:'☀',name:'Sunstone',weight:10,pay:[0,0,1.2,2.5,5.5]},
+ {id:'jaguar',e:'🐆',name:'Golden Jaguar',weight:12,pay:[0,0,1,2.1,4.5]},
+ {id:'eagle',e:'🦅',name:'Warrior Eagle',weight:14,pay:[0,0,.85,1.8,4]},
+ {id:'mask',e:'🎭',name:'Obsidian Mask',weight:16,pay:[0,0,.7,1.45,3.2]},
+ {id:'idol',e:'🗿',name:'Temple Idol',weight:18,pay:[0,0,.6,1.2,2.8]},
+ {id:'coin',e:'🪙',name:'Gold Medallion',weight:20,pay:[0,0,.5,1,2.2]},
+ {id:'serpent',e:'🐍',name:'Feathered Serpent · Wild',weight:7,pay:[0,0,0,0,0]},
+ {id:'calendar',e:'✺',name:'Sun Calendar · Scatter',weight:5,pay:[0,0,0,0,0]}
 ];
 const money=n=>Math.floor(n).toLocaleString('en-US');
 const STORE='lsRoyalDemoV2';
-const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[]};
+const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0};
 let state;
 try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
 function xpNeeded(level){return 250+Math.max(0,level-1)*50}
@@ -251,7 +262,7 @@ function claimQuest(id){
 function updateHUD(){
  ['balance','gameBalance'].forEach(id=>{if($(id))$(id).textContent=money(state.balance)});
  $('topLevel').textContent=state.level;$('profileLevel').textContent=state.level;
- $('xpText').textContent=state.xp+' / '+xpNeeded(state.level)+' XP';$('xpBar').style.width=(state.xp/xpNeeded(state.level)*100)+'%';
+ $('xpText').textContent=state.xp+' / '+xpNeeded(state.level)+' XP';$('xpBar').style.width=(state.xp/xpNeeded(state.level)*100)+'%';if($('topXpText'))$('topXpText').textContent=state.xp+' / '+xpNeeded(state.level)+' XP';if($('topXpBar'))$('topXpBar').style.width=(state.xp/xpNeeded(state.level)*100)+'%';
  $('spinCount').textContent=money(state.spins);$('winCount').textContent=money(state.wins);$('bestWin').textContent=money(state.best);$('betValue').textContent=money(state.bet);
  $('freeSpinInfo').textContent=state.freeSpins?state.freeSpins+' free spins remaining':'No free spins active';
  $('questText').textContent=state.questSpins>=5?'Quest complete — well played!':Math.min(state.questSpins,5)+' / 5 spins completed today';
@@ -261,20 +272,26 @@ function updateHUD(){
 }
 function renderLobby(){$('gameGrid').innerHTML=games.map((g,i)=>`<article class="gamecard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ PLAYABLE DEMO':'✦ COMING SOON'}</span><div class="art ${g.art}"><span>${g.emoji}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small></div></article>`).join('')}
 function showLobby(){stopAuto();$('gameView').classList.remove('active');$('lobby').classList.add('active')}
-function openGame(id){current=games.find(g=>g.id===id);$('lobby').classList.remove('active');$('gameView').classList.add('active');$('gameTitle').textContent=current.name.toUpperCase();$('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';$('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · 3,125 WAYS';buildReels();updateHUD();$('status').textContent=id==='aztec'?'Featured playable demo — every result is virtual and random.':'Preview only — this machine will be developed in a later phase.';$('spinBtn').disabled=id!=='aztec';$('autoBtn').disabled=id!=='aztec'}
+function openGame(id){current=games.find(g=>g.id===id);$('lobby').classList.remove('active');$('gameView').classList.add('active');$('gameTitle').textContent=current.name.toUpperCase();$('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';$('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · 3,125 WAYS';buildReels();updateHUD();$('status').textContent=id==='aztec'?'Royal temple edition — earn XP on every spin and discover Aztec-inspired treasures.':'Preview only — this machine will be developed in a later phase.';$('spinBtn').disabled=id!=='aztec';$('autoBtn').disabled=id!=='aztec'}
 function weightedSymbol(){let total=SYMBOLS.reduce((a,s)=>a+s.weight,0),n=Math.random()*total;for(const s of SYMBOLS){n-=s.weight;if(n<=0)return s}return SYMBOLS[0]}
 function symbolSvg(id){
- const defs=`<defs><linearGradient id="goldG" x2="0" y2="1"><stop stop-color="#fff3ae"/><stop offset=".42" stop-color="#f8bd45"/><stop offset="1" stop-color="#8b4214"/></linearGradient><linearGradient id="blueG" x2="0" y2="1"><stop stop-color="#d8fbff"/><stop offset=".42" stop-color="#36bfff"/><stop offset="1" stop-color="#123b9c"/></linearGradient><linearGradient id="redG" x2="0" y2="1"><stop stop-color="#ffdf9a"/><stop offset=".45" stop-color="#ef8c37"/><stop offset="1" stop-color="#7d281c"/></linearGradient><radialGradient id="sunG"><stop stop-color="#fffbd0"/><stop offset=".55" stop-color="#ffcf4e"/><stop offset="1" stop-color="#bd5c17"/></radialGradient></defs>`;
+ const defs=`<defs>
+ <linearGradient id="goldG" x2="0" y2="1"><stop stop-color="#fff8c9"/><stop offset=".24" stop-color="#f8d477"/><stop offset=".58" stop-color="#d9952e"/><stop offset="1" stop-color="#71320e"/></linearGradient>
+ <linearGradient id="goldLight" x2="0" y2="1"><stop stop-color="#fffbdc"/><stop offset=".5" stop-color="#f5c65e"/><stop offset="1" stop-color="#a85b18"/></linearGradient>
+ <linearGradient id="jade" x2="0" y2="1"><stop stop-color="#b5ffe3"/><stop offset=".45" stop-color="#20a889"/><stop offset="1" stop-color="#075548"/></linearGradient>
+ <linearGradient id="obsidian" x2="0" y2="1"><stop stop-color="#8f9ab1"/><stop offset=".35" stop-color="#34364b"/><stop offset="1" stop-color="#111321"/></linearGradient>
+ <radialGradient id="sunG"><stop stop-color="#fffbd4"/><stop offset=".48" stop-color="#ffd76c"/><stop offset="1" stop-color="#bd6419"/></radialGradient>
+ <filter id="iconGlow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ </defs>`;
  const paths={
- idol:`<path d="M25 17 Q50 2 75 17 L70 75 Q50 92 30 75Z" fill="url(#goldG)" stroke="#fff0a0" stroke-width="3"/><path d="M35 34 L65 34 L60 61 L40 61Z" fill="#51301b"/><circle cx="42" cy="44" r="4" fill="#ffdf72"/><circle cx="58" cy="44" r="4" fill="#ffdf72"/><path d="M42 55 Q50 62 58 55" fill="none" stroke="#ffd76a" stroke-width="4"/>`,
- snake:`<path d="M18 68 C12 30 45 13 70 30 C91 45 72 76 48 66 C29 59 39 38 55 42" fill="none" stroke="url(#goldG)" stroke-width="13" stroke-linecap="round"/><path d="M70 26 L86 17 L81 37Z" fill="#42d58a"/><circle cx="73" cy="29" r="2.5" fill="#21102a"/>`,
- vase:`<path d="M35 12 L65 12 L60 29 Q83 43 73 79 Q50 94 27 79 Q17 43 40 29Z" fill="url(#redG)" stroke="#ffd77a" stroke-width="3"/><path d="M33 53 Q50 61 67 53 M29 69 Q50 77 71 69" stroke="#ffe4a2" stroke-width="4" fill="none"/>`,
- gem:`<path d="M16 34 L34 12 L68 12 L86 34 L50 87Z" fill="url(#blueG)" stroke="#d6f8ff" stroke-width="3"/><path d="M16 34 L50 34 L50 87Z" fill="#1476cf"/><path d="M34 12 L50 34 L68 12Z" fill="#d4faff"/><path d="M50 34 L86 34 L50 87Z" fill="#1852b5"/>`,
- crown:`<path d="M15 31 L33 46 L50 15 L67 46 L85 31 L77 76 L23 76Z" fill="url(#goldG)" stroke="#fff0a5" stroke-width="3"/><path d="M22 76 L78 76 L73 88 L27 88Z" fill="#b95b1a"/><circle cx="33" cy="50" r="5" fill="#e94b93"/><circle cx="50" cy="30" r="5" fill="#48cfff"/><circle cx="67" cy="50" r="5" fill="#e94b93"/>`,
- coin:`<circle cx="50" cy="50" r="37" fill="url(#goldG)" stroke="#fff0a3" stroke-width="4"/><circle cx="50" cy="50" r="27" fill="none" stroke="#a95a17" stroke-width="3"/><path d="M39 34 H61 M50 34 V66 M39 66 H61" stroke="#9a5017" stroke-width="5" stroke-linecap="round"/>`,
- parrot:`<path d="M49 15 Q72 8 76 34 Q82 57 57 65 L54 86 L40 86 L43 62 Q20 48 31 27 Q37 17 49 15Z" fill="#e53e91" stroke="#ffc56b" stroke-width="3"/><path d="M62 32 L88 40 L67 49Z" fill="url(#goldG)"/><circle cx="58" cy="29" r="4" fill="#fff"/><circle cx="59" cy="29" r="2" fill="#17102a"/><path d="M35 56 L15 72 L44 67Z" fill="#35d6c2"/>`,
- wild:`<circle cx="50" cy="50" r="25" fill="url(#sunG)" stroke="#fff1a8" stroke-width="4"/><path d="M50 4 L58 22 L78 12 L75 34 L96 39 L79 54 L91 73 L68 72 L62 95 L47 77 L29 91 L30 68 L7 62 L24 47 L11 28 L34 30Z" fill="url(#goldG)" stroke="#ffeb9d" stroke-width="2"/><circle cx="50" cy="50" r="13" fill="#fff0a5"/>`,
- scatter:`<circle cx="50" cy="50" r="34" fill="none" stroke="#b66bff" stroke-width="8"/><circle cx="50" cy="50" r="23" fill="url(#blueG)" stroke="#e8c7ff" stroke-width="3"/><path d="M50 26 L56 44 L75 50 L56 56 L50 75 L44 56 L25 50 L44 44Z" fill="#fff4ba"/>`
+ sunstone:`<g filter="url(#iconGlow)"><circle cx="50" cy="50" r="39" fill="url(#goldG)" stroke="#fff1ad" stroke-width="3"/><circle cx="50" cy="50" r="32" fill="none" stroke="#8a4818" stroke-width="2.5"/><circle cx="50" cy="50" r="24" fill="url(#sunG)" stroke="#fff0a6" stroke-width="2"/><circle cx="50" cy="50" r="12" fill="#a95c1b" stroke="#fff0a6" stroke-width="2"/><path d="M50 5V17 M50 83V95 M5 50H17 M83 50H95 M18 18L27 27 M73 73L82 82 M82 18L73 27 M27 73L18 82" stroke="#ffe7a0" stroke-width="5" stroke-linecap="round"/><path d="M50 30L55 44L70 50L55 56L50 70L45 56L30 50L45 44Z" fill="#f9d36f" stroke="#704016" stroke-width="1.5"/></g>`,
+ jaguar:`<g filter="url(#iconGlow)"><path d="M19 36L27 13L43 25Q50 21 57 25L73 13L81 36L77 69Q66 88 50 88Q34 88 23 69Z" fill="url(#goldG)" stroke="#fff0a6" stroke-width="3"/><path d="M29 44Q39 34 46 45L42 55H30Z M54 45Q63 34 72 44L70 55H58Z" fill="#201322" stroke="#fff0a6" stroke-width="2"/><path d="M42 65Q50 57 58 65L50 75Z" fill="#251320" stroke="#f6d47b" stroke-width="2"/><path d="M20 55L12 61 M80 55L88 61 M32 28L37 35 M68 28L63 35" stroke="#6b3514" stroke-width="4"/><circle cx="38" cy="48" r="2.5" fill="#fff3b1"/><circle cx="62" cy="48" r="2.5" fill="#fff3b1"/></g>`,
+ eagle:`<g filter="url(#iconGlow)"><path d="M15 48Q22 18 54 17Q77 17 83 39L70 43L86 56L60 57L52 82L39 64L18 69L32 52Z" fill="url(#goldG)" stroke="#fff0a6" stroke-width="3"/><path d="M51 30Q71 26 76 41L58 48L43 45Z" fill="url(#jade)" stroke="#f6d47c" stroke-width="2"/><path d="M70 42L94 48L73 57Z" fill="#e9a93e" stroke="#fff0a6" stroke-width="2"/><circle cx="63" cy="37" r="3" fill="#1a1423"/><path d="M23 47L10 35L15 57L6 69L33 61" fill="#b76a1d" stroke="#fff0a6" stroke-width="2"/><path d="M42 63L32 83L53 75L63 87L65 63" fill="#c67c22" stroke="#fff0a6" stroke-width="2"/></g>`,
+ mask:`<g filter="url(#iconGlow)"><path d="M50 10L78 22L82 51Q75 82 50 91Q25 82 18 51L22 22Z" fill="url(#obsidian)" stroke="#e9c56c" stroke-width="4"/><path d="M27 38L44 32L47 48L31 53Z M73 38L56 32L53 48L69 53Z" fill="#f3c55d" stroke="#fff0a6" stroke-width="2"/><path d="M43 62L57 62L50 77Z" fill="url(#goldG)" stroke="#fff0a6" stroke-width="2"/><path d="M50 14V28 M22 54L34 58 M78 54L66 58 M35 79L42 70 M65 79L58 70" stroke="#d9aa4d" stroke-width="3" fill="none"/></g>`,
+ idol:`<g filter="url(#iconGlow)"><path d="M35 12H65L61 26Q78 35 76 62L68 85H32L24 62Q22 35 39 26Z" fill="url(#goldG)" stroke="#fff1aa" stroke-width="3"/><path d="M34 43L45 38L47 51L35 54Z M66 43L55 38L53 51L65 54Z" fill="#3b2114" stroke="#fff0a6" stroke-width="2"/><path d="M39 65Q50 76 61 65" fill="none" stroke="#704018" stroke-width="5"/><path d="M42 18L50 7L58 18 M28 78H72" stroke="#fff0a6" stroke-width="3" fill="none"/></g>`,
+ coin:`<g filter="url(#iconGlow)"><circle cx="50" cy="50" r="40" fill="url(#goldG)" stroke="#fff4bd" stroke-width="4"/><circle cx="50" cy="50" r="32" fill="none" stroke="#89501c" stroke-width="3"/><circle cx="50" cy="50" r="24" fill="none" stroke="#ffedaa" stroke-width="2" stroke-dasharray="3 4"/><path d="M50 29L57 42L70 50L57 58L50 71L43 58L30 50L43 42Z" fill="#a45b1b" stroke="#fff1a8" stroke-width="2"/><circle cx="50" cy="50" r="7" fill="#fff1b0"/></g>`,
+ serpent:`<g filter="url(#iconGlow)"><path d="M17 68Q13 37 37 25Q57 15 73 31Q88 47 72 62Q59 75 43 64Q31 55 41 44Q49 35 58 44" fill="none" stroke="url(#goldG)" stroke-width="12" stroke-linecap="round"/><path d="M66 23L84 13L81 35Z" fill="url(#jade)" stroke="#fff0a6" stroke-width="2"/><circle cx="73" cy="27" r="3" fill="#241528"/><path d="M25 35L12 24L18 45 M34 25L28 10L43 22 M48 20L47 5L59 20" fill="#168e79" stroke="#c5f6ca" stroke-width="2"/><path d="M58 66L72 83L49 76 M39 66L37 88L26 72" fill="#1d9a7b" stroke="#d0f6c9" stroke-width="2"/></g>`,
+ calendar:`<g filter="url(#iconGlow)"><path d="M50 6L59 20L76 14L76 31L94 40L82 54L88 72L68 73L59 92L46 79L27 88L25 68L7 58L21 44L13 26L34 27Z" fill="url(#goldG)" stroke="#fff0a6" stroke-width="3"/><circle cx="50" cy="50" r="29" fill="url(#obsidian)" stroke="#ffe49b" stroke-width="3"/><circle cx="50" cy="50" r="21" fill="none" stroke="#e9bd5d" stroke-width="2"/><circle cx="50" cy="50" r="11" fill="url(#sunG)" stroke="#fff1a6" stroke-width="2"/><path d="M50 30V39 M50 61V70 M30 50H39 M61 50H70 M36 36L42 42 M58 58L64 64 M64 36L58 42 M42 58L36 64" stroke="#ffe9a8" stroke-width="2.5"/></g>`
  };
  return `<svg viewBox="0 0 100 100" aria-hidden="true">${defs}${paths[id]||paths.coin}</svg>`;
 }
@@ -341,10 +358,17 @@ function spin(){
   let message='';
   if(result.total>0){state.balance+=result.total;state.wins++;state.questWinCount++;state.best=Math.max(state.best,result.total);message='✦ '+money(result.total)+' VIRTUAL COINS · '+result.waysWon+' WAYS';playTone(680,.3,'sine');}
   else message='No ways win this spin — enjoy the next round.';
-  addXP(usingFree?10:25);if(result.total>0)addXP(10);
+  const spinXP=usingFree?10:20;addXP(spinXP);
+  let xpMessage=' · +'+spinXP+' XP';
+  if(result.total>0){
+   addXP(15);state.winStreak=(state.winStreak||0)+1;xpMessage+=' +15 WIN XP';
+   if(state.winStreak%3===0){addXP(30);xpMessage+=' +30 STREAK XP';}
+   if(state.wins%5===0){addXP(100);xpMessage+=' +100 FIVE-WIN BONUS';}
+  }else{state.winStreak=0;}
+  if(state.spins%10===0){addXP(75);xpMessage+=' +75 TEN-SPIN MILESTONE';}
   if(result.scatters>=3){state.freeSpins+=3;message+=' · 3 FREE SPINS AWARDED!';playTone(920,.35,'triangle');}
   $('lastResult').textContent=result.total?('+'+money(result.total)+' · '+result.waysWon+' ways'):'No win';
-  $('status').textContent=(usingFree?'FREE SPIN · ':'')+message;
+  $('status').textContent=(usingFree?'FREE SPIN · ':'')+message+xpMessage;
   $('freeSpinInfo').textContent=state.freeSpins?state.freeSpins+' free spins remaining':'No free spins active';
   save();updateQuestPanel();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=current.id!=='aztec';
   if(autoTimer!==null){if(autoRemaining>0)autoRemaining--;if(autoRemaining===0){stopAuto();$('status').textContent+=' · AUTO PLAY COMPLETE'}else{autoTimer=setTimeout(spin,1050)}}

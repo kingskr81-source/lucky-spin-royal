@@ -1,8 +1,8 @@
 # Changelog
 
-## GitHub Edition (based on V3.2)
-- Fixed progression logic so spin XP is awarded through the same `addXP()` level-up/reward system.
-- Connected spin progress to the daily quest counters used by the quest cards.
-- Changed daily gift date calculation to local calendar date.
-- Added player save JSON export and restore controls.
-- Kept the existing `lsRoyalDemoV2` localStorage key so the same browser profile can retain the existing save.
+## V3.3 — Royal XP & Aztec Artifacts
+- Added a header XP meter that updates with level progression.
+- Added XP feedback for every spin, winning spins, 3-win streaks, every 5 wins, and every 10 spins.
+- Added a custom Aztec-inspired SVG symbol family: Sunstone, Golden Jaguar, Warrior Eagle, Obsidian Mask, Temple Idol, Gold Medallion, Feathered Serpent Wild, and Sun Calendar Scatter.
+- Kept the existing local storage key to preserve this browser's current save.
+- Retained the existing 5×5 reel and game logic.
