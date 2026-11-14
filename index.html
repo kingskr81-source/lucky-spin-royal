@@ -276,7 +276,7 @@ const STORE='lsRoyalDemoV2';
 const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0};
 const BET_TIERS=[{level:1,bet:5000},{level:3,bet:10000},{level:5,bet:20000},{level:8,bet:50000},{level:12,bet:100000},{level:18,bet:250000},{level:25,bet:500000},{level:35,bet:1000000}];
 function unlockedBets(){return BET_TIERS.filter(t=>state.level>=t.level).map(t=>t.bet)}
-function maxBetForLevel(level){return BET_TIERS.filter(t=>level>=t.level).at(-1)?.bet||5000}
+function maxBetForLevel(level){const allowed=BET_TIERS.filter(t=>level>=t.level);return allowed.length?allowed[allowed.length-1].bet:5000}
 state.bet=Math.min(Number(state.bet)||5000,maxBetForLevel(state.level));
 if(!Number.isFinite(state.respinSpins))state.respinSpins=0;
 let state;
@@ -344,7 +344,7 @@ function updateHUD(){
 }
 function renderLobby(){
  const artIds=['sunstone','jaguar','eagle','serpent','calendar','mask','idol','coin'];
- $('gameGrid').innerHTML=games.map((g,i)=>`<article class="gamecard vipCard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ FEATURED EXPERIENCE':'✦ WORLD PREVIEW'}</span><div class="art ${g.art}"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">${symbolSvg(artIds[i]||'coin')}</div><span class="artTitle">${g.name}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>`).join('')
+ $('gameGrid').innerHTML=games.map((g,i)=>{let art='';try{art=symbolSvg(artIds[i]||'coin')}catch(e){art='<span style="font-size:76px">'+g.emoji+'</span>'}return `<article class="gamecard vipCard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ FEATURED EXPERIENCE':'✦ WORLD PREVIEW'}</span><div class="art ${g.art}"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">${art}</div><span class="artTitle">${g.name}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>`}).join('')
 }
 function showLobby(){stopAuto();$('gameView').classList.remove('active');$('lobby').classList.add('active')}
 function openGame(id){current=games.find(g=>g.id===id);$('lobby').classList.remove('active');$('gameView').classList.add('active');$('gameTitle').textContent=current.name.toUpperCase();$('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';$('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · 3,125 WAYS';buildReels();updateHUD();$('status').textContent=id==='aztec'?'Royal temple edition — earn XP on every spin and discover Aztec-inspired treasures.':'Preview only — this machine will be developed in a later phase.';$('spinBtn').disabled=id!=='aztec';$('autoBtn').disabled=id!=='aztec'}
