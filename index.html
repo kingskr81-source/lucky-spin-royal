@@ -647,114 +647,7 @@ button:hover{border-color:#e8c987;box-shadow:0 0 18px #d4b36b33}
 </main><div class="toast" id="toast"></div>
 <script>
 const games=[
- {id:'aztec',name:'Aztec Gold Riches',sub:'Temple treasure · Golden wilds',emoji:'🗿',art:'aztec',symbol:['☀','🐆','🦅','🎭','🗿','🪙','🐍','✺'],desc:'Explore a forgotten temple and uncover golden treasures.'},
- {id:'cyber',name:'Neon Cyber Quest',sub:'Neon city · Digital wilds',emoji:'🤖',art:'cyber',symbol:['💠','🤖','🛸','🔮','⚡','👾','💿','🌐'],desc:'Enter a neon city of digital treasures and electric symbols.'},
- {id:'dragon',name:"Mystic Dragon's Lair",sub:'Fantasy cave · Dragon treasures',emoji:'🐉',art:'dragon',symbol:['🐉','🔥','🥚','🛡️','💰','👑','💎','🗝️'],desc:'Discover the dragon’s vault and its enchanted treasures.'},
- {id:'cosmic',name:'Cosmic Fruits',sub:'Galaxy fruits · Star multipliers',emoji:'🍒',art:'cosmic',symbol:['🍒','🍋','🍇','🔔','⭐','7️⃣','💫','🌙'],desc:'A colourful cosmic fruit machine among the stars.'},
- {id:'phoenix',name:'Phoenix Empire',sub:'Fire kingdom · Rising fortunes',emoji:'🦅',art:'phoenix',symbol:['🦅','🔥','🌺','💎','👑','☀️','🪶','🏆'],desc:'Rise from the ashes in a glowing fire kingdom.'},
- {id:'ocean',name:'Ocean Treasure',sub:'Deep sea · Pearl discoveries',emoji:'🐬',art:'ocean',symbol:['🐬','🐚','🪸','🦈','💎','⚓','🫧','👑'],desc:'Dive into a deep-sea world of pearls and lost treasure.'},
- {id:'wildwest',name:'Wild West Gold',sub:'Frontier town · Lucky legends',emoji:'🤠',art:'wildwest',symbol:['🤠','🐎','🌵','⭐','🔔','💰','🃏','🏜️'],desc:'Ride into a frontier adventure filled with lucky legends.'},
- {id:'moon',name:'Moonlight Fortune',sub:'Celestial realm · Lunar magic',emoji:'🌙',art:'moon',symbol:['🌙','✨','🪐','🌟','🔮','🦉','💎','👑'],desc:'A celestial night journey through a realm of lunar magic.'}
-];
-const SYMBOLS=[
- {id:'sunstone',e:'☀',name:'Sunstone',weight:10,pay:[0,0,1.2,2.5,5.5]},
- {id:'jaguar',e:'🐆',name:'Golden Jaguar',weight:12,pay:[0,0,1,2.1,4.5]},
- {id:'eagle',e:'🦅',name:'Warrior Eagle',weight:14,pay:[0,0,.85,1.8,4]},
- {id:'mask',e:'🎭',name:'Obsidian Mask',weight:16,pay:[0,0,.7,1.45,3.2]},
- {id:'idol',e:'🗿',name:'Temple Idol',weight:18,pay:[0,0,.6,1.2,2.8]},
- {id:'coin',e:'🪙',name:'Gold Medallion',weight:20,pay:[0,0,.5,1,2.2]},
- {id:'serpent',e:'🐍',name:'Feathered Serpent · Wild',weight:7,pay:[0,0,0,0,0]},
- {id:'calendar',e:'✺',name:'Sun Calendar · Free Games',weight:4,pay:[0,0,0,0,0]},
- {id:'respin',e:'⟳',name:'Royal Seal · Respin',weight:3,pay:[0,0,0,0,0]},
- {id:'jackpot',e:'♛',name:'Royal Crown · Jackpot',weight:2,pay:[0,0,0,0,0]},
- {id:'free1',e:'🎟️',name:'Free Spin +1',weight:2.1,pay:[0,0,0,0,0]},
- {id:'free2',e:'🎟️',name:'Free Spins +2',weight:1.15,pay:[0,0,0,0,0]},
- {id:'free5',e:'🎟️',name:'Free Spins +5',weight:.42,pay:[0,0,0,0,0]},
- {id:'bonus',e:'💎',name:'Bonus Vault',weight:1.1,pay:[0,0,0,0,0]}
-];
-const money=n=>Math.floor(n).toLocaleString('en-US');
-const STORE='lsRoyalDemoV2';
-const defaults={v54PlaySeconds:0,v54PlayDate:'',v54PlayClaims:[],v52Claims:[],v52BonusSeen:0,v53FreeMeter:0,v53JackpotClaims:[],balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0,cards:[],ingredients:0, v5Stamps:0,v5StampClaims:[],v5Tickets:{1:0,2:0,3:0,4:0,5:0},v5DailyDate:'',v5DailySpins:0,v5DailyClaimed:false,v5WeekKey:'',v5WeeklySpins:0,v5WeeklyClaimed:false,difficultyByGame:{}};
-const BET_TIERS=Array.from({length:50},(_,i)=>({level:i+1,bet:Math.round((5000*Math.pow(1.25,i))/1000)*1000}));
-let state;
-try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
-function unlockedBets(){return BET_TIERS.filter(t=>state.level>=t.level).map(t=>t.bet)}
-function maxBetForLevel(level){const allowed=BET_TIERS.filter(t=>level>=t.level);return allowed.length?allowed[allowed.length-1].bet:5000}
-state.bet=Math.min(Number(state.bet)||5000,maxBetForLevel(state.level));
-if(!Number.isFinite(state.respinSpins))state.respinSpins=0;
-function xpNeeded(level){return 250+Math.max(0,level-1)*50}
-function levelReward(level){return 100000+level*25000}
-function migrateProgression(){
- if((state.progressionVersion||0)<1){
-  let leveled=[];
-  while(state.xp>=xpNeeded(state.level)&&leveled.length<100){state.xp-=xpNeeded(state.level);state.level++;let prize=levelReward(state.level);state.balance+=prize;leveled.push({level:state.level,prize})}
-  state.progressionVersion=1;
-  if(leveled.length)state.pendingLevelRewards=leveled;
- }
-}
-function v5Week(){const d=new Date();const x=new Date(d);x.setDate(d.getDate()-((d.getDay()+6)%7));return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
-function v5Reset(){const today=localDay(),week=v5Week();if(state.v5DailyDate!==today){state.v5DailyDate=today;state.v5DailySpins=0;state.v5DailyClaimed=false;state.v5DailyEventClaims=[]}if(state.v5WeekKey!==week){state.v5WeekKey=week;state.v5WeeklySpins=0;state.v5WeeklyClaimed=false;state.v5WeeklyEventClaims=[]}state.v5DailyEventClaims=state.v5DailyEventClaims||[];state.v5WeeklyEventClaims=state.v5WeeklyEventClaims||[];state.v5StampClaims=state.v5StampClaims||[];state.v5Tickets={1:0,2:0,3:0,4:0,5:0,...(state.v5Tickets||{})}}
-const V53_JACKPOTS=[{id:'mini',name:'MINI',tier:1,prize:1000000},{id:'minor',name:'MINOR',tier:1,prize:5000000},{id:'major',name:'MAJOR',tier:2,prize:10000000},{id:'grand',name:'GRAND',tier:3,prize:100000000},{id:'super',name:'SUPER',tier:4,prize:10000000000},{id:'legendary',name:'LEGENDARY',tier:5,prize:1000000000000}];
-function v53TicketCount(){return [1,2,3,4,5].reduce((a,n)=>a+Number(state.v5Tickets[n]||0),0)}
-function v53Update(){const meter=Math.min(12,Number(state.v53FreeMeter)||0),freePct=0;if($('v53FreeMeter'))$('v53FreeMeter').style.width='0%';if($('v53FreePercent'))$('v53FreePercent').textContent='RANDOM';if($('v53FreeMeterText'))$('v53FreeMeterText').textContent='Free-spin symbols can drop randomly: +1, +2 or +5';const count=v53TicketCount(),jackPct=Math.min(100,Math.round(count/10*100));if($('v53JackpotMeter'))$('v53JackpotMeter').style.width=jackPct+'%';if($('v53JackpotPercent'))$('v53JackpotPercent').textContent=jackPct+'%';if($('v53JackpotMeterText'))$('v53JackpotMeterText').textContent='Star tickets collected: '+count+' / 10 · "'+[1,2,3,4,5].map(n=>'⭐'.repeat(n)+' '+(state.v5Tickets[n]||0)).join(' · ');const grid=$('v53JackpotGrid');if(grid)grid.innerHTML=V53_JACKPOTS.map(j=>{const have=Number(state.v5Tickets[j.tier]||0),ready=have>0;return '<div class="v53JackpotCard '+(ready?'ready':'')+'"><b>'+j.name+'</b><strong>'+money(j.prize)+'</strong><small>Cost: '+('⭐'.repeat(j.tier))+' ticket</small><small>'+(ready?'Ready to redeem':'Need '+('⭐'.repeat(j.tier))+' ticket')+'</small><button data-jackpot="'+j.id+'" '+(!ready?'disabled':'')+'>REDEEM</button></div>'}).join('')}
-function v53Redeem(id){const j=V53_JACKPOTS.find(x=>x.id===id);if(!j||!(state.v5Tickets[j.tier]>0)){toast('You need a '+('⭐'.repeat(j?.tier||1))+' ticket first.');return}state.v5Tickets[j.tier]--;state.v53JackpotClaims=state.v53JackpotClaims||[];state.v53JackpotClaims.push(id);state.balance+=j.prize;state.best=Math.max(state.best,j.prize);save();v53Update();v5Update();toast(j.name+' JACKPOT redeemed: '+money(j.prize)+' virtual coins!')}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-jackpot]');if(b)v53Redeem(b.dataset.jackpot)});
-window.v53Redeem=v53Redeem;
-function v52RewardFor(stage){const anchors=[[1,1000000],[5,5000000],[10,10000000],[20,100000000],[30,1000000000],[50,10000000000],[75,100000000000],[100,1000000000000]];let a=anchors[0],b=anchors[anchors.length-1];for(let i=0;i<anchors.length-1;i++){if(stage>=anchors[i][0]&&stage<=anchors[i+1][0]){a=anchors[i];b=anchors[i+1];break}}const ratio=(stage-a[0])/(b[0]-a[0]);return Math.round(a[1]+(b[1]-a[1])*ratio)}
-function v52Tier(stage){return stage<10?1:stage<25?2:stage<45?3:stage<70?4:5}
-function v52Render(){const el=id=>$(id);const spins=Number(state.spins)||0,claimed=state.v52Claims||[],unlocked=Math.min(100,spins);if(el('v52ProgressLabel'))el('v52ProgressLabel').textContent=claimed.length+' / 100 rewards claimed · '+unlocked+' stages unlocked';if(el('v52ProgressBar'))el('v52ProgressBar').style.width=(unlocked)+'%';const list=el('v52Stages');if(list){const shown=window.v52ShowAllStages?100:20;list.innerHTML=Array.from({length:shown},(_,i)=>i+1).map(n=>{const done=claimed.includes(n),ready=spins>=n&&!done,tier=v52Tier(n),reward=v52RewardFor(n);return '<div class="v52Stage '+(done?'claimed':ready?'unlocked':'')+'"><b>STAGE '+String(n).padStart(2,'0')+' '+(done?'✓':ready?'🔓':'🔒')+'</b><small>Reward: '+money(reward)+' coins</small><small>'+('⭐'.repeat(tier))+' star ticket</small><small>'+(done?'Collected':ready?'Ready to claim':(n-spins)+' more spins')+'</small>'+(ready?'<button onclick="v52Claim('+n+')">CLAIM REWARD</button>':'')+'</div>'}).join('')}}
-function v52Claim(n){n=Number(n);if(n<1||n>100||n>state.spins||(state.v52Claims||[]).includes(n))return;const tier=v52Tier(n),reward=v52RewardFor(n);state.v52Claims=state.v52Claims||[];state.v52Claims.push(n);state.balance+=reward;state.v5Tickets[tier]=(state.v5Tickets[tier]||0)+1;save();v52Render();v5Update();toast('Stage '+n+' claimed: '+money(reward)+' virtual coins and '+('⭐'.repeat(tier))+' ticket!')}
-function v52ClaimNext(){const n=Array.from({length:100},(_,i)=>i+1).find(x=>x<=state.spins&&!(state.v52Claims||[]).includes(x));if(!n){toast('No new event stage is ready yet.');return}v52Claim(n)}
-function v52ShowAll(){window.v52ShowAllStages=true;v52Render()}
-function v52BonusDrop(){if(spinning||bonusPending)return;const roll=Math.random();if(roll<0.005){const reward=Math.max(state.bet*100,1000000)*([1,2,5,10][Math.floor(Math.random()*4)]);showFeature('ROYAL JACKPOT!','A RARE BONUS VAULT OPENED!', '<div class="collectStars">✦ ✦ ✦</div><h2 style="color:#ffdf73">'+money(reward)+' VIRTUAL COINS</h2><p>A random virtual bonus reveal. No purchase required.</p>',()=>{state.balance+=reward;state.best=Math.max(state.best,reward);state.v52BonusSeen=(state.v52BonusSeen||0)+1;toast('Royal jackpot collected: '+money(reward))});return}if(roll<0.015){const count=1+Math.floor(Math.random()*5);showFeature('FREE SPINS!','A MYSTERY BONUS DROP!', '<div class="collectStars">🎟️ ✨ 🎟️</div><h2 style="color:#ffdf73">'+count+' FREE SPINS</h2><p>Bonus spins added to your virtual game balance.</p>',()=>{state.freeSpins+=count;state.v52BonusSeen=(state.v52BonusSeen||0)+1;toast(count+' free spins added')})}}
-function v5MilestoneDefs(){return [{n:8,coins:100000,tier:1,tickets:1},{n:15,coins:250000,tier:1,tickets:2},{n:25,coins:500000,tier:2,tickets:1},{n:40,coins:900000,tier:2,tickets:2},{n:60,coins:1500000,tier:3,tickets:1},{n:85,coins:2500000,tier:3,tickets:2},{n:120,coins:4000000,tier:4,tickets:1},{n:160,coins:6000000,tier:4,tickets:2},{n:220,coins:9000000,tier:5,tickets:1},{n:300,coins:15000000,tier:5,tickets:2}]}
-function v5Update(){
- const el=id=>$(id),defs=v5MilestoneDefs(),next=defs.find(x=>x.n>state.v5Stamps),prev=defs.filter(x=>x.n<=state.v5Stamps).slice(-1)[0];
- if(el('v5StampText'))el('v5StampText').textContent=state.v5Stamps+' stamps collected · '+(next?'next milestone '+next.n:'all milestones completed');
- if(el('v5StampBar'))el('v5StampBar').style.width=(next?Math.min(100,(state.v5Stamps-(prev?prev.n:0))/(next.n-(prev?prev.n:0))*100):100)+'%';
- if(el('v5StampReward'))el('v5StampReward').textContent=next?'Next chest: '+money(next.coins)+' coins + '+next.tickets+' '+('⭐'.repeat(next.tier))+' ticket(s)':'Every milestone chest collected — royal champion!';
- if(el('v5TicketInventory'))el('v5TicketInventory').innerHTML=[1,2,3,4,5].map(n=>'<div class="v5Ticket"><b>'+('⭐'.repeat(n))+'</b><strong>'+Number(state.v5Tickets[n]||0)+'</strong><small>'+n+'-star tickets</small></div>').join('');
- if(el('v5DailyText'))el('v5DailyText').textContent='Today: '+state.v5DailySpins+' spins · stages: 5 / 12 / 20';
- if(el('v5DailyBar'))el('v5DailyBar').style.width=Math.min(100,state.v5DailySpins/20*100)+'%';
- if(el('v5WeeklyText'))el('v5WeeklyText').textContent='This week: '+state.v5WeeklySpins+' spins · stages: 30 / 60 / 100';
- if(el('v5WeeklyBar'))el('v5WeeklyBar').style.width=Math.min(100,state.v5WeeklySpins/100*100)+'%';
- const daily=[{n:5,c:50000,x:30,t:1},{n:12,c:150000,x:75,t:1},{n:20,c:400000,x:150,t:2}],weekly=[{n:30,c:300000,x:100,t:2},{n:60,c:900000,x:250,t:3},{n:100,c:2500000,x:500,t:4}];
- if(el('v5DailyClaims'))el('v5DailyClaims').innerHTML=daily.map((q,i)=>'<button class="v5Btn" '+(state.v5DailySpins<q.n||(state.v5DailyEventClaims||[]).includes(i)?'disabled':'')+' onclick="claimV5Event(\'daily\','+i+')">'+((state.v5DailyEventClaims||[]).includes(i)?'✓ CLAIMED':state.v5DailySpins>=q.n?'CLAIM '+q.n+' SPIN REWARD':q.n+' SPINS REQUIRED')+'</button>').join('');
- if(el('v5WeeklyClaims'))el('v5WeeklyClaims').innerHTML=weekly.map((q,i)=>'<button class="v5Btn" '+(state.v5WeeklySpins<q.n||(state.v5WeeklyEventClaims||[]).includes(i)?'disabled':'')+' onclick="claimV5Event(\'weekly\','+i+')">'+((state.v5WeeklyEventClaims||[]).includes(i)?'✓ CLAIMED':state.v5WeeklySpins>=q.n?'CLAIM '+q.n+' SPIN REWARD':q.n+' SPINS REQUIRED')+'</button>').join('');
- if(el('v5MilestoneMap'))el('v5MilestoneMap').innerHTML=defs.map(q=>{let done=(state.v5StampClaims||[]).includes(q.n),ready=state.v5Stamps>=q.n&&!done;return '<div class="v5Milestone '+(done?'done':ready?'ready':'')+'"><b>'+q.n+' STAMPS '+(done?'✓':ready?'🔓':'🔒')+'</b><small>'+money(q.coins)+' virtual coins</small><small>'+q.tickets+' × '+('⭐'.repeat(q.tier))+' ticket</small><small>'+(done?'Chest opened':ready?'Ready to claim':(q.n-state.v5Stamps)+' more stamps needed')+'</small></div>'}).join('');
- if(el('v5DifficultyBadge'))el('v5DifficultyBadge').textContent=current&&state.difficultyByGame[current.id]?'Current mode: '+state.difficultyByGame[current.id].toUpperCase():'Choose a mode when entering a world';
-}
-function claimV5Event(kind,index){const daily=[{n:5,c:50000,x:30,t:1},{n:12,c:150000,x:75,t:1},{n:20,c:400000,x:150,t:2}],weekly=[{n:30,c:300000,x:100,t:2},{n:60,c:900000,x:250,t:3},{n:100,c:2500000,x:500,t:4}],arr=kind==='daily'?daily:weekly,claims=kind==='daily'?'v5DailyEventClaims':'v5WeeklyEventClaims',q=arr[index],progress=kind==='daily'?state.v5DailySpins:state.v5WeeklySpins;if(!q||progress<q.n||(state[claims]||[]).includes(index))return;state[claims]=state[claims]||[];state[claims].push(index);state.balance+=q.c;addXP(q.x);state.v5Tickets[q.t]=(state.v5Tickets[q.t]||0)+1;save();v5Update();toast('Event reward claimed: '+money(q.c)+' coins, '+q.x+' XP and '+('⭐'.repeat(q.t))+' ticket!')}
-
-function v5AddStamp(n=1){state.v5Stamps=(state.v5Stamps||0)+n}
-function v5AwardTicket(n){state.v5Tickets[n]=(state.v5Tickets[n]||0)+1;toast(n+'-star ticket collected!')}
-function claimV5Milestone(){const q=v5MilestoneDefs().find(x=>state.v5Stamps>=x.n&&!(state.v5StampClaims||[]).includes(x.n));if(!q){toast('No milestone chest is ready yet.');return}state.balance+=q.coins;state.v5Tickets[q.tier]=(state.v5Tickets[q.tier]||0)+q.tickets;state.v5StampClaims.push(q.n);save();v5Update();toast(q.n+'-stamp chest opened: '+money(q.coins)+' coins and '+q.tickets+' '+('⭐'.repeat(q.tier))+' ticket(s)!')}
-function useV5Ticket(){const tier=[5,4,3,2,1].find(n=>(state.v5Tickets[n]||0)>0);if(!tier){toast('Collect a star ticket first by playing and completing events.');return}state.v5Tickets[tier]--;const prize=[0,1000000,5000000,100000000,10000000000,1000000000000][tier];state.balance+=prize;save();v5Update();toast(tier+'-star bonus round complete: +'+money(prize)+' virtual coins!')}
-function localDay(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function resetQuestDayIfNeeded(){let today=localDay();if(state.questDate!==today){state.questDate=today;state.questSpinCount=0;state.questWinCount=0;state.questClaims=[]}}
-migrateProgression();resetQuestDayIfNeeded();v5Reset();
-let current=games[0],sound=true,autoTimer=null,autoRemaining=0,spinning=false,bonusPending=false;
-const $=id=>document.getElementById(id);
-function save(){localStorage.setItem(STORE,JSON.stringify(state));updateHUD()}
-function showLevelUp(level,reward){
- let old=document.getElementById('levelCelebration');if(old)old.remove();
- let el=document.createElement('div');el.id='levelCelebration';el.className='levelToast';
- el.innerHTML='<div style="font-size:30px">👑 ✨ 👑</div><b style="color:var(--gold);font-size:22px">LEVEL '+level+' UNLOCKED!</b><div style="margin-top:6px">+'+money(reward)+' VIRTUAL COINS</div><small>Keep exploring at your own pace.</small>';
- document.body.appendChild(el);setTimeout(()=>el.remove(),3200);
-}
-function addXP(amount){
- state.xp+=amount;let ups=0;
- while(state.xp>=xpNeeded(state.level)&&ups<100){
-  state.xp-=xpNeeded(state.level);state.level++;let reward=levelReward(state.level);state.balance+=reward;ups++;showLevelUp(state.level,reward);
- }
- return ups;
-}
-function updateQuestPanel(){
- const list=$('questList');if(!list)return;
- const defs=[
-  {id:'spins5',title:'Warm-up Explorer',desc:'Play 5 spins',progress:Math.min(state.questSpinCount,5),goal:5,coins:75000,xp:60},
-  {id:'wins3',title:'Lucky Moments',desc:'Get 3 winning spins',progress:Math.min(state.questWinCount,3),goal:3,coins:100000,xp:75},
-  {id:'spins10',title:'Temple Regular',desc:'Play 10 spins',progress:Math.min(state.questSpinCount,10),goal:10,coins:150000,xp:100}
+ {id:'dragon',name:'Crystalline Vault',sub:'Ancient subterranean treasury · Prismatic gems',emoji:'💎',art:'dragon',symbol:['💎','🔷','❤️','👑','🗝️','✨','💠','💎'],desc:'Descend into an ancient subterranean treasury filled with rare gemstones, enchanted vault keys and royal treasure.'}
  ];
  list.innerHTML='<div class="questHowTo"><b>HOW TO EARN REWARDS</b><span>1. Enter any world and press SPIN. 2. Complete the spin or win target shown on a quest. 3. Press CLAIM REWARD when the button lights up. 4. Your virtual coins and XP are added automatically. Quests refresh each day.</span></div>'+defs.map(q=>{
   let claimed=(state.questClaims||[]).includes(q.id),ready=q.progress>=q.goal;
@@ -782,7 +675,7 @@ function updateHUD(){
  updateQuestPanel();updateVault();
 }
 function renderLobby(){
- const artIds=['sunstone','jaguar','eagle','serpent','calendar','mask','idol','coin'];
+ const artIds=['coin'];
  $('gameGrid').innerHTML=games.map((g,i)=>{let art='';try{art=symbolSvg(artIds[i]||'coin')}catch(e){art='<span style="font-size:76px">'+g.emoji+'</span>'}return `<article class="gamecard vipCard" data-game-id="${g.id}" tabindex="0" role="button" aria-label="Play ${g.name}"><span class="tag">${i===0?'✦ FEATURED EXPERIENCE':'✦ WORLD PREVIEW'}</span><div class="art ${g.art}"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">${art}</div><span class="artTitle">${g.name}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>`}).join('')
 }
 function showLobby(){stopAuto();$('gameView').classList.remove('active');$('lobby').classList.add('active')}
@@ -796,7 +689,7 @@ function openGameCore(id){
   $('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';
   $('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · VIRTUAL COINS';
   buildReels();updateHUD();
-  $('status').textContent=id==='aztec'?'Featured machine ready. Spin to play and discover bonus symbols.':'World preview opened. This prototype uses the shared 5×5 reel engine.';
+  $('status').textContent='Crystalline Vault is the featured experience. Explore the gemstone treasury and discover its bonus symbols.';
   $('spinBtn').disabled=false;$('autoBtn').disabled=false;
   window.scrollTo({top:0,behavior:'smooth'});
  }catch(err){console.error('Could not open game:',err);$('gameView').classList.remove('active');$('lobby').classList.add('active');toast('Could not open this game. Please refresh and try again.')}
@@ -1099,7 +992,7 @@ renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v5
   const cfg={
    aztec:['GOLDEN TEMPLE','Recover ancient relics to reveal the temple vault.',['coin','idol','sunstone']],
    cyber:['CYBER HEART','Gather energy cores and unlock the neon heart chamber.',['heart','jewel','calendar']],
-   dragon:['DRAGON HOARD','Discover dragon jewels, scales and the hidden hoard.',['jewel','serpent','crown']],
+   dragon:['THE INNER SANCTUM','Discover rare gemstones, collect vault keys and awaken the prismatic core.',['jewel','crystal','crown']],
    cosmic:['GALAXY BLAST','Collect cosmic fragments and power the supernova.',['calendar','jewel','pearl']],
    phoenix:['PHOENIX REBIRTH','Gather sacred feathers to awaken the firebird.',['feather','heart','crown']],
    ocean:['PEARL DISCOVERY','Collect rare pearls and open the deep-sea vault.',['pearl','jewel','coin']],
@@ -1124,7 +1017,7 @@ renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v5
   if(artifacts>0)state.v6WorldCollections[current.id]=(Number(state.v6WorldCollections[current.id])||0)+artifacts;
   window.v6RenderWorldRail();
   if(result.jackpots>=3)window.v6ShowCelebration('ROYAL JACKPOT','JACKPOT DISCOVERED','Your reel revealed a '+result.jackpots+'-crown jackpot combination. +'+(typeof money==='function'?money(adjustedTotal||0):'')+' virtual coins.','crown');
-  else if(result.bonuses>=3)window.v6ShowCelebration('WORLD BONUS',({aztec:'TEMPLE VAULT OPENED',cyber:'CYBER HEART AWAKENED',dragon:'DRAGON HOARD FOUND',cosmic:'GALAXY BLAST',phoenix:'PHOENIX REBIRTH',ocean:'PEARL VAULT DISCOVERED',wildwest:'SHERIFF’S VAULT OPENED',moon:'CELESTIAL HEART AWAKENED'}[current.id]||'BONUS DISCOVERED'),'You discovered a special world bonus and added artifacts to your collection.','jewel');
+  else if(result.bonuses>=3)window.v6ShowCelebration('WORLD BONUS',({aztec:'TEMPLE VAULT OPENED',cyber:'CYBER HEART AWAKENED',dragon:'CRYSTALLINE VAULT OPENED',cosmic:'GALAXY BLAST',phoenix:'PHOENIX REBIRTH',ocean:'PEARL VAULT DISCOVERED',wildwest:'SHERIFF’S VAULT OPENED',moon:'CELESTIAL HEART AWAKENED'}[current.id]||'BONUS DISCOVERED'),'You discovered a special world bonus and added artifacts to your collection.','jewel');
   else if(adjustedTotal>=Math.max(1000000,(state.bet||5000)*100))window.v6ShowCelebration('MEGA WIN','TREASURE REVEALED','A spectacular virtual-coin result in '+current.name+'.','heart');
  };
  const railHTML='<section class="v6BonusRail" id="v6BonusRail" aria-live="polite"></section>';
@@ -1213,7 +1106,7 @@ renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v5
  const worlds={
  aztec:{name:'AZTEC',colors:['#fff2a5','#f7bd43','#b86a17','#5d2b0a'],bg:'#f3bb43',motifs:['sun','cat','eagle','mask','idol','coin','serpent','calendar']},
  cyber:{name:'CYBER',colors:['#e3ffff','#59efff','#168cda','#172c82'],bg:'#42eaff',motifs:['chip','bot','ufo','orb','bolt','alien','disc','portal']},
- dragon:{name:'DRAGON',colors:['#fff0bd','#ff9b46','#d94728','#641728'],bg:'#ff8141',motifs:['dragon','flame','egg','shield','sack','crown','gem','key']},
+ dragon:{name:'CRYSTALLINE VAULT',colors:['#f3ffff','#75e8ff','#3278dc','#171c58'],bg:'#66dfff',motifs:['gem','shield','crown','egg','flame','key','gem','key']},
  cosmic:{name:'COSMIC',colors:['#ffe9ff','#ed91ff','#8a45d9','#2c1b79'],bg:'#d47aff',motifs:['cherry','lemon','grape','bell','star','seven','comet','moon']},
  phoenix:{name:'PHOENIX',colors:['#fff2b2','#ffb04a','#e94e23','#7b1e19'],bg:'#ff9a3d',motifs:['phoenix','flame','lotus','sapphire','crown','sun','feather','trophy']},
  ocean:{name:'OCEAN',colors:['#e0ffff','#69e6e7','#1789a9','#10405c'],bg:'#55e5ed',motifs:['dolphin','shell','coral','shark','pearl','anchor','bubble','trident']},
