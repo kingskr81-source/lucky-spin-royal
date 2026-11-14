@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LUCKY SPIN ROYAL — Prototype 3.3 (GitHub Edition · Royal XP & Aztec Artifacts)</title>
+<title>LUCKY SPIN ROYAL — Prototype 3.4 (Royal VIP Redesign)</title>
 <style>
 :root{--bg:#090713;--panel:#17102b;--panel2:#21143b;--gold:#f6cf72;--gold2:#a96b21;--violet:#9b5cff;--cyan:#53e7ff;--pink:#ff4fc8;--muted:#b9abcF;--line:rgba(226,190,255,.22)}
 *{box-sizing:border-box}body{margin:0;color:#fff;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at 50% -20%,#66321f 0,#211034 42%,#090713 78%);min-height:100vh}
@@ -126,6 +126,57 @@ main{padding:clamp(8px,1.4vh,16px) clamp(10px,2.4vw,36px) 12px}
 .symbol svg{overflow:visible}
 .symbol.win{filter:drop-shadow(0 0 9px #ffd86b) drop-shadow(0 0 18px #eeb54b);transform:scale(1.08)}
 @media(max-width:760px){.topLevelWrap{order:3;min-width:150px;flex:1}.topright{flex-wrap:wrap}}
+
+
+/* V3.4 — Royal VIP visual redesign */
+:root{--bg:#07070d;--panel:#12121c;--panel2:#1b1a25;--gold:#f4d18a;--gold2:#8d642e;--violet:#7042a7;--cyan:#8fe9df;--pink:#d98b9e;--line:rgba(230,201,145,.22)}
+body{background:radial-gradient(ellipse at 50% -18%,#66502e 0,#211b27 32%,#0b0a11 72%,#06060a 100%);background-attachment:fixed}
+.top{background:linear-gradient(180deg,#100e17f5,#090910ee);border-bottom:1px solid #d8b87988;box-shadow:0 8px 35px #0009}
+.brand{color:#ffe2a0;letter-spacing:3px;text-shadow:0 0 8px #ffdc8a88,0 0 28px #d39b4c55}
+main{max-width:1640px}
+.heroMain,.profile,.infoBox,.questCard{background:linear-gradient(145deg,#211c28f5,#100f18f5);border-color:#c7a56a66;box-shadow:0 18px 48px #0009,inset 0 1px #fff2}
+.heroMain{min-height:250px}
+.heroMain:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,#ffe2a00b 48%,transparent 75%);animation:vipSweep 8s linear infinite}
+.heroMain:after{width:360px;height:360px;right:-95px;top:-130px;background:radial-gradient(circle,#e8bd6a3b,transparent 68%)}
+@keyframes vipSweep{0%{transform:translateX(-55%)}100%{transform:translateX(55%)}}
+.games{gap:19px}
+.gamecard.vipCard{min-height:290px;border-radius:20px;border:1px solid #b9975c88;background:linear-gradient(150deg,#24202a,#0d0c13 72%);box-shadow:0 16px 38px #000a,inset 0 1px #fff2;transition:transform .35s,border-color .35s,box-shadow .35s}
+.gamecard.vipCard:hover{transform:translateY(-8px) scale(1.012);border-color:#ffe2a0;box-shadow:0 24px 48px #000c,0 0 30px #e2b65b35}
+.vipCard .tag{background:#100e16eF;color:#ffe0a0;border:1px solid #d7b66b99;letter-spacing:1.4px}
+.vipCard .art{height:190px;background:radial-gradient(ellipse at 50% 65%,#5c4529 0,#28202a 43%,#0e0d14 78%);isolation:isolate}
+.vipCard .art:before{width:155px;height:155px;border:1px solid #f2d28b88;box-shadow:0 0 24px #d5a95b66,inset 0 0 25px #d5a95b22}
+.vipCard .art:after{width:230px;height:230px;background:radial-gradient(circle,#f4d18a1c,transparent 68%)}
+.artHalo{position:absolute;width:180px;height:180px;border:1px solid #f4d18a55;border-radius:50%;box-shadow:0 0 35px #d8b16a44,inset 0 0 35px #d8b16a22;animation:haloTurn 24s linear infinite}
+.artHalo:before,.artHalo:after{content:"";position:absolute;inset:12px;border:1px dashed #e4c17a66;border-radius:50%}
+.artHalo:after{inset:28px;border-style:solid;opacity:.55}
+@keyframes haloTurn{to{transform:rotate(360deg)}}
+.artPedestal{position:absolute;bottom:18px;width:150px;height:28px;border-radius:50%;background:radial-gradient(ellipse,#f7d58b55,transparent 70%);filter:blur(5px)}
+.vipArtifact{position:relative;z-index:2;width:108px;height:108px;display:grid;place-items:center;filter:drop-shadow(0 0 12px #f7d58b88);animation:artifactFloat 4s ease-in-out infinite}
+.vipArtifact svg{width:100%;height:100%;overflow:visible}
+@keyframes artifactFloat{0%,100%{transform:translateY(2px) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
+.vipCard .artTitle{position:absolute;bottom:8px;z-index:3;font-size:8px;letter-spacing:3px;font-weight:900;color:#ffe4aa;text-shadow:0 2px 6px #000;opacity:.8}
+.vipCard .gameinfo{padding:13px 16px 15px;background:linear-gradient(180deg,#17141e,#100e16)}
+.vipCard .gameinfo strong{font-size:15px;letter-spacing:.6px;color:#ffebc0}
+.vipCard .gameinfo small{color:#c2b49d}
+.cardEnter{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:9px;border-top:1px solid #d6b46a44;color:#e9ca8b;font-size:9px;font-weight:900;letter-spacing:2px}
+.cardEnter b{font-size:16px}
+.sectionhead h2{color:#f9e4b6;letter-spacing:1px}
+.machine{background:linear-gradient(145deg,#f0d28b,#80582c 18%,#2a2027 45%,#121018 78%);border:2px solid #f4d99b;box-shadow:0 0 0 3px #30251b,0 20px 55px #000c,0 0 35px #d5aa5a2b,inset 0 0 25px #ffe4a044}
+.machineInner{background:radial-gradient(ellipse at 50% 20%,#29212a,#09090f 78%);border-color:#f4d99b}
+#gameView .reel{background:linear-gradient(90deg,#09080e,#211b25 18%,#100e16 50%,#211b25 82%,#09080e);border-color:#c4a56c88;box-shadow:inset 0 0 22px #000,0 3px 12px #000b}
+#gameView .symbol{background:radial-gradient(ellipse at 50% 24%,#fff3d51b,#ffffff02 70%);border-color:#d6bb8130;box-shadow:inset 0 1px #fff3,0 4px 12px #0009}
+#gameView .symbol svg{filter:drop-shadow(0 5px 6px #000c) drop-shadow(0 0 5px #f5d28a44)}
+#gameView .symbol.win{outline:2px solid #fff0bd;background:radial-gradient(circle,#ffe4a05c,#d19b3622 65%,transparent);box-shadow:0 0 12px #ffe7a4,0 0 32px #d8aa5a99,inset 0 0 16px #fff8}
+#gameView .reel.stopping{box-shadow:inset 0 0 25px #ffe3a077,0 0 18px #e9bd6c88}
+button{border-color:#c6a36d88;background:linear-gradient(145deg,#49351f,#211a22);box-shadow:0 6px 18px #0009,inset 0 1px #fff2}
+button:hover{border-color:#ffe3a0;box-shadow:0 8px 25px #000b,0 0 16px #e7bf7144}
+.goldbtn{background:linear-gradient(110deg,#fff0bd,#d7a34e 52%,#f0d08a);color:#21150b}
+.spinbtn{background:linear-gradient(100deg,#fff0bd,#d9a34b 48%,#e5b6a4);color:#24170d;box-shadow:0 0 22px #e9bd6b44,0 8px 20px #0009}
+.controlPanel,.pill,.topLevelWrap{background:linear-gradient(145deg,#211c27,#100e16);border-color:#c5a46c77}
+.xp span,.topXpTrack span{background:linear-gradient(90deg,#c58c3d,#f9e5a2,#87c9bb);box-shadow:0 0 14px #f4d18a}
+.levelToast{background:linear-gradient(135deg,#302333,#111018);border-color:#f4d18a;box-shadow:0 0 55px #e2b65b88}
+@media(max-width:760px){.vipCard .art{height:145px}.vipArtifact{width:88px;height:88px}.gamecard.vipCard{min-height:245px}}
+@media(prefers-reduced-motion:reduce){.artHalo,.vipArtifact,.heroMain:before{animation:none!important}}
 
 </style>
 </head>
@@ -270,7 +321,10 @@ function updateHUD(){
  if(state.questSpins>=5)$('questText').classList.add('questComplete');
  updateQuestPanel();
 }
-function renderLobby(){$('gameGrid').innerHTML=games.map((g,i)=>`<article class="gamecard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ PLAYABLE DEMO':'✦ COMING SOON'}</span><div class="art ${g.art}"><span>${g.emoji}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small></div></article>`).join('')}
+function renderLobby(){
+ const artIds=['sunstone','jaguar','eagle','serpent','calendar','mask','idol','coin'];
+ $('gameGrid').innerHTML=games.map((g,i)=>`<article class="gamecard vipCard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ FEATURED EXPERIENCE':'✦ WORLD PREVIEW'}</span><div class="art ${g.art}"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">${symbolSvg(artIds[i]||'coin')}</div><span class="artTitle">${g.name}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>`).join('')
+}
 function showLobby(){stopAuto();$('gameView').classList.remove('active');$('lobby').classList.add('active')}
 function openGame(id){current=games.find(g=>g.id===id);$('lobby').classList.remove('active');$('gameView').classList.add('active');$('gameTitle').textContent=current.name.toUpperCase();$('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';$('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · 3,125 WAYS';buildReels();updateHUD();$('status').textContent=id==='aztec'?'Royal temple edition — earn XP on every spin and discover Aztec-inspired treasures.':'Preview only — this machine will be developed in a later phase.';$('spinBtn').disabled=id!=='aztec';$('autoBtn').disabled=id!=='aztec'}
 function weightedSymbol(){let total=SYMBOLS.reduce((a,s)=>a+s.weight,0),n=Math.random()*total;for(const s of SYMBOLS){n-=s.weight;if(n<=0)return s}return SYMBOLS[0]}
