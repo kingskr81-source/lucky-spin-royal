@@ -458,6 +458,20 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 @media(max-width:900px){.v53JackpotGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){#gameView .infoStrip{grid-template-columns:1fr 1fr}#gameView .infoStrip .infoBox:first-child{grid-column:1;grid-row:1}#gameView .infoStrip .infoBox:nth-child(2){grid-column:2;grid-row:1}#gameView .infoStrip .infoBox:nth-child(3){grid-column:1 / -1;grid-row:2}.v53JackpotGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 @media(max-width:760px){#gameView .spinrow{grid-template-columns:1fr 1.2fr}#gameView .spinrow .infoBox{grid-column:1 / -1}}
+
+/* V5.4 — rewards progress is visible before the reels */
+#gameView .v53TopRewards{display:grid!important;grid-template-columns:1fr 1fr;gap:12px;width:calc(100% - 24px);max-width:1100px!important;margin:12px auto 14px!important}
+#gameView .v53RewardPanel{padding:14px 16px!important;min-height:102px;border:1px solid #d5b56c99!important;border-radius:14px;background:linear-gradient(115deg,#14283a,#101a2c 62%,#2a2030)!important;box-shadow:inset 0 1px #fff2,0 8px 22px #0005}
+.v53RewardHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:5px}
+.v53RewardHead b{font-size:12px;letter-spacing:1px;color:#ffdc95}
+.v53RewardHead strong{font-size:18px;color:#7ff0df;font-variant-numeric:tabular-nums}
+.v53RewardPanel>span{display:block;font-size:11px;color:#d6e3f2;min-height:16px}
+#gameView .v53BigMeter{height:13px;margin:9px 0 6px;background:#050c17;border:1px solid #62758c88}
+#gameView .v53BigMeter span{border-radius:20px;background:linear-gradient(90deg,#30c8bc,#7de3cb,#f4c66e);box-shadow:0 0 12px #58d8c777}
+.v53RewardPanel:nth-child(2) .v53BigMeter span{background:linear-gradient(90deg,#9874f0,#e4a7e7,#ffd878)}
+.v53RewardPanel .v53MeterText{font-size:10px;color:#c5d4e5}
+@media(max-width:680px){#gameView .v53TopRewards{grid-template-columns:1fr;gap:8px}.v53RewardPanel{min-height:88px!important;padding:11px 13px!important}.v53RewardHead strong{font-size:16px}}
+
 </style>
 </head>
 <body>
@@ -542,6 +556,10 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 <section id="gameView" class="view">
  <button class="back" onclick="showLobby()">← BACK TO GAME LOBBY</button>
  <div class="gamehead"><div><div class="eyebrow">ROYAL ARCADE · FEATURED MACHINE</div><h2 id="gameTitle">AZTEC GOLD RICHES</h2><div class="muted" id="gameSubtitle">TEMPLE TREASURE · 5 REELS × 5 ROWS</div></div><div class="pill">🪙 <b id="gameBalance">5,000,000</b></div></div>
+ <div class="infoStrip v53TopRewards" style="max-width:1100px;margin:12px auto">
+  <div class="infoBox v53RewardPanel"><div class="v53RewardHead"><b>🎁 FREE GAMES & RESPINS</b><strong id="v53FreePercent">0%</strong></div><span id="freeSpinInfo">No bonus turns active</span><div class="v53Meter v53BigMeter"><span id="v53FreeMeter"></span></div><div class="v53MeterText" id="v53FreeMeterText">Paid spins: 0 / 12 · 3 free spins when full</div></div>
+  <div class="infoBox v53RewardPanel"><div class="v53RewardHead"><b>👑 ROYAL JACKPOT PROGRESS</b><strong id="v53JackpotPercent">0%</strong></div><span id="bonusInfo">Collect star tickets to unlock six jackpot tiers.</span><div class="v53Meter v53BigMeter"><span id="v53JackpotMeter"></span></div><div class="v53MeterText" id="v53JackpotMeterText">Star tickets collected: 0</div></div>
+ </div>
  <div class="machine"><div class="machineInner"><div class="reels" id="reels"></div><div class="machineFoot" id="machineFoot">5 REELS · 5 ROWS · VIRTUAL COINS ONLY</div></div></div>
  <div class="controls">
   <div class="controlPanel betControl"><label>BET TIER</label><button id="betDown" onclick="changeBet(-1)" aria-label="Lower bet">−</button><div class="betval" id="betValue">5,000</div><button id="betUp" onclick="changeBet(1)" aria-label="Raise bet">+</button><button class="v53MaxBet" id="maxBetBtn" onclick="setMaxBet()">MAX BET</button><label>PER SPIN</label><small id="betUnlockNote" class="betUnlockNote">LEVEL 1 · STARTER TIER</small></div>
@@ -549,11 +567,6 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
  </div>
  <div class="spinrow"><button onclick="showRules()">📖 PAYTABLE</button><button class="spinbtn" id="spinBtn" onclick="spin()">⚡ SPIN ⚡</button><button onclick="resetDemo()">↻ RESET DEMO</button><div class="infoBox" style="padding:10px;min-width:0"><b>📊 LAST RESULT</b><span id="lastResult">No spins yet</span></div></div>
  <div class="status" id="status">Welcome to the temple. Every spin is virtual entertainment.</div>
- <div class="infoStrip" style="max-width:980px;margin:12px auto">
-  <div class="infoBox"><b>🎁 FREE GAMES & RESPINS</b><span id="freeSpinInfo">No bonus turns active</span><div class="v53Meter"><span id="v53FreeMeter"></span></div><div class="v53MeterText" id="v53FreeMeterText">Paid spins: 0 / 12 toward the next guaranteed free-spin drop</div></div>
-  <div class="infoBox"><b>👑 ROYAL JACKPOT LADDER</b><span id="bonusInfo">Collect star tickets to unlock six jackpot tiers below.</span><div class="v53Meter"><span id="v53JackpotMeter"></span></div><div class="v53MeterText" id="v53JackpotMeterText">Star tickets collected: 0</div></div>
-  
- </div>
  <section class="v53Jackpot" id="v53JackpotLadder"><div class="v53JackpotHead"><h3>👑 ROYAL JACKPOT LADDER · SIX TIERS</h3><span class="v53MeterText">Redeem the matching star ticket to unlock each virtual jackpot</span></div><div class="v53JackpotGrid" id="v53JackpotGrid"></div><div class="v53Legend">⭐ Mini · ⭐ Minor · ⭐⭐ Major · ⭐⭐⭐ Grand · ⭐⭐⭐⭐ Super · ⭐⭐⭐⭐⭐ Legendary. Tickets are consumed when redeemed. All prizes are virtual coins with no cash value.</div></section>
 <div style="max-width:980px;margin:10px auto;text-align:center"><button id="collectionBtn" onclick="openAlbum()">✦ CARD ALBUM · COLLECTION <span id="cardCount">0/8</span></button></div>
  <div id="rulesPanel" class="infoBox" style="display:none;max-width:980px;margin:12px auto">
@@ -622,7 +635,7 @@ function v5Week(){const d=new Date();const x=new Date(d);x.setDate(d.getDate()-(
 function v5Reset(){const today=localDay(),week=v5Week();if(state.v5DailyDate!==today){state.v5DailyDate=today;state.v5DailySpins=0;state.v5DailyClaimed=false;state.v5DailyEventClaims=[]}if(state.v5WeekKey!==week){state.v5WeekKey=week;state.v5WeeklySpins=0;state.v5WeeklyClaimed=false;state.v5WeeklyEventClaims=[]}state.v5DailyEventClaims=state.v5DailyEventClaims||[];state.v5WeeklyEventClaims=state.v5WeeklyEventClaims||[];state.v5StampClaims=state.v5StampClaims||[];state.v5Tickets={1:0,2:0,3:0,4:0,5:0,...(state.v5Tickets||{})}}
 const V53_JACKPOTS=[{id:'mini',name:'MINI',tier:1,prize:1000000},{id:'minor',name:'MINOR',tier:1,prize:5000000},{id:'major',name:'MAJOR',tier:2,prize:10000000},{id:'grand',name:'GRAND',tier:3,prize:100000000},{id:'super',name:'SUPER',tier:4,prize:10000000000},{id:'legendary',name:'LEGENDARY',tier:5,prize:1000000000000}];
 function v53TicketCount(){return [1,2,3,4,5].reduce((a,n)=>a+Number(state.v5Tickets[n]||0),0)}
-function v53Update(){const meter=Math.min(12,Number(state.v53FreeMeter)||0);if($('v53FreeMeter'))$('v53FreeMeter').style.width=(meter/12*100)+'%';if($('v53FreeMeterText'))$('v53FreeMeterText').textContent='Paid spins: '+meter+' / 12 toward the next guaranteed 3 free spins';const count=v53TicketCount();if($('v53JackpotMeter'))$('v53JackpotMeter').style.width=Math.min(100,count/10*100)+'%';if($('v53JackpotMeterText'))$('v53JackpotMeterText').textContent='Star tickets collected: '+count;const grid=$('v53JackpotGrid');if(grid)grid.innerHTML=V53_JACKPOTS.map(j=>{const have=Number(state.v5Tickets[j.tier]||0),ready=have>0;return '<div class="v53JackpotCard '+(ready?'ready':'')+'"><b>'+j.name+'</b><strong>'+money(j.prize)+'</strong><small>Cost: '+('⭐'.repeat(j.tier))+' ticket</small><small>'+(ready?'Ready to redeem':'Need '+('⭐'.repeat(j.tier))+' ticket')+'</small><button data-jackpot="'+j.id+'" '+(!ready?'disabled':'')+'>REDEEM</button></div>'}).join('')}
+function v53Update(){const meter=Math.min(12,Number(state.v53FreeMeter)||0),freePct=Math.round(meter/12*100);if($('v53FreeMeter'))$('v53FreeMeter').style.width=freePct+'%';if($('v53FreePercent'))$('v53FreePercent').textContent=freePct+'%';if($('v53FreeMeterText'))$('v53FreeMeterText').textContent='Paid spins: '+meter+' / 12 · '+(12-meter)+' to go · 3 free spins when full';const count=v53TicketCount(),jackPct=Math.min(100,Math.round(count/10*100));if($('v53JackpotMeter'))$('v53JackpotMeter').style.width=jackPct+'%';if($('v53JackpotPercent'))$('v53JackpotPercent').textContent=jackPct+'%';if($('v53JackpotMeterText'))$('v53JackpotMeterText').textContent='Star tickets collected: '+count+' / 10 · "'+[1,2,3,4,5].map(n=>'⭐'.repeat(n)+' '+(state.v5Tickets[n]||0)).join(' · ');const grid=$('v53JackpotGrid');if(grid)grid.innerHTML=V53_JACKPOTS.map(j=>{const have=Number(state.v5Tickets[j.tier]||0),ready=have>0;return '<div class="v53JackpotCard '+(ready?'ready':'')+'"><b>'+j.name+'</b><strong>'+money(j.prize)+'</strong><small>Cost: '+('⭐'.repeat(j.tier))+' ticket</small><small>'+(ready?'Ready to redeem':'Need '+('⭐'.repeat(j.tier))+' ticket')+'</small><button data-jackpot="'+j.id+'" '+(!ready?'disabled':'')+'>REDEEM</button></div>'}).join('')}
 function v53Redeem(id){const j=V53_JACKPOTS.find(x=>x.id===id);if(!j||!(state.v5Tickets[j.tier]>0)){toast('You need a '+('⭐'.repeat(j?.tier||1))+' ticket first.');return}state.v5Tickets[j.tier]--;state.v53JackpotClaims=state.v53JackpotClaims||[];state.v53JackpotClaims.push(id);state.balance+=j.prize;state.best=Math.max(state.best,j.prize);save();v53Update();v5Update();toast(j.name+' JACKPOT redeemed: '+money(j.prize)+' virtual coins!')}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-jackpot]');if(b)v53Redeem(b.dataset.jackpot)});
 window.v53Redeem=v53Redeem;
