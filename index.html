@@ -292,6 +292,23 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 #gameGrid .gamecard:focus-visible{outline:3px solid #68c8c2!important}
 @media(max-width:760px){.vipCard .art{height:140px!important}.vipArtifact{width:104px!important;height:104px!important}}
 
+
+/* V3.9 — Reel symbol fit and spacing correction */
+#gameView .reels{height:clamp(330px,48vh,460px)!important;min-height:330px!important;gap:10px!important;align-items:stretch}
+#gameView .reel{position:relative!important;min-width:0!important;min-height:0!important;padding:6px!important;gap:6px!important;overflow:hidden!important;isolation:isolate}
+#gameView .reelTrack{inset:6px!important;gap:6px!important;padding:0!important;align-items:stretch!important}
+#gameView .reelTrack .symbol{box-sizing:border-box!important;flex:0 0 calc((100% - 24px)/5)!important;width:100%!important;height:calc((100% - 24px)/5)!important;min-height:0!important;max-height:calc((100% - 24px)/5)!important;overflow:hidden!important;padding:3px!important;display:grid!important;place-items:center!important}
+#gameView .reelTrack .symbol svg{display:block!important;width:auto!important;height:auto!important;max-width:78%!important;max-height:78%!important;min-width:0!important;min-height:0!important;aspect-ratio:1/1!important;overflow:visible!important;object-fit:contain!important}
+#gameView .reel:before,#gameView .reel:after{height:7%!important;z-index:3!important;opacity:.5}
+#gameView .reelTrack .symbol.win{transform:scale(.96)!important;outline:2px solid #d8b36f!important;outline-offset:-3px!important}
+@media(max-width:760px){
+ #gameView .reels{height:clamp(300px,76vw,390px)!important;min-height:300px!important;gap:5px!important}
+ #gameView .reel{padding:3px!important;gap:4px!important}
+ #gameView .reelTrack{inset:3px!important;gap:4px!important}
+ #gameView .reelTrack .symbol{flex-basis:calc((100% - 16px)/5)!important;height:calc((100% - 16px)/5)!important;max-height:calc((100% - 16px)/5)!important;padding:2px!important}
+ #gameView .reelTrack .symbol svg{max-width:82%!important;max-height:82%!important}
+}
+
 </style>
 </head>
 <body>
