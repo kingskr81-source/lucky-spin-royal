@@ -309,6 +309,45 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
  #gameView .reelTrack .symbol svg{max-width:82%!important;max-height:82%!important}
 }
 
+
+/* V3.10 — player profile readability and contrast */
+.profile{
+ background:linear-gradient(145deg,#18283b 0%,#142235 58%,#101b2b 100%)!important;
+ border:1px solid #526982!important;
+ box-shadow:0 18px 42px #0007,inset 0 1px #ffffff14!important;
+ color:#f2f6fb!important;
+}
+.profile .profileHead .muted,
+.profile>div .muted,
+.profile .muted{
+ color:#c2cfdd!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+.profile .level{color:#f0c987!important;text-shadow:0 1px 8px #d9ad5d22!important}
+.profile #xpText,
+.profile #spinCount,
+.profile #winCount,
+.profile #bestWin,
+.profile b{
+ color:#f4f7fb!important;
+ opacity:1!important;
+ font-weight:800!important;
+ text-shadow:0 1px 8px #0008!important;
+}
+.profile #xpText{font-size:15px!important;letter-spacing:.2px}
+.profile #spinCount,.profile #winCount,.profile #bestWin{font-size:18px!important;line-height:1.35}
+.profile .xp{background:#080f1b!important;border:1px solid #60758d!important;box-shadow:inset 0 2px 5px #0009!important}
+.profile .xp span{background:linear-gradient(90deg,#55c9c2,#8fa7d5,#d5ad70)!important;box-shadow:0 0 12px #66c9c455!important}
+.profile .avatar{box-shadow:0 5px 16px #0007;border:1px solid #a5bbd0!important}
+.profile>div:last-child{gap:16px}
+.profile>div:last-child>div{min-width:0}
+@media(max-width:520px){
+ .profile>div:last-child{gap:8px}
+ .profile #spinCount,.profile #winCount,.profile #bestWin{font-size:16px!important}
+ .profile .muted{font-size:11px!important}
+}
+
 </style>
 </head>
 <body>
