@@ -386,6 +386,25 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 .featurePanel,.collectionPanel{animation:popIn .35s cubic-bezier(.2,.8,.2,1)}
 @media(max-width:600px){.collectionPanel,.featurePanel{padding:16px;border-radius:20px}.albumGrid{grid-template-columns:repeat(2,1fr)}}
 
+
+/* V4.1 — clear quest instructions and visible rewards inventory */
+.royalVault{margin-top:14px!important;padding:18px!important;border-color:#66829d!important;background:linear-gradient(145deg,#17283d,#101b2b 78%)!important}
+.vaultHead{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.vaultHead b{font-size:18px;color:#e7c58c;letter-spacing:.7px}
+.vaultHead p{margin:6px 0 0;color:#b5c5d7;font-size:12px}
+.vaultAlbumBtn{background:linear-gradient(110deg,#7250b9,#a04db7)!important;color:white!important;border-color:#d2a0ff!important}
+.vaultGrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin-top:14px}
+.vaultItem{min-width:0;padding:12px 10px;border:1px solid #405a75;border-radius:13px;background:linear-gradient(145deg,#20344b,#142236);display:flex;flex-direction:column;gap:5px}
+.vaultItem>span{font-size:22px}.vaultItem small{font-size:9px;letter-spacing:.7px;color:#b9c9da;font-weight:800}
+.vaultItem b{font-size:clamp(15px,1.5vw,21px);color:#f4d49b;overflow-wrap:anywhere}
+.vaultItem em{font-style:normal;font-size:10px;line-height:1.35;color:#9eb1c7}
+.vaultNote{margin:12px 2px 0!important;font-size:10px;color:#a9bbcf;line-height:1.5}
+.questHowTo{grid-column:1/-1;display:flex;flex-direction:column;gap:5px;padding:12px 14px;border:1px solid #55718c;border-radius:12px;background:#0d1928}
+.questHowTo b{color:#71d7d0;font-size:11px;letter-spacing:1px}
+.questHowTo span{font-size:12px;line-height:1.55;color:#d0dceb}
+@media(max-width:900px){.vaultGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:520px){.vaultGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.vaultHead{align-items:flex-start}.vaultAlbumBtn{width:100%}.vaultItem{padding:10px 8px}}
+
 </style>
 </head>
 <body>
@@ -415,9 +434,22 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
  <div class="infoBox"><b>🧭 DAILY QUEST</b><span id="questText">Play 5 spins to complete today's relaxed quest.</span><div class="xp" style="margin-top:10px"><span id="questBar" style="width:0%"></span></div></div>
  <div class="infoBox"><b>📖 HOW TO PLAY</b><span>Match symbols from the leftmost reel across adjacent reels. Wilds substitute; 3 scatters award free spins.</span><br><button style="margin-top:10px" onclick="showRules()">VIEW PAYTABLE & RULES</button></div>
  </div>
- <section class="infoBox questHub" style="margin-top:14px">
+ 
+ <section class="infoBox royalVault" aria-label="Royal rewards inventory">
+  <div class="vaultHead"><div><b>🎒 ROYAL VAULT · YOUR REWARDS</b><p>Everything you collect is stored here on this device. Open the album to view your world cards.</p></div><button class="vaultAlbumBtn" onclick="openAlbum()">OPEN CARD ALBUM <span id="vaultCardCount">0/8</span></button></div>
+  <div class="vaultGrid">
+   <div class="vaultItem"><span>🪙</span><small>VIRTUAL COINS</small><b id="vaultCoins">0</b><em>Added to your coin balance</em></div>
+   <div class="vaultItem"><span>🎟️</span><small>FREE GAME TICKETS</small><b id="vaultFreeTickets">0</b><em>Each ticket gives one free spin</em></div>
+   <div class="vaultItem"><span>🔁</span><small>RESPIN TOKENS</small><b id="vaultRespinTokens">0</b><em>Use automatically on your next spin</em></div>
+   <div class="vaultItem"><span>🃏</span><small>WORLD CARDS</small><b id="vaultCards">0/8</b><em>Collected from bonus discoveries</em></div>
+   <div class="vaultItem"><span>💎</span><small>BONUS INGREDIENTS</small><b id="vaultIngredients">0</b><em>Virtual collection items</em></div>
+   <div class="vaultItem"><span>🎁</span><small>DAILY GIFT</small><b id="vaultDailyGift">READY</b><em>25,000 virtual coins · once per day</em></div>
+  </div>
+  <p class="vaultNote">Free game tickets and respin tokens are bonus turns, not cash or redeemable items. Your progress is saved in this browser; use BACK UP to keep a copy.</p>
+ </section>
+<section class="infoBox questHub" style="margin-top:14px">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-   <div><b style="color:var(--gold);font-size:17px">🏆 ROYAL DAILY QUESTS</b><div class="muted">Optional daily challenges · claim each reward when ready</div></div>
+   <div><b style="color:var(--gold);font-size:17px">🏆 ROYAL DAILY QUESTS</b><div class="muted">Complete the tasks below, then press CLAIM REWARD. Coins and XP are added to your profile immediately.</div></div>
    <span class="muted" id="questResetLabel">Refreshes daily</span>
   </div>
   <div id="questList" class="questGrid">
@@ -531,7 +563,7 @@ function updateQuestPanel(){
   {id:'wins3',title:'Lucky Moments',desc:'Get 3 winning spins',progress:Math.min(state.questWinCount,3),goal:3,coins:100000,xp:75},
   {id:'spins10',title:'Temple Regular',desc:'Play 10 spins',progress:Math.min(state.questSpinCount,10),goal:10,coins:150000,xp:100}
  ];
- list.innerHTML=defs.map(q=>{
+ list.innerHTML='<div class="questHowTo"><b>HOW TO EARN REWARDS</b><span>1. Enter any world and press SPIN. 2. Complete the spin or win target shown on a quest. 3. Press CLAIM REWARD when the button lights up. 4. Your virtual coins and XP are added automatically. Quests refresh each day.</span></div>'+defs.map(q=>{
   let claimed=(state.questClaims||[]).includes(q.id),ready=q.progress>=q.goal;
   return '<div class="questCard"><b>✨ '+q.title+'</b><small>'+q.desc+' · '+q.progress+'/'+q.goal+'</small><div class="questTrack"><span style="width:'+(q.progress/q.goal*100)+'%"></span></div><small>Reward: '+money(q.coins)+' coins + '+q.xp+' XP</small><button class="questClaim" '+(!ready||claimed?'disabled':'')+' onclick="claimQuest(\''+q.id+'\')">'+(claimed?'✓ CLAIMED':ready?'CLAIM REWARD':'IN PROGRESS')+'</button></div>';
  }).join('');
@@ -541,7 +573,7 @@ function claimQuest(id){
  let q=defs[id];if(!q||(state.questClaims||[]).includes(id))return;
  let progress=id==='wins3'?state.questWinCount:state.questSpinCount;
  if(progress<q.goal)return;
- state.questClaims.push(id);state.balance+=q.coins;addXP(q.xp);save();updateQuestPanel();toast('Quest claimed: +'+money(q.coins)+' coins and '+q.xp+' XP');
+ state.questClaims.push(id);state.balance+=q.coins;addXP(q.xp);save();updateHUD();toast('Quest claimed: +'+money(q.coins)+' coins and '+q.xp+' XP');
 }
 function updateHUD(){
  ['balance','gameBalance'].forEach(id=>{if($(id))$(id).textContent=money(state.balance)});
@@ -554,7 +586,7 @@ function updateHUD(){
  $('questText').textContent=state.questSpins>=5?'Quest complete — well played!':Math.min(state.questSpins,5)+' / 5 spins completed today';
  $('questBar').style.width=(Math.min(state.questSpins,5)/5*100)+'%';
  if(state.questSpins>=5)$('questText').classList.add('questComplete');
- updateQuestPanel();
+ updateQuestPanel();updateVault();
 }
 function renderLobby(){
  const artIds=['sunstone','jaguar','eagle','serpent','calendar','mask','idol','coin'];
@@ -707,7 +739,7 @@ function stopAuto(){if(autoTimer!==null)clearTimeout(autoTimer);autoTimer=null;a
 function claimDaily(){
  let today=localDay();
  if(state.dailyDate===today){toast('Your daily virtual gift has already been claimed.');return}
- state.dailyDate=today;state.balance+=25000;save();toast('Daily gift claimed: +25,000 virtual coins')
+ state.dailyDate=today;state.balance+=25000;save();updateHUD();toast('Daily gift claimed: +25,000 virtual coins')
 }
 function showRules(){$('rulesPanel').style.display=$('rulesPanel').style.display==='none'?'block':'none'}
 function resetDemo(){if(!confirm('Reset this prototype profile and virtual coins?'))return;stopAuto();state={...defaults};save();buildReels();$('status').textContent='Demo profile reset. Have fun exploring.'}
@@ -720,7 +752,7 @@ function exportPlayerData(){
  const url=URL.createObjectURL(blob),a=document.createElement('a');
  a.href=url;a.download='lucky-spin-royal-player-backup-'+localDay()+'.json';
  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
- toast('Player backup downloaded. Keep it somewhere safe.');
+ updateVault();toast('Player backup downloaded. Keep it somewhere safe.');
 }
 async function importPlayerData(event){
  const file=event.target.files&&event.target.files[0];if(!file)return;
@@ -754,7 +786,7 @@ const CARD_POOL=[
 let pendingFeature=null;
 function showFeature(headline,ribbon,body,action){pendingFeature=action;$('featureHeadline').textContent=headline;$('featureRibbon').textContent=ribbon;$('featureBody').innerHTML=body;$('featureModal').style.display='grid'}
 function closeFeature(){$('featureModal').style.display='none';pendingFeature=null}
-function collectFeature(){if(pendingFeature)pendingFeature();closeFeature();save()}
+function collectFeature(){if(pendingFeature)pendingFeature();closeFeature();save();updateHUD()}
 function awardCard(){
  const available=CARD_POOL.filter(c=>!(state.cards||[]).includes(c.id));if(!available.length)return false;
  const card=available[Math.floor(Math.random()*available.length)];
@@ -764,7 +796,13 @@ function awardCard(){
 function awardIngredients(){
  showFeature('CONGRATULATIONS!','YOU FOUND BONUS TREASURES!',`<div class="rewardItems"><div class="rewardItem">💎<small>GEM ×1</small></div><div class="rewardItem">🪙<small>COIN ×1</small></div><div class="rewardItem">🧿<small>RELIC ×1</small></div></div><p style="color:#f3dcff">Three themed ingredients added to your collection.</p>`,()=>{state.ingredients=(Number(state.ingredients)||0)+3;toast('3 virtual ingredients collected')});
 }
-function updateCardCount(){if($('cardCount'))$('cardCount').textContent=(state.cards||[]).length+'/8'}
+function updateCardCount(){const count=(state.cards||[]).length+'/8';if($('cardCount'))$('cardCount').textContent=count;if($('vaultCardCount'))$('vaultCardCount').textContent=count;updateVault()} 
+function updateVault(){
+ const set=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+ set('vaultCoins',money(state.balance));set('vaultFreeTickets',Number(state.freeSpins)||0);set('vaultRespinTokens',Number(state.respinSpins)||0);
+ set('vaultCards',(state.cards||[]).length+'/8');set('vaultIngredients',Number(state.ingredients)||0);
+ set('vaultDailyGift',state.dailyDate===localDay()?'CLAIMED':'READY');
+}
 function openAlbum(){$('collectionModal').style.display='grid';renderAlbum('all')}
 function closeAlbum(){$('collectionModal').style.display='none'}
 function renderAlbum(filter){
