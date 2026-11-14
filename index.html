@@ -562,7 +562,22 @@ function migrateProgression(){
 }
 function v5Week(){const d=new Date();const x=new Date(d);x.setDate(d.getDate()-((d.getDay()+6)%7));return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
 function v5Reset(){const today=localDay(),week=v5Week();if(state.v5DailyDate!==today){state.v5DailyDate=today;state.v5DailySpins=0;state.v5DailyClaimed=false}if(state.v5WeekKey!==week){state.v5WeekKey=week;state.v5WeeklySpins=0;state.v5WeeklyClaimed=false}state.v5StampClaims=state.v5StampClaims||[];state.v5Tickets={1:0,2:0,3:0,4:0,5:0,...(state.v5Tickets||{})}}
-function v5Update(){const el=id=>$(id);const milestones=[8,15,20,50,100],next=milestones.find(x=>x>state.v5Stamps)||100,prev=[0,...milestones].filter(x=>x<=state.v5Stamps).pop()||0; if(el('v5StampText'))el('v5StampText').textContent=state.v5Stamps+' stamps collected · next milestone '+next;if(el('v5StampBar'))el('v5StampBar').style.width=Math.min(100,(state.v5Stamps-prev)/(next-prev)*100)+'%';if(el('v5StampReward'))el('v5StampReward').textContent='Next reward: '+({8:'100,000 coins + 2 one-star tickets',15:'300,000 coins + 2 two-star tickets',20:'750,000 coins + 2 three-star tickets',50:'2,500,000 coins + 2 four-star tickets',100:'10,000,000 coins + 1 five-star ticket'}[next]||'All milestones completed');if(el('v5DailyText'))el('v5DailyText').textContent='Daily spins: '+state.v5DailySpins+'/5 · reward: 1 stamp + 1 one-star ticket';if(el('v5DailyBar'))el('v5DailyBar').style.width=Math.min(100,state.v5DailySpins/5*100)+'%';if(el('v5WeeklyText'))el('v5WeeklyText').textContent='Weekly spins: '+state.v5WeeklySpins+'/30 · reward: 3 stamps + 1 two-star ticket';if(el('v5WeeklyBar'))el('v5WeeklyBar').style.width=Math.min(100,state.v5WeeklySpins/30*100)+'%';if(el('v5TicketInventory'))el('v5TicketInventory').innerHTML=[1,2,3,4,5].map(n=>'<div class="v5Ticket"><b>'+('⭐'.repeat(n))+'</b><strong>'+Number(state.v5Tickets[n]||0)+'</strong><small>'+n+'-star tickets</small></div>').join('');if(el('v5DifficultyBadge'))el('v5DifficultyBadge').textContent=current&&state.difficultyByGame[current.id]?'Current mode: '+state.difficultyByGame[current.id].toUpperCase():'Choose a mode when entering a world')}
+function v5Update(){
+ const el=id=>$(id);
+ const milestones=[8,15,20,50,100];
+ const next=milestones.find(x=>x>state.v5Stamps)||100;
+ const prev=[0,...milestones].filter(x=>x<=state.v5Stamps).pop()||0;
+ const rewardMap={8:'100,000 coins + 2 one-star tickets',15:'300,000 coins + 2 two-star tickets',20:'750,000 coins + 2 three-star tickets',50:'2,500,000 coins + 2 four-star tickets',100:'10,000,000 coins + 1 five-star ticket'};
+ if(el('v5StampText'))el('v5StampText').textContent=state.v5Stamps+' stamps collected · next milestone '+next;
+ if(el('v5StampBar'))el('v5StampBar').style.width=Math.min(100,(state.v5Stamps-prev)/(next-prev)*100)+'%';
+ if(el('v5StampReward'))el('v5StampReward').textContent='Next reward: '+(rewardMap[next]||'All milestones completed');
+ if(el('v5DailyText'))el('v5DailyText').textContent='Daily spins: '+state.v5DailySpins+'/5 · reward: 1 stamp + 1 one-star ticket';
+ if(el('v5DailyBar'))el('v5DailyBar').style.width=Math.min(100,state.v5DailySpins/5*100)+'%';
+ if(el('v5WeeklyText'))el('v5WeeklyText').textContent='Weekly spins: '+state.v5WeeklySpins+'/30 · reward: 3 stamps + 1 two-star ticket';
+ if(el('v5WeeklyBar'))el('v5WeeklyBar').style.width=Math.min(100,state.v5WeeklySpins/30*100)+'%';
+ if(el('v5TicketInventory'))el('v5TicketInventory').innerHTML=[1,2,3,4,5].map(n=>'<div class="v5Ticket"><b>'+('⭐'.repeat(n))+'</b><strong>'+Number(state.v5Tickets[n]||0)+'</strong><small>'+n+'-star tickets</small></div>').join('');
+ if(el('v5DifficultyBadge'))el('v5DifficultyBadge').textContent=current&&state.difficultyByGame[current.id]?'Current mode: '+state.difficultyByGame[current.id].toUpperCase():'Choose a mode when entering a world';
+}
 function v5AddStamp(n=1){state.v5Stamps=(state.v5Stamps||0)+n}
 function v5AwardTicket(n){state.v5Tickets[n]=(state.v5Tickets[n]||0)+1;toast(n+'-star ticket collected!')}
 function claimV5Milestone(){const milestones=[8,15,20,50,100],m=milestones.find(x=>state.v5Stamps>=x&&!(state.v5StampClaims||[]).includes(x));if(!m){toast('No new stamp milestone is ready yet.');return}const rewards={8:[100000,1,2],15:[300000,2,2],20:[750000,3,2],50:[2500000,4,2],100:[10000000,5,1]},r=rewards[m];state.balance+=r[0];state.v5Tickets[r[1]]=(state.v5Tickets[r[1]]||0)+r[2];state.v5StampClaims.push(m);save();v5Update();toast('Milestone '+m+' claimed: '+money(r[0])+' coins and '+r[2]+' tickets!')}
