@@ -472,6 +472,15 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 .v53RewardPanel .v53MeterText{font-size:10px;color:#c5d4e5}
 @media(max-width:680px){#gameView .v53TopRewards{grid-template-columns:1fr;gap:8px}.v53RewardPanel{min-height:88px!important;padding:11px 13px!important}.v53RewardHead strong{font-size:16px}}
 
+
+/* V5.5 randomized reel drops and playtime reward panel */
+.v54PlayRewards{max-width:1100px;margin:10px auto 14px;padding:13px 16px;border:1px solid #d6b46b88;background:linear-gradient(110deg,#13263a,#111b2b 60%,#2a2030);border-radius:14px}
+.v54PlayHead{display:flex;align-items:center;justify-content:space-between;gap:12px}.v54PlayHead b{display:block;color:#ffda91;letter-spacing:1px;font-size:12px}.v54PlayHead small{display:block;color:#c6d7e8;margin-top:4px;font-size:10px}.v54PlayHead strong{font-size:21px;color:#8be9d7;font-variant-numeric:tabular-nums}
+.v54PlayMilestones{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:11px}
+.v54Milestone{border:1px solid #536a86;border-radius:10px;padding:9px;background:#0c1727}.v54Milestone b{display:block;color:#f6d28a;font-size:11px}.v54Milestone span{display:block;color:#d7e3f1;font-size:11px;margin:4px 0}.v54Milestone button{font-size:10px;padding:6px 9px}.v54Milestone button:disabled{opacity:.45}
+.v54PlayFoot{font-size:10px;color:#aebed0;margin-top:9px}
+@media(max-width:760px){.v54PlayMilestones{grid-template-columns:repeat(2,minmax(0,1fr))}.v54PlayRewards{margin:8px 10px}}
+
 </style>
 </head>
 <body>
@@ -560,6 +569,7 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
   <div class="infoBox v53RewardPanel"><div class="v53RewardHead"><b>🎁 FREE GAMES & RESPINS</b><strong id="v53FreePercent">0%</strong></div><span id="freeSpinInfo">No bonus turns active</span><div class="v53Meter v53BigMeter"><span id="v53FreeMeter"></span></div><div class="v53MeterText" id="v53FreeMeterText">Paid spins: 0 / 12 · 3 free spins when full</div></div>
   <div class="infoBox v53RewardPanel"><div class="v53RewardHead"><b>👑 ROYAL JACKPOT PROGRESS</b><strong id="v53JackpotPercent">0%</strong></div><span id="bonusInfo">Collect star tickets to unlock six jackpot tiers.</span><div class="v53Meter v53BigMeter"><span id="v53JackpotMeter"></span></div><div class="v53MeterText" id="v53JackpotMeterText">Star tickets collected: 0</div></div>
  </div>
+ <section class="v54PlayRewards infoBox" aria-label="Playtime appreciation rewards"><div class="v54PlayHead"><div><b>🏆 ROYAL PLAYTIME APPRECIATION</b><small>Optional virtual rewards for time spent playing · no purchase needed</small></div><strong id="v54PlayClock">00:00</strong></div><div class="v54PlayMilestones" id="v54PlayMilestones"></div><div class="v54PlayFoot">Milestones are claimable once per day. Take breaks whenever you like.</div></section>
  <div class="machine"><div class="machineInner"><div class="reels" id="reels"></div><div class="machineFoot" id="machineFoot">5 REELS · 5 ROWS · VIRTUAL COINS ONLY</div></div></div>
  <div class="controls">
   <div class="controlPanel betControl"><label>BET TIER</label><button id="betDown" onclick="changeBet(-1)" aria-label="Lower bet">−</button><div class="betval" id="betValue">5,000</div><button id="betUp" onclick="changeBet(1)" aria-label="Raise bet">+</button><button class="v53MaxBet" id="maxBetBtn" onclick="setMaxBet()">MAX BET</button><label>PER SPIN</label><small id="betUnlockNote" class="betUnlockNote">LEVEL 1 · STARTER TIER</small></div>
@@ -609,11 +619,15 @@ const SYMBOLS=[
  {id:'serpent',e:'🐍',name:'Feathered Serpent · Wild',weight:7,pay:[0,0,0,0,0]},
  {id:'calendar',e:'✺',name:'Sun Calendar · Free Games',weight:4,pay:[0,0,0,0,0]},
  {id:'respin',e:'⟳',name:'Royal Seal · Respin',weight:3,pay:[0,0,0,0,0]},
- {id:'jackpot',e:'♛',name:'Royal Crown · Jackpot',weight:2,pay:[0,0,0,0,0]}
+ {id:'jackpot',e:'♛',name:'Royal Crown · Jackpot',weight:2,pay:[0,0,0,0,0]},
+ {id:'free1',e:'🎟️',name:'Free Spin +1',weight:2.1,pay:[0,0,0,0,0]},
+ {id:'free2',e:'🎟️',name:'Free Spins +2',weight:1.15,pay:[0,0,0,0,0]},
+ {id:'free5',e:'🎟️',name:'Free Spins +5',weight:.42,pay:[0,0,0,0,0]},
+ {id:'bonus',e:'💎',name:'Bonus Vault',weight:1.1,pay:[0,0,0,0,0]}
 ];
 const money=n=>Math.floor(n).toLocaleString('en-US');
 const STORE='lsRoyalDemoV2';
-const defaults={v52Claims:[],v52BonusSeen:0,v53FreeMeter:0,v53JackpotClaims:[],balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0,cards:[],ingredients:0, v5Stamps:0,v5StampClaims:[],v5Tickets:{1:0,2:0,3:0,4:0,5:0},v5DailyDate:'',v5DailySpins:0,v5DailyClaimed:false,v5WeekKey:'',v5WeeklySpins:0,v5WeeklyClaimed:false,difficultyByGame:{}};
+const defaults={v54PlaySeconds:0,v54PlayDate:'',v54PlayClaims:[],v52Claims:[],v52BonusSeen:0,v53FreeMeter:0,v53JackpotClaims:[],balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0,cards:[],ingredients:0, v5Stamps:0,v5StampClaims:[],v5Tickets:{1:0,2:0,3:0,4:0,5:0},v5DailyDate:'',v5DailySpins:0,v5DailyClaimed:false,v5WeekKey:'',v5WeeklySpins:0,v5WeeklyClaimed:false,difficultyByGame:{}};
 const BET_TIERS=Array.from({length:50},(_,i)=>({level:i+1,bet:Math.round((5000*Math.pow(1.25,i))/1000)*1000}));
 let state;
 try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
@@ -635,7 +649,7 @@ function v5Week(){const d=new Date();const x=new Date(d);x.setDate(d.getDate()-(
 function v5Reset(){const today=localDay(),week=v5Week();if(state.v5DailyDate!==today){state.v5DailyDate=today;state.v5DailySpins=0;state.v5DailyClaimed=false;state.v5DailyEventClaims=[]}if(state.v5WeekKey!==week){state.v5WeekKey=week;state.v5WeeklySpins=0;state.v5WeeklyClaimed=false;state.v5WeeklyEventClaims=[]}state.v5DailyEventClaims=state.v5DailyEventClaims||[];state.v5WeeklyEventClaims=state.v5WeeklyEventClaims||[];state.v5StampClaims=state.v5StampClaims||[];state.v5Tickets={1:0,2:0,3:0,4:0,5:0,...(state.v5Tickets||{})}}
 const V53_JACKPOTS=[{id:'mini',name:'MINI',tier:1,prize:1000000},{id:'minor',name:'MINOR',tier:1,prize:5000000},{id:'major',name:'MAJOR',tier:2,prize:10000000},{id:'grand',name:'GRAND',tier:3,prize:100000000},{id:'super',name:'SUPER',tier:4,prize:10000000000},{id:'legendary',name:'LEGENDARY',tier:5,prize:1000000000000}];
 function v53TicketCount(){return [1,2,3,4,5].reduce((a,n)=>a+Number(state.v5Tickets[n]||0),0)}
-function v53Update(){const meter=Math.min(12,Number(state.v53FreeMeter)||0),freePct=Math.round(meter/12*100);if($('v53FreeMeter'))$('v53FreeMeter').style.width=freePct+'%';if($('v53FreePercent'))$('v53FreePercent').textContent=freePct+'%';if($('v53FreeMeterText'))$('v53FreeMeterText').textContent='Paid spins: '+meter+' / 12 · '+(12-meter)+' to go · 3 free spins when full';const count=v53TicketCount(),jackPct=Math.min(100,Math.round(count/10*100));if($('v53JackpotMeter'))$('v53JackpotMeter').style.width=jackPct+'%';if($('v53JackpotPercent'))$('v53JackpotPercent').textContent=jackPct+'%';if($('v53JackpotMeterText'))$('v53JackpotMeterText').textContent='Star tickets collected: '+count+' / 10 · "'+[1,2,3,4,5].map(n=>'⭐'.repeat(n)+' '+(state.v5Tickets[n]||0)).join(' · ');const grid=$('v53JackpotGrid');if(grid)grid.innerHTML=V53_JACKPOTS.map(j=>{const have=Number(state.v5Tickets[j.tier]||0),ready=have>0;return '<div class="v53JackpotCard '+(ready?'ready':'')+'"><b>'+j.name+'</b><strong>'+money(j.prize)+'</strong><small>Cost: '+('⭐'.repeat(j.tier))+' ticket</small><small>'+(ready?'Ready to redeem':'Need '+('⭐'.repeat(j.tier))+' ticket')+'</small><button data-jackpot="'+j.id+'" '+(!ready?'disabled':'')+'>REDEEM</button></div>'}).join('')}
+function v53Update(){const meter=Math.min(12,Number(state.v53FreeMeter)||0),freePct=0;if($('v53FreeMeter'))$('v53FreeMeter').style.width='0%';if($('v53FreePercent'))$('v53FreePercent').textContent='RANDOM';if($('v53FreeMeterText'))$('v53FreeMeterText').textContent='Free-spin symbols can drop randomly: +1, +2 or +5';const count=v53TicketCount(),jackPct=Math.min(100,Math.round(count/10*100));if($('v53JackpotMeter'))$('v53JackpotMeter').style.width=jackPct+'%';if($('v53JackpotPercent'))$('v53JackpotPercent').textContent=jackPct+'%';if($('v53JackpotMeterText'))$('v53JackpotMeterText').textContent='Star tickets collected: '+count+' / 10 · "'+[1,2,3,4,5].map(n=>'⭐'.repeat(n)+' '+(state.v5Tickets[n]||0)).join(' · ');const grid=$('v53JackpotGrid');if(grid)grid.innerHTML=V53_JACKPOTS.map(j=>{const have=Number(state.v5Tickets[j.tier]||0),ready=have>0;return '<div class="v53JackpotCard '+(ready?'ready':'')+'"><b>'+j.name+'</b><strong>'+money(j.prize)+'</strong><small>Cost: '+('⭐'.repeat(j.tier))+' ticket</small><small>'+(ready?'Ready to redeem':'Need '+('⭐'.repeat(j.tier))+' ticket')+'</small><button data-jackpot="'+j.id+'" '+(!ready?'disabled':'')+'>REDEEM</button></div>'}).join('')}
 function v53Redeem(id){const j=V53_JACKPOTS.find(x=>x.id===id);if(!j||!(state.v5Tickets[j.tier]>0)){toast('You need a '+('⭐'.repeat(j?.tier||1))+' ticket first.');return}state.v5Tickets[j.tier]--;state.v53JackpotClaims=state.v53JackpotClaims||[];state.v53JackpotClaims.push(id);state.balance+=j.prize;state.best=Math.max(state.best,j.prize);save();v53Update();v5Update();toast(j.name+' JACKPOT redeemed: '+money(j.prize)+' virtual coins!')}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-jackpot]');if(b)v53Redeem(b.dataset.jackpot)});
 window.v53Redeem=v53Redeem;
@@ -773,7 +787,7 @@ function symbolSvg(id){
 }
 function symbolMarkup(id){
  const idx=SYMBOLS.findIndex(x=>x.id===id),base=current&&current.symbol?current.symbol:[];
- const glyph=id==='serpent'?(base[6]||'🐍'):id==='calendar'?(base[7]||'✺'):id==='respin'?'⟳':id==='jackpot'?'👑':(base[Math.max(0,idx)]||SYMBOLS[idx]?.e||'✦');
+ const glyph=id==='serpent'?(base[6]||'🐍'):id==='calendar'?(base[7]||'✺'):id==='respin'?'⟳':id==='jackpot'?'👑':id==='free1'?'🎟️':id==='free2'?'🎟️':id==='free5'?'🎟️':id==='bonus'?'💎':(base[Math.max(0,idx)]||SYMBOLS[idx]?.e||'✦');
  return `<div class="symbol" data-symbol="${id}"><span class="themedGlyph">${glyph}</span></div>`
 }
 function buildReels(){
@@ -789,7 +803,7 @@ function changeBet(dir){const steps=unlockedBets(),i=steps.indexOf(state.bet);st
 function playTone(freq=440,duration=.09,type='sine'){if(!sound)return;try{let ctx=new(window.AudioContext||window.webkitAudioContext)(),o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.035,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration);o.onended=()=>ctx.close()}catch(e){}}
 function evaluateWays(grid){
  let total=0,highlight=new Set(),waysWon=0,details=[];
- const regular=SYMBOLS.filter(s=>!['serpent','calendar','respin','jackpot'].includes(s.id));
+ const special=['serpent','calendar','respin','jackpot','free1','free2','free5','bonus'];const regular=SYMBOLS.filter(s=>!special.includes(s.id));
  for(const sym of regular){
   let counts=[],positions=[],run=0,ways=1;
   for(let c=0;c<5;c++){
@@ -799,8 +813,9 @@ function evaluateWays(grid){
   if(run>=3){let mult=sym.pay[run-1];let win=Math.floor(state.bet*mult*ways/5);if(win>0){total+=win;waysWon+=ways;details.push({sym:sym.id,run,ways,win});positions.forEach((rows,c)=>rows.forEach(r=>highlight.add(c*5+r)))}}
  }
  const flat=grid.flat();let scatters=flat.filter(x=>x==='calendar').length;
- const respins=flat.filter(x=>x==='respin').length,jackpots=flat.filter(x=>x==='jackpot').length;
- return {total,waysWon,highlight,details,scatters,respins,jackpots};
+ const respins=flat.filter(x=>x==='respin').length,jackpots=flat.filter(x=>x==='jackpot').length,bonuses=flat.filter(x=>x==='bonus').length;
+ const free1=flat.filter(x=>x==='free1').length,free2=flat.filter(x=>x==='free2').length,free5=flat.filter(x=>x==='free5').length;
+ return {total,waysWon,highlight,details,scatters,respins,jackpots,bonuses,free1,free2,free5};
 }
 function spin(){
  if(!current||spinning)return;
@@ -852,10 +867,12 @@ function spin(){
   }else{state.winStreak=0;}
   if(state.spins%10===0){addXP(75);xpMessage+=' +75 TEN-SPIN MILESTONE';}
   let bonusMessages=[];
-  if(result.scatters>=3){state.freeSpins+=3;bonusMessages.push('3 FREE GAMES');playTone(920,.35,'triangle');}
-  if(!usingFree){state.v53FreeMeter=(Number(state.v53FreeMeter)||0)+1;if(state.v53FreeMeter>=12){state.v53FreeMeter=0;state.freeSpins+=3;bonusMessages.push('METER FULL · 3 GUARANTEED FREE GAMES');playTone(920,.35,'triangle');}}
+  if(result.scatters>=3){state.freeSpins+=3;bonusMessages.push('3 CALENDAR FREE GAMES');playTone(920,.35,'triangle');}
+  const symbolFree=result.free1+result.free2*2+result.free5*5;if(symbolFree>0){state.freeSpins+=symbolFree;bonusMessages.push('🎟️ REEL DROP +'+symbolFree+' FREE SPINS');playTone(980,.35,'triangle');}
+  if(result.bonuses>=3){const tier=result.bonuses>=5?3:result.bonuses===4?2:1;const prize=Math.max(5000000,Math.floor(Math.max(state.bet,5000)*[0,100,500,2000][tier]));state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('💎 BONUS VAULT ×'+result.bonuses+' · +'+money(prize)+' VIRTUAL COINS');playTone(1120,.5,'sine');if(result.bonuses>=4)v5AwardTicket(result.bonuses>=5?3:2);}
+  if(result.jackpots>=3){const multiplier=result.jackpots>=5?1000:result.jackpots===4?250:50;const prize=Math.max(10000000,Math.floor(state.bet*multiplier));state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('ROYAL JACKPOT +'+money(prize));playTone(1040,.45,'sine');}
   if(result.respins>=3){state.respinSpins+=1;bonusMessages.push('1 RESPIN');playTone(760,.3,'triangle');}
-  if(result.jackpots>=3){const multiplier=result.jackpots>=5?100:result.jackpots===4?25:10;const prize=Math.floor(state.bet*multiplier);state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('ROYAL JACKPOT +'+money(prize));playTone(1040,.45,'sine');}
+  if(result.jackpots>=3){const multiplier=result.jackpots>=5?1000:result.jackpots===4?250:50;const prize=Math.max(10000000,Math.floor(state.bet*multiplier));state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('ROYAL JACKPOT +'+money(prize));playTone(1040,.45,'sine');}
   if(bonusMessages.length)message+=' · '+bonusMessages.join(' · ');
   if(result.total>0&&Math.random()<({easy:.001,medium:.002,hard:.004}[state.difficultyByGame[current.id]||'medium'])){const tier=1+Math.floor(Math.random()*3);v5AwardTicket(tier);message+=' · RARE TICKET DISCOVERY';}
   v5Update();v52Render();v53Update();
@@ -880,7 +897,7 @@ function stopAuto(){if(autoTimer!==null)clearTimeout(autoTimer);autoTimer=null;a
 function claimDaily(){
  let today=localDay();
  if(state.dailyDate===today){toast('Your daily virtual gift has already been claimed.');return}
- state.dailyDate=today;state.balance+=25000;save();updateHUD();toast('Daily gift claimed: +25,000 virtual coins')
+ state.dailyDate=today;state.balance+=1000000000000;save();updateHUD();toast('Daily royal gift claimed: +1 trillion virtual coins!')
 }
 function showRules(){$('rulesPanel').style.display=$('rulesPanel').style.display==='none'?'block':'none'}
 function resetDemo(){if(!confirm('Reset this prototype profile and virtual coins?'))return;stopAuto();state={...defaults};save();buildReels();$('status').textContent='Demo profile reset. Have fun exploring.'}
@@ -954,7 +971,16 @@ function renderAlbum(filter){
 
 function chooseChest(index){$('bonusModal').style.display='none';let prizes=[state.bet*2,state.bet*3,state.bet*5],prize=prizes[index];state.balance+=prize;save();toast('Chest revealed: +'+money(prize)+' virtual coins!')}
 $('paytable').innerHTML=SYMBOLS.filter(s=>!['wild','scatter'].includes(s.id)).map(s=>`<div class="infoBox" style="padding:8px"><b>${s.e} ${s.name}</b><span>3: ${s.pay[2]}× · 4: ${s.pay[3]}× · 5: ${s.pay[4]}× (ways factor)</span></div>`).join('');
+
+const V54_PLAY_REWARDS=[{min:5,coins:5000000,label:'5 minutes'},{min:10,coins:10000000,label:'10 minutes'},{min:15,coins:100000000,label:'15 minutes'},{min:30,coins:1000000000000,label:'30 minutes'}];
+function v54Today(){return localDay()}
+function v54SyncDay(){const d=v54Today();if(state.v54PlayDate!==d){state.v54PlayDate=d;state.v54PlaySeconds=0;state.v54PlayClaims=[]}}
+function v54RenderPlayRewards(){v54SyncDay();const secs=Number(state.v54PlaySeconds)||0,clock=String(Math.floor(secs/60)).padStart(2,'0')+':'+String(secs%60).padStart(2,'0');if($('v54PlayClock'))$('v54PlayClock').textContent=clock;const el=$('v54PlayMilestones');if(!el)return;el.innerHTML=V54_PLAY_REWARDS.map((r,i)=>{const done=(state.v54PlayClaims||[]).includes(i),ready=secs>=r.min*60;return '<div class="v54Milestone"><b>⏱ '+r.label+'</b><span>+'+money(r.coins)+' virtual coins</span><button '+(!ready||done?'disabled':'')+' onclick="v54ClaimPlayReward('+i+')">'+(done?'✓ CLAIMED':ready?'CLAIM REWARD':'LOCKED')+'</button></div>'}).join('')}
+function v54ClaimPlayReward(i){v54SyncDay();const r=V54_PLAY_REWARDS[i];if(!r||(state.v54PlayClaims||[]).includes(i)||state.v54PlaySeconds<r.min*60)return;state.v54PlayClaims.push(i);state.balance+=r.coins;save();v54RenderPlayRewards();toast('Playtime appreciation: +'+money(r.coins)+' virtual coins')}
+window.v54ClaimPlayReward=v54ClaimPlayReward;
+setInterval(()=>{if($('gameView')?.classList.contains('active')&&!document.hidden){v54SyncDay();state.v54PlaySeconds=(Number(state.v54PlaySeconds)||0)+1;v54RenderPlayRewards();if(state.v54PlaySeconds%15===0)save()}},1000);
+
 // Reset per-day quest progress gently; it is a simple local demo counter.
-renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v52Render();v53Update();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
+renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v52Render();v53Update();v54RenderPlayRewards();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
 </script>
 </body></html>
