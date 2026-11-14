@@ -405,7 +405,22 @@ function renderLobby(){
  $('gameGrid').innerHTML=games.map((g,i)=>{let art='';try{art=symbolSvg(artIds[i]||'coin')}catch(e){art='<span style="font-size:76px">'+g.emoji+'</span>'}return `<article class="gamecard vipCard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ FEATURED EXPERIENCE':'✦ WORLD PREVIEW'}</span><div class="art ${g.art}"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">${art}</div><span class="artTitle">${g.name}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>`}).join('')
 }
 function showLobby(){stopAuto();$('gameView').classList.remove('active');$('lobby').classList.add('active')}
-function openGame(id){current=games.find(g=>g.id===id);$('lobby').classList.remove('active');$('gameView').classList.add('active');$('gameTitle').textContent=current.name.toUpperCase();$('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';$('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · 3,125 WAYS';buildReels();updateHUD();$('status').textContent=id==='aztec'?'Royal temple edition — earn XP on every spin and discover Aztec-inspired treasures.':'Preview only — this machine will be developed in a later phase.';$('spinBtn').disabled=id!=='aztec';$('autoBtn').disabled=id!=='aztec'}
+function openGame(id){
+ const selected=games.find(g=>g.id===id);if(!selected){toast('This game could not be found.');return}
+ try{
+  stopAuto();current=selected;
+  $('lobby').classList.remove('active');$('gameView').classList.add('active');
+  $('gameTitle').textContent=current.name.toUpperCase();
+  $('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';
+  $('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · VIRTUAL COINS';
+  buildReels();updateHUD();
+  $('status').textContent=id==='aztec'?'Featured machine ready. Spin to play and discover bonus symbols.':'World preview opened. This prototype uses the shared 5×5 reel engine.';
+  $('spinBtn').disabled=false;$('autoBtn').disabled=false;
+  window.scrollTo({top:0,behavior:'smooth'});
+ }catch(err){console.error('Could not open game:',err);$('gameView').classList.remove('active');$('lobby').classList.add('active');toast('Could not open this game. Please refresh and try again.')}
+}
+window.openGame=openGame;
+document.addEventListener('click',function(event){const card=event.target.closest('#gameGrid .gamecard');if(card){const match=card.getAttribute('onclick')?.match(/openGame\(['"]([^'"]+)['"]\)/);if(match)openGame(match[1])}});
 function weightedSymbol(){let total=SYMBOLS.reduce((a,s)=>a+s.weight,0),n=Math.random()*total;for(const s of SYMBOLS){n-=s.weight;if(n<=0)return s}return SYMBOLS[0]}
 function symbolSvg(id){
  const defs=`<defs>
@@ -442,11 +457,11 @@ function changeBet(dir){const steps=unlockedBets(),i=steps.indexOf(state.bet);st
 function playTone(freq=440,duration=.09,type='sine'){if(!sound)return;try{let ctx=new(window.AudioContext||window.webkitAudioContext)(),o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.035,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration);o.onended=()=>ctx.close()}catch(e){}}
 function evaluateWays(grid){
  let total=0,highlight=new Set(),waysWon=0,details=[];
- const regular=SYMBOLS.filter(s=>!['wild','scatter'].includes(s.id));
+ const regular=SYMBOLS.filter(s=>!['serpent','calendar','respin','jackpot'].includes(s.id));
  for(const sym of regular){
   let counts=[],positions=[],run=0,ways=1;
   for(let c=0;c<5;c++){
-   let hits=[];for(let r=0;r<5;r++)if(grid[c][r]===sym.id||grid[c][r]==='wild')hits.push(r);
+   let hits=[];for(let r=0;r<5;r++)if(grid[c][r]===sym.id||grid[c][r]==='serpent')hits.push(r);
    if(!hits.length)break;counts.push(hits.length);positions.push(hits);run++;ways*=hits.length;
   }
   if(run>=3){let mult=sym.pay[run-1];let win=Math.floor(state.bet*mult*ways/5);if(win>0){total+=win;waysWon+=ways;details.push({sym:sym.id,run,ways,win});positions.forEach((rows,c)=>rows.forEach(r=>highlight.add(c*5+r)))}}
@@ -456,7 +471,7 @@ function evaluateWays(grid){
  return {total,waysWon,highlight,details,scatters,respins,jackpots};
 }
 function spin(){
- if(current.id!=='aztec'||spinning)return;
+ if(!current||spinning)return;
  let usingRespin=state.respinSpins>0,usingFree=usingRespin||state.freeSpins>0,bet=usingFree?0:state.bet;
  if(!usingFree&&state.balance<bet){$('status').textContent='Not enough virtual coins. Lower the bet or claim your daily gift.';stopAuto();return}
  if(!usingFree)state.balance-=bet;else if(usingRespin)state.respinSpins--;else state.freeSpins--;
@@ -510,12 +525,12 @@ function spin(){
   $('lastResult').textContent=result.total?('+'+money(result.total)+' · '+result.waysWon+' ways'):'No win';
   $('status').textContent=(usingFree?'FREE SPIN · ':'')+message+xpMessage;
   $('freeSpinInfo').textContent=[state.freeSpins?state.freeSpins+' free games':'',state.respinSpins?state.respinSpins+' respin'+(state.respinSpins===1?'':'s'):''].filter(Boolean).join(' · ')||'No bonus turns active';
-  save();updateQuestPanel();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=current.id!=='aztec';
+  save();updateQuestPanel();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=false;
   if(autoTimer!==null){if(autoRemaining>0)autoRemaining--;if(autoRemaining===0){stopAuto();$('status').textContent+=' · AUTO PLAY COMPLETE'}else{autoTimer=setTimeout(spin,1050)}}
  },totalDelay);
 }
 function autoPlay(){if(autoTimer!==null||spinning)return;autoRemaining=Number($('autoCount').value);autoTimer=-1;$('autoBtn').disabled=true;$('stopBtn').disabled=false;spin()}
-function stopAuto(){if(autoTimer!==null)clearTimeout(autoTimer);autoTimer=null;autoRemaining=0;if($('autoBtn'))$('autoBtn').disabled=current.id!=='aztec';if($('stopBtn'))$('stopBtn').disabled=true}
+function stopAuto(){if(autoTimer!==null)clearTimeout(autoTimer);autoTimer=null;autoRemaining=0;if($('autoBtn'))$('autoBtn').disabled=false;if($('stopBtn'))$('stopBtn').disabled=true}
 function claimDaily(){
  let today=localDay();
  if(state.dailyDate===today){toast('Your daily virtual gift has already been claimed.');return}
