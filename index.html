@@ -833,6 +833,7 @@ function symbolSvg(id){
  return `<svg viewBox="0 0 100 100" aria-hidden="true">${defs}${paths[id]||paths.coin}</svg>`;
 }
 function symbolMarkup(id){
+ if(typeof window.v62RenderSymbol==='function')return window.v62RenderSymbol(id);
  const idx=SYMBOLS.findIndex(x=>x.id===id),base=current&&current.symbol?current.symbol:[];
  const glyph=id==='serpent'?(base[6]||'🐍'):id==='calendar'?(base[7]||'✺'):id==='respin'?'⟳':id==='jackpot'?'👑':id==='free1'?'🎟️':id==='free2'?'🎟️':id==='free5'?'🎟️':id==='bonus'?'💎':(base[Math.max(0,idx)]||SYMBOLS[idx]?.e||'✦');
  return `<div class="symbol" data-symbol="${id}"><span class="themedGlyph">${glyph}</span></div>`
@@ -1288,6 +1289,7 @@ renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v5
   const special=id==='serpent'?'WILD':id==='calendar'?'SCATTER':id==='jackpot'?'JACKPOT':id==='free1'||id==='free2'||id==='free5'?'FREE SPIN':id==='respin'?'RESPIN':id==='bonus'?'BONUS':w.motifs[slot];
   return '<div class="symbol worldSymbol" data-symbol="'+id+'" data-world="'+world+'" title="'+w.name+' · '+special+'"><span class="themedGlyph">'+svgArt(world,slot)+'</span></div>';
  };
+ window.v62RenderSymbol=function(id){return window.symbolMarkup(id)};
  // Keep the original reel-strip animation engine intact; only the symbol artwork is themed.
 })();
 </script>
