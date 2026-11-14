@@ -427,6 +427,29 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 .v5HallBox h4{margin:0 0 8px;color:#f1cf82}.v5HallBox p{font-size:12px;color:#bccbd9;line-height:1.5;margin:6px 0}
 @media(max-width:900px){.v5Milestones{grid-template-columns:repeat(2,minmax(0,1fr))}.v5HallGrid{grid-template-columns:1fr}}
 
+
+/* V5.2 event and bonus UI */
+#collectionModal{z-index:1200!important;overflow:auto}
+.collectionPanel{position:relative;z-index:1201;width:min(900px,96vw);max-height:90vh;overflow:auto}
+.albumGrid{grid-template-columns:repeat(auto-fit,minmax(125px,1fr));max-height:54vh;overflow:auto}
+.v52Events{margin-top:14px;padding:18px;border:1px solid #c79b5c77;border-radius:18px;background:linear-gradient(145deg,#14243a,#0c1422)}
+.v52Head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.v52Head h3{margin:0;color:#f3d18b}.v52Sub{font-size:12px;color:#b9c8d9;line-height:1.5}
+.v52Track{height:10px;background:#050b14;border-radius:20px;overflow:hidden;margin:10px 0}
+.v52Track span{display:block;height:100%;background:linear-gradient(90deg,#42cfc2,#e5b25d)}
+.v52Stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}
+.v52Stage{padding:10px;border-radius:12px;border:1px solid #71849b66;background:#0c1828;min-height:120px}
+.v52Stage.unlocked{border-color:#d6aa62;box-shadow:inset 0 0 15px #d6aa6218}
+.v52Stage.claimed{border-color:#4ac9b4;background:#102a2b}
+.v52Stage b{display:block;color:#f4d18b;font-size:12px}
+.v52Stage small{display:block;color:#bac9d8;font-size:11px;line-height:1.45;margin-top:5px}
+.v52Stage button{font-size:10px;padding:6px 8px;margin-top:8px}
+.v52BonusMeter{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.v52BonusCard{padding:12px;border-radius:13px;background:#0c1929;border:1px solid #7488a366}
+.v52BonusCard b{color:#f2cf82}.v52BonusCard p{font-size:11px;color:#bac9d8;line-height:1.45}
+@media(max-width:850px){.v52Stages{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.v52Stages{grid-template-columns:repeat(2,minmax(0,1fr))}.v52BonusMeter{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -484,6 +507,17 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
  <h3>🏛️ ROYAL TICKET HALL & MILESTONE MAP</h3><p class="v5HallIntro">Your complete collection path. Earn stamps, open each milestone chest once, and collect rare star tickets.</p>
  <div class="v5Milestones" id="v5MilestoneMap"></div>
  <div class="v5HallGrid"><div class="v5HallBox"><h4>⭐ TICKET RARITY GUIDE</h4><p>⭐ One Star — Starter bonus chest</p><p>⭐⭐ Two Star — Silver bonus chest</p><p>⭐⭐⭐ Three Star — Gold bonus chest</p><p>⭐⭐⭐⭐ Four Star — Royal bonus chest</p><p>⭐⭐⭐⭐⭐ Five Star — Legendary bonus chest</p></div><div class="v5HallBox"><h4>🗝️ HOW TO COLLECT</h4><p>• Reach stamp milestones for guaranteed tickets.</p><p>• Finish daily and weekly event stages.</p><p>• Rare discoveries may drop a ticket; ordinary wins do not guarantee one.</p><p>• Use a ticket to open its matching bonus chest.</p></div></div>
+</section>
+<section class="v52Events" id="v52EventHall">
+ <div class="v52Head"><div><h3>🏆 ROYAL 100-STAGE EVENT ROAD</h3><div class="v52Sub">100 collectible stages. Each stage unlocks after the matching number of spins. Claim each reward once.</div></div><div><b id="v52ProgressLabel">0 / 100 stages</b></div></div>
+ <div class="v52Track"><span id="v52ProgressBar" style="width:0%"></span></div>
+ <div class="v52Sub">Rewards scale from 1 million to 1 trillion virtual coins. Star tickets are collectible bonus keys; they have no cash value.</div>
+ <div class="v52Stages" id="v52Stages"></div>
+ <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="v5Btn" onclick="v52ClaimNext()">CLAIM NEXT READY EVENT</button><button class="v5Btn" onclick="v52ShowAll()">SHOW ALL 100 STAGES</button></div>
+ <div class="v52BonusMeter">
+  <div class="v52BonusCard"><b>🎰 ROYAL JACKPOT SURPRISE</b><p>There is a small, disclosed random chance after a spin to reveal a virtual jackpot bonus. It is not guaranteed by playing more.</p><small id="v52JackpotOdds">Bonus chance: 0.5% per spin</small></div>
+  <div class="v52BonusCard"><b>🎟️ MYSTERY FREE-SPIN DROP</b><p>Occasionally a mystery bonus reveals extra free spins. The normal scatter-symbol free spins still work too.</p><small id="v52FreeOdds">Bonus chance: 1% per spin</small></div>
+ </div>
 </section>
 <section class="infoBox questHub" style="margin-top:14px">
   <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
@@ -557,7 +591,7 @@ const SYMBOLS=[
 ];
 const money=n=>Math.floor(n).toLocaleString('en-US');
 const STORE='lsRoyalDemoV2';
-const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0,cards:[],ingredients:0, v5Stamps:0,v5StampClaims:[],v5Tickets:{1:0,2:0,3:0,4:0,5:0},v5DailyDate:'',v5DailySpins:0,v5DailyClaimed:false,v5WeekKey:'',v5WeeklySpins:0,v5WeeklyClaimed:false,difficultyByGame:{}};
+const defaults={v52Claims:[],v52BonusSeen:0,balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0,cards:[],ingredients:0, v5Stamps:0,v5StampClaims:[],v5Tickets:{1:0,2:0,3:0,4:0,5:0},v5DailyDate:'',v5DailySpins:0,v5DailyClaimed:false,v5WeekKey:'',v5WeeklySpins:0,v5WeeklyClaimed:false,difficultyByGame:{}};
 const BET_TIERS=[{level:1,bet:5000},{level:3,bet:10000},{level:5,bet:20000},{level:8,bet:50000},{level:12,bet:100000},{level:18,bet:250000},{level:25,bet:500000},{level:35,bet:1000000}];
 let state;
 try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
@@ -577,6 +611,13 @@ function migrateProgression(){
 }
 function v5Week(){const d=new Date();const x=new Date(d);x.setDate(d.getDate()-((d.getDay()+6)%7));return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
 function v5Reset(){const today=localDay(),week=v5Week();if(state.v5DailyDate!==today){state.v5DailyDate=today;state.v5DailySpins=0;state.v5DailyClaimed=false;state.v5DailyEventClaims=[]}if(state.v5WeekKey!==week){state.v5WeekKey=week;state.v5WeeklySpins=0;state.v5WeeklyClaimed=false;state.v5WeeklyEventClaims=[]}state.v5DailyEventClaims=state.v5DailyEventClaims||[];state.v5WeeklyEventClaims=state.v5WeeklyEventClaims||[];state.v5StampClaims=state.v5StampClaims||[];state.v5Tickets={1:0,2:0,3:0,4:0,5:0,...(state.v5Tickets||{})}}
+function v52RewardFor(stage){const anchors=[[1,1000000],[5,5000000],[10,10000000],[20,100000000],[30,1000000000],[50,10000000000],[75,100000000000],[100,1000000000000]];let a=anchors[0],b=anchors[anchors.length-1];for(let i=0;i<anchors.length-1;i++){if(stage>=anchors[i][0]&&stage<=anchors[i+1][0]){a=anchors[i];b=anchors[i+1];break}}const ratio=(stage-a[0])/(b[0]-a[0]);return Math.round(a[1]+(b[1]-a[1])*ratio)}
+function v52Tier(stage){return stage<10?1:stage<25?2:stage<45?3:stage<70?4:5}
+function v52Render(){const el=id=>$(id);const spins=Number(state.spins)||0,claimed=state.v52Claims||[],unlocked=Math.min(100,spins);if(el('v52ProgressLabel'))el('v52ProgressLabel').textContent=claimed.length+' / 100 rewards claimed · '+unlocked+' stages unlocked';if(el('v52ProgressBar'))el('v52ProgressBar').style.width=(unlocked)+'%';const list=el('v52Stages');if(list){const shown=window.v52ShowAllStages?100:20;list.innerHTML=Array.from({length:shown},(_,i)=>i+1).map(n=>{const done=claimed.includes(n),ready=spins>=n&&!done,tier=v52Tier(n),reward=v52RewardFor(n);return '<div class="v52Stage '+(done?'claimed':ready?'unlocked':'')+'"><b>STAGE '+String(n).padStart(2,'0')+' '+(done?'✓':ready?'🔓':'🔒')+'</b><small>Reward: '+money(reward)+' coins</small><small>'+('⭐'.repeat(tier))+' star ticket</small><small>'+(done?'Collected':ready?'Ready to claim':(n-spins)+' more spins')+'</small>'+(ready?'<button onclick="v52Claim('+n+')">CLAIM REWARD</button>':'')+'</div>'}).join('')}}
+function v52Claim(n){n=Number(n);if(n<1||n>100||n>state.spins||(state.v52Claims||[]).includes(n))return;const tier=v52Tier(n),reward=v52RewardFor(n);state.v52Claims=state.v52Claims||[];state.v52Claims.push(n);state.balance+=reward;state.v5Tickets[tier]=(state.v5Tickets[tier]||0)+1;save();v52Render();v5Update();toast('Stage '+n+' claimed: '+money(reward)+' virtual coins and '+('⭐'.repeat(tier))+' ticket!')}
+function v52ClaimNext(){const n=Array.from({length:100},(_,i)=>i+1).find(x=>x<=state.spins&&!(state.v52Claims||[]).includes(x));if(!n){toast('No new event stage is ready yet.');return}v52Claim(n)}
+function v52ShowAll(){window.v52ShowAllStages=true;v52Render()}
+function v52BonusDrop(){if(spinning||bonusPending)return;const roll=Math.random();if(roll<0.005){const reward=Math.max(state.bet*100,1000000)*([1,2,5,10][Math.floor(Math.random()*4)]);showFeature('ROYAL JACKPOT!','A RARE BONUS VAULT OPENED!', '<div class="collectStars">✦ ✦ ✦</div><h2 style="color:#ffdf73">'+money(reward)+' VIRTUAL COINS</h2><p>A random virtual bonus reveal. No purchase required.</p>',()=>{state.balance+=reward;state.best=Math.max(state.best,reward);state.v52BonusSeen=(state.v52BonusSeen||0)+1;toast('Royal jackpot collected: '+money(reward))});return}if(roll<0.015){const count=1+Math.floor(Math.random()*5);showFeature('FREE SPINS!','A MYSTERY BONUS DROP!', '<div class="collectStars">🎟️ ✨ 🎟️</div><h2 style="color:#ffdf73">'+count+' FREE SPINS</h2><p>Bonus spins added to your virtual game balance.</p>',()=>{state.freeSpins+=count;state.v52BonusSeen=(state.v52BonusSeen||0)+1;toast(count+' free spins added')})}}
 function v5MilestoneDefs(){return [{n:8,coins:100000,tier:1,tickets:1},{n:15,coins:250000,tier:1,tickets:2},{n:25,coins:500000,tier:2,tickets:1},{n:40,coins:900000,tier:2,tickets:2},{n:60,coins:1500000,tier:3,tickets:1},{n:85,coins:2500000,tier:3,tickets:2},{n:120,coins:4000000,tier:4,tickets:1},{n:160,coins:6000000,tier:4,tickets:2},{n:220,coins:9000000,tier:5,tickets:1},{n:300,coins:15000000,tier:5,tickets:2}]}
 function v5Update(){
  const el=id=>$(id),defs=v5MilestoneDefs(),next=defs.find(x=>x.n>state.v5Stamps),prev=defs.filter(x=>x.n<=state.v5Stamps).slice(-1)[0];
@@ -599,7 +640,7 @@ function claimV5Event(kind,index){const daily=[{n:5,c:50000,x:30,t:1},{n:12,c:15
 function v5AddStamp(n=1){state.v5Stamps=(state.v5Stamps||0)+n}
 function v5AwardTicket(n){state.v5Tickets[n]=(state.v5Tickets[n]||0)+1;toast(n+'-star ticket collected!')}
 function claimV5Milestone(){const q=v5MilestoneDefs().find(x=>state.v5Stamps>=x.n&&!(state.v5StampClaims||[]).includes(x.n));if(!q){toast('No milestone chest is ready yet.');return}state.balance+=q.coins;state.v5Tickets[q.tier]=(state.v5Tickets[q.tier]||0)+q.tickets;state.v5StampClaims.push(q.n);save();v5Update();toast(q.n+'-stamp chest opened: '+money(q.coins)+' coins and '+q.tickets+' '+('⭐'.repeat(q.tier))+' ticket(s)!')}
-function useV5Ticket(){const tier=[5,4,3,2,1].find(n=>(state.v5Tickets[n]||0)>0);if(!tier){toast('Collect a star ticket first by playing and completing events.');return}state.v5Tickets[tier]--;const prize=[0,25000,60000,150000,400000,1000000][tier];state.balance+=prize;save();v5Update();toast(tier+'-star bonus round complete: +'+money(prize)+' virtual coins!')}
+function useV5Ticket(){const tier=[5,4,3,2,1].find(n=>(state.v5Tickets[n]||0)>0);if(!tier){toast('Collect a star ticket first by playing and completing events.');return}state.v5Tickets[tier]--;const prize=[0,1000000,5000000,25000000,100000000,1000000000][tier];state.balance+=prize;save();v5Update();toast(tier+'-star bonus round complete: +'+money(prize)+' virtual coins!')}
 function localDay(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function resetQuestDayIfNeeded(){let today=localDay();if(state.questDate!==today){state.questDate=today;state.questSpinCount=0;state.questWinCount=0;state.questClaims=[]}}
 migrateProgression();resetQuestDayIfNeeded();v5Reset();
@@ -674,7 +715,7 @@ function openGameCore(id){
 function openGame(id){const selected=games.find(g=>g.id===id);if(!selected)return;showV5Difficulty(selected)}
 function showV5Difficulty(game){const old=$('v5DifficultyModal');if(old)old.remove();const modal=document.createElement('div');modal.id='v5DifficultyModal';modal.className='v5Modal show';modal.innerHTML='<div class="v5Dialog"><div style="font-size:12px;letter-spacing:2px;color:#62d9d0">ROYAL ARCADE · GAME SETUP</div><h2 style="margin:8px 0;color:#f2d18c">'+game.name+'</h2><p style="color:#c4d0df">Choose your preferred challenge for this world. You can choose a different mode in another game.</p><div class="v5Modes"><button class="v5Mode" onclick="selectV5Mode(\''+game.id+'\',\'easy\')"><b>🟢 EASY</b><small>Relaxed objectives<br>Smaller virtual prizes</small></button><button class="v5Mode" onclick="selectV5Mode(\''+game.id+'\',\'medium\')"><b>🟡 MEDIUM</b><small>Balanced objectives<br>Balanced virtual prizes</small></button><button class="v5Mode" onclick="selectV5Mode(\''+game.id+'\',\'hard\')"><b>🟣 HARD</b><small>Advanced objectives<br>Higher possible virtual prizes</small></button></div><p style="font-size:11px;color:#aab8c9;margin-bottom:0">All rewards are virtual entertainment points with no cash value. Hard mode does not guarantee a win.</p><button class="v5Btn" onclick="this.closest(\'.v5Modal\').remove()">CANCEL</button></div>';document.body.appendChild(modal)}
 function selectV5Mode(id,mode){state.difficultyByGame[id]=mode;save();const modal=$('v5DifficultyModal');if(modal)modal.remove();openGameCore(id);v5Update()}
-window.openGame=openGame;window.selectV5Mode=selectV5Mode;window.claimV5Milestone=claimV5Milestone;window.claimV5Event=claimV5Event;window.useV5Ticket=useV5Ticket;window.spin=spin;window.autoPlay=autoPlay;window.showLobby=showLobby;
+window.openGame=openGame;window.selectV5Mode=selectV5Mode;window.v52Claim=v52Claim;window.v52ClaimNext=v52ClaimNext;window.v52ShowAll=v52ShowAll;window.claimV5Milestone=claimV5Milestone;window.claimV5Event=claimV5Event;window.useV5Ticket=useV5Ticket;window.spin=spin;window.autoPlay=autoPlay;window.showLobby=showLobby;
 function enterCard(card){if(card&&card.dataset.gameId)openGame(card.dataset.gameId)}
 document.addEventListener('click',function(event){const card=event.target.closest('#gameGrid .gamecard');if(card)enterCard(card)});
 document.addEventListener('keydown',function(event){if((event.key==='Enter'||event.key===' ')&&event.target.matches('#gameGrid .gamecard')){event.preventDefault();enterCard(event.target)}});
@@ -786,7 +827,7 @@ function spin(){
   if(result.jackpots>=3){const multiplier=result.jackpots>=5?100:result.jackpots===4?25:10;const prize=Math.floor(state.bet*multiplier);state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('ROYAL JACKPOT +'+money(prize));playTone(1040,.45,'sine');}
   if(bonusMessages.length)message+=' · '+bonusMessages.join(' · ');
   if(result.total>0&&Math.random()<({easy:.001,medium:.002,hard:.004}[state.difficultyByGame[current.id]||'medium'])){const tier=1+Math.floor(Math.random()*3);v5AwardTicket(tier);message+=' · RARE TICKET DISCOVERY';}
-  v5Update();
+  v5Update();v52Render();
   const wildCount=grid.flat().filter(x=>x==='serpent').length;
   let showCardDrop=wildCount>=2 && (state.cards||[]).length<CARD_POOL.length;
   let showIngredientDrop=result.jackpots>=3;
@@ -799,6 +840,7 @@ function spin(){
   save();updateQuestPanel();updateCardCount();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=false;
   if(showCardDrop)setTimeout(()=>awardCard(),450);
   else if(showIngredientDrop)setTimeout(()=>awardIngredients(),450);
+  else if(!usingFree)setTimeout(v52BonusDrop,650);
   if(autoTimer!==null){if(autoRemaining>0)autoRemaining--;if(autoRemaining===0){stopAuto();$('status').textContent+=' · AUTO PLAY COMPLETE'}else{autoTimer=setTimeout(spin,1050)}}
  },totalDelay);
 }
@@ -872,7 +914,7 @@ function updateVault(){
  set('vaultCards',(state.cards||[]).length+'/8');set('vaultIngredients',Number(state.ingredients)||0);
  set('vaultDailyGift',state.dailyDate===localDay()?'CLAIMED':'READY');
 }
-function openAlbum(){$('collectionModal').style.display='grid';renderAlbum('all')}
+function openAlbum(){const modal=$('collectionModal');if(!modal){toast('Album screen is unavailable.');return}modal.style.display='grid';modal.style.visibility='visible';modal.style.opacity='1';renderAlbum('all')}window.openAlbum=openAlbum;window.closeAlbum=closeAlbum;window.renderAlbum=renderAlbum;
 function closeAlbum(){$('collectionModal').style.display='none'}
 function renderAlbum(filter){
  const owned=state.cards||[],list=CARD_POOL.filter(c=>filter==='owned'?owned.includes(c.id):filter==='missing'?!owned.includes(c.id):true);
@@ -882,6 +924,6 @@ function renderAlbum(filter){
 function chooseChest(index){$('bonusModal').style.display='none';let prizes=[state.bet*2,state.bet*3,state.bet*5],prize=prizes[index];state.balance+=prize;save();toast('Chest revealed: +'+money(prize)+' virtual coins!')}
 $('paytable').innerHTML=SYMBOLS.filter(s=>!['wild','scatter'].includes(s.id)).map(s=>`<div class="infoBox" style="padding:8px"><b>${s.e} ${s.name}</b><span>3: ${s.pay[2]}× · 4: ${s.pay[3]}× · 5: ${s.pay[4]}× (ways factor)</span></div>`).join('');
 // Reset per-day quest progress gently; it is a simple local demo counter.
-renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
+renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v52Render();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
 </script>
 </body></html>
