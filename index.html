@@ -576,7 +576,7 @@ function migrateProgression(){
  }
 }
 function v5Week(){const d=new Date();const x=new Date(d);x.setDate(d.getDate()-((d.getDay()+6)%7));return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}
-function v5Reset(){const today=localDay(),week=v5Week();if(state.v5DailyDate!==today){state.v5DailyDate=today;state.v5DailySpins=0;state.v5DailyClaimed=false}if(state.v5WeekKey!==week){state.v5WeekKey=week;state.v5WeeklySpins=0;state.v5WeeklyClaimed=false}state.v5StampClaims=state.v5StampClaims||[];state.v5Tickets={1:0,2:0,3:0,4:0,5:0,...(state.v5Tickets||{})}}
+function v5Reset(){const today=localDay(),week=v5Week();if(state.v5DailyDate!==today){state.v5DailyDate=today;state.v5DailySpins=0;state.v5DailyClaimed=false;state.v5DailyEventClaims=[]}if(state.v5WeekKey!==week){state.v5WeekKey=week;state.v5WeeklySpins=0;state.v5WeeklyClaimed=false;state.v5WeeklyEventClaims=[]}state.v5DailyEventClaims=state.v5DailyEventClaims||[];state.v5WeeklyEventClaims=state.v5WeeklyEventClaims||[];state.v5StampClaims=state.v5StampClaims||[];state.v5Tickets={1:0,2:0,3:0,4:0,5:0,...(state.v5Tickets||{})}}
 function v5MilestoneDefs(){return [{n:8,coins:100000,tier:1,tickets:1},{n:15,coins:250000,tier:1,tickets:2},{n:25,coins:500000,tier:2,tickets:1},{n:40,coins:900000,tier:2,tickets:2},{n:60,coins:1500000,tier:3,tickets:1},{n:85,coins:2500000,tier:3,tickets:2},{n:120,coins:4000000,tier:4,tickets:1},{n:160,coins:6000000,tier:4,tickets:2},{n:220,coins:9000000,tier:5,tickets:1},{n:300,coins:15000000,tier:5,tickets:2}]}
 function v5Update(){
  const el=id=>$(id),defs=v5MilestoneDefs(),next=defs.find(x=>x.n>state.v5Stamps),prev=defs.filter(x=>x.n<=state.v5Stamps).slice(-1)[0];
