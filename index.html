@@ -204,7 +204,16 @@ button:hover{border-color:#ffe3a0;box-shadow:0 8px 25px #000b,0 0 16px #e7bf7144
   <div class="profile"><div class="profileHead"><div><div class="muted">PLAYER PROFILE</div><div class="level">LEVEL <span id="profileLevel">1</span> · ROOKIE</div></div><div class="avatar">👑</div></div><div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><b id="xpText">120 / 500 XP</b><span class="muted">NEXT LEVEL</span></div><div class="xp"><span id="xpBar"></span></div></div><div style="display:flex;justify-content:space-between"><div><div class="muted">TOTAL SPINS</div><b id="spinCount">0</b></div><div><div class="muted">TOTAL WINS</div><b id="winCount">0</b></div><div><div class="muted">BEST WIN</div><b id="bestWin">0</b></div></div></div>
  </div>
  <div class="sectionhead" id="gamesTitle"><div><h2>✦ THE GAME COLLECTION</h2><p>Choose a world. Enter its machine. Make it yours.</p></div><span class="muted">8 GAMES · 1 ARCADE</span></div>
- <div class="games" id="gameGrid"></div>
+ <div class="games" id="gameGrid">
+  <article class="gamecard vipCard" onclick="openGame('aztec')"><span class="tag">✦ FEATURED EXPERIENCE</span><div class="art aztec"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">☀</div><span class="artTitle">AZTEC GOLD RICHES</span></div><div class="gameinfo"><strong>Aztec Gold Riches</strong><small>Temple treasure · Golden wilds</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+  <article class="gamecard vipCard" onclick="openGame('cyber')"><span class="tag">✦ WORLD PREVIEW</span><div class="art cyber"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">✧</div><span class="artTitle">NEON CYBER QUEST</span></div><div class="gameinfo"><strong>Neon Cyber Quest</strong><small>Neon city · Digital wilds</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+  <article class="gamecard vipCard" onclick="openGame('dragon')"><span class="tag">✦ WORLD PREVIEW</span><div class="art dragon"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">♜</div><span class="artTitle">MYSTIC DRAGON'S LAIR</span></div><div class="gameinfo"><strong>Mystic Dragon's Lair</strong><small>Fantasy cave · Dragon treasures</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+  <article class="gamecard vipCard" onclick="openGame('cosmic')"><span class="tag">✦ WORLD PREVIEW</span><div class="art cosmic"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">✺</div><span class="artTitle">COSMIC FRUITS</span></div><div class="gameinfo"><strong>Cosmic Fruits</strong><small>Galaxy fruits · Star multipliers</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+  <article class="gamecard vipCard" onclick="openGame('phoenix')"><span class="tag">✦ WORLD PREVIEW</span><div class="art phoenix"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">✵</div><span class="artTitle">PHOENIX EMPIRE</span></div><div class="gameinfo"><strong>Phoenix Empire</strong><small>Fire kingdom · Rising fortunes</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+  <article class="gamecard vipCard" onclick="openGame('ocean')"><span class="tag">✦ WORLD PREVIEW</span><div class="art ocean"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">◇</div><span class="artTitle">OCEAN TREASURE</span></div><div class="gameinfo"><strong>Ocean Treasure</strong><small>Deep sea · Pearl discoveries</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+  <article class="gamecard vipCard" onclick="openGame('wildwest')"><span class="tag">✦ WORLD PREVIEW</span><div class="art wildwest"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">♛</div><span class="artTitle">WILD WEST GOLD</span></div><div class="gameinfo"><strong>Wild West Gold</strong><small>Frontier town · Lucky legends</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+  <article class="gamecard vipCard" onclick="openGame('moon')"><span class="tag">✦ WORLD PREVIEW</span><div class="art moon"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">☾</div><span class="artTitle">MOONLIGHT FORTUNE</span></div><div class="gameinfo"><strong>Moonlight Fortune</strong><small>Celestial realm · Lunar magic</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>
+ </div>
  <div class="infoStrip">
  <div class="infoBox"><b>🎁 DAILY TREASURE</b><span>One modest daily virtual gift. No purchase required.</span><br><button style="margin-top:10px" onclick="claimDaily()">CLAIM DAILY GIFT</button></div>
  <div class="infoBox"><b>🧭 DAILY QUEST</b><span id="questText">Play 5 spins to complete today's relaxed quest.</span><div class="xp" style="margin-top:10px"><span id="questBar" style="width:0%"></span></div></div>
@@ -215,7 +224,11 @@ button:hover{border-color:#ffe3a0;box-shadow:0 8px 25px #000b,0 0 16px #e7bf7144
    <div><b style="color:var(--gold);font-size:17px">🏆 ROYAL DAILY QUESTS</b><div class="muted">Optional daily challenges · claim each reward when ready</div></div>
    <span class="muted" id="questResetLabel">Refreshes daily</span>
   </div>
-  <div id="questList" class="questGrid"></div>
+  <div id="questList" class="questGrid">
+   <div class="questCard"><b>✨ Warm-up Explorer</b><small>Play 5 spins · 0/5</small><div class="questTrack"><span style="width:0%"></span></div><small>Reward: 75,000 coins + 60 XP</small></div>
+   <div class="questCard"><b>✨ Lucky Moments</b><small>Get 3 winning spins · 0/3</small><div class="questTrack"><span style="width:0%"></span></div><small>Reward: 100,000 coins + 75 XP</small></div>
+   <div class="questCard"><b>✨ Temple Regular</b><small>Play 10 spins · 0/10</small><div class="questTrack"><span style="width:0%"></span></div><small>Reward: 150,000 coins + 100 XP</small></div>
+  </div>
  </section>
 </section>
 <section id="gameView" class="view">
