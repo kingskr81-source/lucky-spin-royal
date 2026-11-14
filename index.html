@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LUCKY SPIN ROYAL — Prototype 3.4 (Royal VIP Redesign)</title>
+<title>LUCKY SPIN ROYAL — Prototype 3.5 (Royal Progression & Bonus Edition)</title>
 <style>
 :root{--bg:#090713;--panel:#17102b;--panel2:#21143b;--gold:#f6cf72;--gold2:#a96b21;--violet:#9b5cff;--cyan:#53e7ff;--pink:#ff4fc8;--muted:#b9abcF;--line:rgba(226,190,255,.22)}
 *{box-sizing:border-box}body{margin:0;color:#fff;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at 50% -20%,#66321f 0,#211034 42%,#090713 78%);min-height:100vh}
@@ -178,6 +178,18 @@ button:hover{border-color:#ffe3a0;box-shadow:0 8px 25px #000b,0 0 16px #e7bf7144
 @media(max-width:760px){.vipCard .art{height:145px}.vipArtifact{width:88px;height:88px}.gamecard.vipCard{min-height:245px}}
 @media(prefers-reduced-motion:reduce){.artHalo,.vipArtifact,.heroMain:before{animation:none!important}}
 
+
+/* V3.5 progression and bonus clarity */
+.betControl{position:relative;padding-bottom:22px!important}
+.betUnlockNote{position:absolute;bottom:5px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:8px;letter-spacing:1.2px;color:#f1d79e}
+.betControl button:disabled{opacity:.22;filter:grayscale(1);cursor:not-allowed;box-shadow:none}
+#gameView .infoStrip .infoBox{border-color:#c8a66c77;background:linear-gradient(145deg,#241e29,#100f16);box-shadow:inset 0 1px #fff2,0 8px 22px #0008}
+#gameView .infoStrip .infoBox b{color:#f7d99b;letter-spacing:.8px}
+#gameView .symbol[data-symbol="calendar"],#gameView .symbol[data-symbol="respin"],#gameView .symbol[data-symbol="jackpot"]{background:radial-gradient(circle,#e8c77728,transparent 72%);border-color:#e7c77a77}
+#gameView .symbol[data-symbol="jackpot"]{box-shadow:inset 0 0 18px #f4d18a33,0 0 12px #f4d18a22}
+#gameView .symbol[data-symbol="respin"]{box-shadow:inset 0 0 18px #8fe9df22,0 0 12px #8fe9df22}
+@media(max-width:700px){.betUnlockNote{font-size:7px}.betControl{padding-bottom:21px!important}}
+
 </style>
 </head>
 <body>
@@ -211,19 +223,19 @@ button:hover{border-color:#ffe3a0;box-shadow:0 8px 25px #000b,0 0 16px #e7bf7144
  <div class="gamehead"><div><div class="eyebrow">ROYAL ARCADE · FEATURED MACHINE</div><h2 id="gameTitle">AZTEC GOLD RICHES</h2><div class="muted" id="gameSubtitle">TEMPLE TREASURE · 5 REELS × 5 ROWS</div></div><div class="pill">🪙 <b id="gameBalance">5,000,000</b></div></div>
  <div class="machine"><div class="machineInner"><div class="reels" id="reels"></div><div class="machineFoot" id="machineFoot">5 REELS · 5 ROWS · VIRTUAL COINS ONLY</div></div></div>
  <div class="controls">
-  <div class="controlPanel"><label>TOTAL BET</label><button onclick="changeBet(-1)">−</button><div class="betval" id="betValue">5,000</div><button onclick="changeBet(1)">+</button><label>PER SPIN</label></div>
+  <div class="controlPanel betControl"><label>BET TIER</label><button id="betDown" onclick="changeBet(-1)" aria-label="Lower bet">−</button><div class="betval" id="betValue">5,000</div><button id="betUp" onclick="changeBet(1)" aria-label="Raise bet">+</button><label>PER SPIN</label><small id="betUnlockNote" class="betUnlockNote">LEVEL 1 · STARTER TIER</small></div>
   <div class="controlPanel"><label>AUTO SPINS</label><select id="autoCount"><option value="10">10 spins</option><option value="20" selected>20 spins</option><option value="30">30 spins</option><option value="100">100 spins</option></select><button onclick="autoPlay()" id="autoBtn">▶ AUTO PLAY</button><button onclick="stopAuto()" id="stopBtn" disabled>■ STOP</button></div>
  </div>
  <div class="spinrow"><button onclick="showRules()">📖 PAYTABLE</button><button class="spinbtn" id="spinBtn" onclick="spin()">⚡ SPIN ⚡</button><button onclick="resetDemo()">↻ RESET DEMO</button></div>
  <div class="status" id="status">Welcome to the temple. Every spin is virtual entertainment.</div>
  <div class="infoStrip" style="max-width:980px;margin:12px auto">
-  <div class="infoBox"><b>🎁 FREE SPINS</b><span id="freeSpinInfo">No free spins active</span></div>
-  <div class="infoBox"><b>🪙 TREASURE BONUS</b><span id="bonusInfo">3 or more scatter symbols unlock a bonus</span></div>
+  <div class="infoBox"><b>🎁 FREE GAMES & RESPINS</b><span id="freeSpinInfo">No bonus turns active</span></div>
+  <div class="infoBox"><b>👑 ROYAL JACKPOT</b><span id="bonusInfo">3+ jackpot crowns award a virtual prize</span></div>
   <div class="infoBox"><b>📊 LAST RESULT</b><span id="lastResult">No spins yet</span></div>
  </div>
  <div id="rulesPanel" class="infoBox" style="display:none;max-width:980px;margin:12px auto">
   <b>AZTEC GOLD RICHES · HOW TO PLAY</b>
-  <span>5 reels × 5 rows. Wins are evaluated left-to-right across adjacent reels. Any position on a reel can contribute. The Feathered Serpent is Wild and substitutes for regular symbols. Three or more Sun Calendar scatters anywhere award 3 free spins. Free spins do not deduct a bet. Virtual coins have no cash value.</span>
+  <span>5 reels × 5 rows. Wins are evaluated left-to-right across adjacent reels. Any position on a reel can contribute. The Feathered Serpent is Wild and substitutes for regular symbols. 3+ Sun Calendar symbols anywhere award 3 free games. 3+ Respin Seals award 1 respin. 3+ Royal Crowns award a virtual jackpot: 10× bet for 3, 25× for 4, or 100× for 5+. Bonus symbols can land across different rows. Bonus turns do not deduct a bet. Bet tiers unlock by level. Virtual coins have no cash value.</span>
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px" id="paytable"></div>
  </div>
  <div id="bonusModal" style="display:none;position:fixed;inset:0;background:#05030ddd;z-index:20;place-items:center;padding:20px">
@@ -255,11 +267,18 @@ const SYMBOLS=[
  {id:'idol',e:'🗿',name:'Temple Idol',weight:18,pay:[0,0,.6,1.2,2.8]},
  {id:'coin',e:'🪙',name:'Gold Medallion',weight:20,pay:[0,0,.5,1,2.2]},
  {id:'serpent',e:'🐍',name:'Feathered Serpent · Wild',weight:7,pay:[0,0,0,0,0]},
- {id:'calendar',e:'✺',name:'Sun Calendar · Scatter',weight:5,pay:[0,0,0,0,0]}
+ {id:'calendar',e:'✺',name:'Sun Calendar · Free Games',weight:4,pay:[0,0,0,0,0]},
+ {id:'respin',e:'⟳',name:'Royal Seal · Respin',weight:3,pay:[0,0,0,0,0]},
+ {id:'jackpot',e:'♛',name:'Royal Crown · Jackpot',weight:2,pay:[0,0,0,0,0]}
 ];
 const money=n=>Math.floor(n).toLocaleString('en-US');
 const STORE='lsRoyalDemoV2';
-const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0};
+const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0};
+const BET_TIERS=[{level:1,bet:5000},{level:3,bet:10000},{level:5,bet:20000},{level:8,bet:50000},{level:12,bet:100000},{level:18,bet:250000},{level:25,bet:500000},{level:35,bet:1000000}];
+function unlockedBets(){return BET_TIERS.filter(t=>state.level>=t.level).map(t=>t.bet)}
+function maxBetForLevel(level){return BET_TIERS.filter(t=>level>=t.level).at(-1)?.bet||5000}
+state.bet=Math.min(Number(state.bet)||5000,maxBetForLevel(state.level));
+if(!Number.isFinite(state.respinSpins))state.respinSpins=0;
 let state;
 try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
 function xpNeeded(level){return 250+Math.max(0,level-1)*50}
@@ -315,7 +334,9 @@ function updateHUD(){
  $('topLevel').textContent=state.level;$('profileLevel').textContent=state.level;
  $('xpText').textContent=state.xp+' / '+xpNeeded(state.level)+' XP';$('xpBar').style.width=(state.xp/xpNeeded(state.level)*100)+'%';if($('topXpText'))$('topXpText').textContent=state.xp+' / '+xpNeeded(state.level)+' XP';if($('topXpBar'))$('topXpBar').style.width=(state.xp/xpNeeded(state.level)*100)+'%';
  $('spinCount').textContent=money(state.spins);$('winCount').textContent=money(state.wins);$('bestWin').textContent=money(state.best);$('betValue').textContent=money(state.bet);
- $('freeSpinInfo').textContent=state.freeSpins?state.freeSpins+' free spins remaining':'No free spins active';
+ const bets=unlockedBets(),bi=bets.indexOf(state.bet);if($('betDown'))$('betDown').disabled=bi<=0;if($('betUp'))$('betUp').disabled=bi>=bets.length-1;
+ if($('betUnlockNote')){const next=BET_TIERS.find(t=>state.level<t.level);$('betUnlockNote').textContent=next?'LEVEL '+state.level+' · NEXT TIER AT LEVEL '+next.level:'ALL BET TIERS UNLOCKED'}
+ $('freeSpinInfo').textContent=[state.freeSpins?state.freeSpins+' free games':'',state.respinSpins?state.respinSpins+' respin'+(state.respinSpins===1?'':'s'):''].filter(Boolean).join(' · ')||'No bonus turns active';
  $('questText').textContent=state.questSpins>=5?'Quest complete — well played!':Math.min(state.questSpins,5)+' / 5 spins completed today';
  $('questBar').style.width=(Math.min(state.questSpins,5)/5*100)+'%';
  if(state.questSpins>=5)$('questText').classList.add('questComplete');
@@ -357,7 +378,7 @@ function buildReels(){
   reel.appendChild(track);root.appendChild(reel)
  }
 }
-function changeBet(dir){let steps=[5000,10000,20000,50000,100000,250000,500000,1000000],i=steps.indexOf(state.bet);if(i<0)i=0;state.bet=steps[Math.max(0,Math.min(steps.length-1,i+dir))];save()}
+function changeBet(dir){const steps=unlockedBets(),i=steps.indexOf(state.bet);state.bet=steps[Math.max(0,Math.min(steps.length-1,(i<0?0:i)+dir))];save();if(dir>0&&i===steps.length-1){const next=BET_TIERS.find(t=>state.level<t.level);if(next)toast('Next bet tier unlocks at Level '+next.level+'.')}}
 function playTone(freq=440,duration=.09,type='sine'){if(!sound)return;try{let ctx=new(window.AudioContext||window.webkitAudioContext)(),o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.035,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration);o.onended=()=>ctx.close()}catch(e){}}
 function evaluateWays(grid){
  let total=0,highlight=new Set(),waysWon=0,details=[];
@@ -370,14 +391,15 @@ function evaluateWays(grid){
   }
   if(run>=3){let mult=sym.pay[run-1];let win=Math.floor(state.bet*mult*ways/5);if(win>0){total+=win;waysWon+=ways;details.push({sym:sym.id,run,ways,win});positions.forEach((rows,c)=>rows.forEach(r=>highlight.add(c*5+r)))}}
  }
- let scatters=grid.flat().filter(x=>x==='scatter').length;
- return {total,waysWon,highlight,details,scatters};
+ const flat=grid.flat();let scatters=flat.filter(x=>x==='calendar').length;
+ const respins=flat.filter(x=>x==='respin').length,jackpots=flat.filter(x=>x==='jackpot').length;
+ return {total,waysWon,highlight,details,scatters,respins,jackpots};
 }
 function spin(){
  if(current.id!=='aztec'||spinning)return;
- let usingFree=state.freeSpins>0,bet=usingFree?0:state.bet;
+ let usingRespin=state.respinSpins>0,usingFree=usingRespin||state.freeSpins>0,bet=usingFree?0:state.bet;
  if(!usingFree&&state.balance<bet){$('status').textContent='Not enough virtual coins. Lower the bet or claim your daily gift.';stopAuto();return}
- if(!usingFree)state.balance-=bet;else state.freeSpins--;
+ if(!usingFree)state.balance-=bet;else if(usingRespin)state.respinSpins--;else state.freeSpins--;
  state.spins++;state.questSpins++;state.questSpinCount++;
  // XP is awarded once after the result via addXP(): 25 paid / 10 free, plus 10 for a win.
  spinning=true;$('spinBtn').disabled=true;$('autoBtn').disabled=true;
@@ -420,10 +442,14 @@ function spin(){
    if(state.wins%5===0){addXP(100);xpMessage+=' +100 FIVE-WIN BONUS';}
   }else{state.winStreak=0;}
   if(state.spins%10===0){addXP(75);xpMessage+=' +75 TEN-SPIN MILESTONE';}
-  if(result.scatters>=3){state.freeSpins+=3;message+=' · 3 FREE SPINS AWARDED!';playTone(920,.35,'triangle');}
+  let bonusMessages=[];
+  if(result.scatters>=3){state.freeSpins+=3;bonusMessages.push('3 FREE GAMES');playTone(920,.35,'triangle');}
+  if(result.respins>=3){state.respinSpins+=1;bonusMessages.push('1 RESPIN');playTone(760,.3,'triangle');}
+  if(result.jackpots>=3){const multiplier=result.jackpots>=5?100:result.jackpots===4?25:10;const prize=Math.floor(state.bet*multiplier);state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('ROYAL JACKPOT +'+money(prize));playTone(1040,.45,'sine');}
+  if(bonusMessages.length)message+=' · '+bonusMessages.join(' · ');
   $('lastResult').textContent=result.total?('+'+money(result.total)+' · '+result.waysWon+' ways'):'No win';
   $('status').textContent=(usingFree?'FREE SPIN · ':'')+message+xpMessage;
-  $('freeSpinInfo').textContent=state.freeSpins?state.freeSpins+' free spins remaining':'No free spins active';
+  $('freeSpinInfo').textContent=[state.freeSpins?state.freeSpins+' free games':'',state.respinSpins?state.respinSpins+' respin'+(state.respinSpins===1?'':'s'):''].filter(Boolean).join(' · ')||'No bonus turns active';
   save();updateQuestPanel();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=current.id!=='aztec';
   if(autoTimer!==null){if(autoRemaining>0)autoRemaining--;if(autoRemaining===0){stopAuto();$('status').textContent+=' · AUTO PLAY COMPLETE'}else{autoTimer=setTimeout(spin,1050)}}
  },totalDelay);
@@ -456,10 +482,11 @@ async function importPlayerData(event){
   if(!confirm('Restore this backup? It will replace the player progress currently saved in this browser.')){event.target.value='';return}
   const allowed=Object.keys(defaults),restored={...defaults};
   for(const key of allowed)if(Object.prototype.hasOwnProperty.call(payload.state,key))restored[key]=payload.state[key];
-  const numeric=['balance','level','xp','spins','wins','best','bet','freeSpins','questSpins','questSpinCount','questWinCount'];
+  const numeric=['balance','level','xp','spins','wins','best','bet','freeSpins','respinSpins','questSpins','questSpinCount','questWinCount'];
   for(const key of numeric){if(!Number.isFinite(Number(restored[key]))||Number(restored[key])<0)throw new Error('The backup contains an invalid '+key+' value.')}
   if(!Array.isArray(restored.questClaims))restored.questClaims=[];
-  if(![5000,10000,20000,50000,100000,250000,500000,1000000].includes(restored.bet))restored.bet=5000;
+  restored.respinSpins=Number(restored.respinSpins)||0;
+  if(!BET_TIERS.some(t=>t.bet===restored.bet&&restored.level>=t.level))restored.bet=maxBetForLevel(restored.level);
   state=restored;resetQuestDayIfNeeded();save();toast('Backup restored. Reloading your arcade…');
   setTimeout(()=>location.reload(),700);
  }catch(err){alert('Could not restore backup: '+err.message)}
