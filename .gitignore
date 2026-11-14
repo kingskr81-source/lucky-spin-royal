@@ -1,0 +1,6 @@
+# Do not commit private player backup files
+player-backup-*.json
+lucky-spin-royal-player-backup-*.json
+*.log
+.DS_Store
+Thumbs.db

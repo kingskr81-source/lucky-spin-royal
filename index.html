@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LUCKY SPIN ROYAL — Prototype 3.2 (GitHub Edition · Progression & Quests)</title>
+<style>
+:root{--bg:#090713;--panel:#17102b;--panel2:#21143b;--gold:#f6cf72;--gold2:#a96b21;--violet:#9b5cff;--cyan:#53e7ff;--pink:#ff4fc8;--muted:#b9abcF;--line:rgba(226,190,255,.22)}
+*{box-sizing:border-box}body{margin:0;color:#fff;font-family:Inter,Segoe UI,Arial,sans-serif;background:radial-gradient(ellipse at 50% -20%,#66321f 0,#211034 42%,#090713 78%);min-height:100vh}
+button,select{font:inherit}button{cursor:pointer;color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px 16px;background:linear-gradient(135deg,#4d1c86,#211039);box-shadow:0 5px 18px #0008;transition:.18s}button:hover{filter:brightness(1.2);transform:translateY(-1px)}button:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px clamp(14px,4vw,54px);background:#100a20eF;border-bottom:1px solid #d3a34a66;backdrop-filter:blur(16px)}
+.brand{font-weight:1000;letter-spacing:2px;color:var(--gold);font-size:clamp(18px,2.4vw,27px);text-shadow:0 0 18px #ffb84e66}.brand small{display:block;font-size:9px;letter-spacing:4px;color:#ead8ba;text-align:center;margin-top:2px}
+.topright{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.backupBtn{padding:8px 11px;font-size:12px;border-color:#e9c36c88;background:linear-gradient(135deg,#3b2360,#17102b)}.pill{border:1px solid #bd8a4c88;background:linear-gradient(140deg,#29154a,#120d26);padding:8px 13px;border-radius:14px;white-space:nowrap}.pill b{color:var(--gold)}
+main{max-width:1500px;margin:auto;padding:25px clamp(14px,3vw,42px) 55px}
+.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;align-items:stretch;margin:8px 0 22px}
+.heroMain,.profile{border:1px solid #d9ad5d77;border-radius:22px;background:linear-gradient(125deg,#2d174cdd,#120d24f2);box-shadow:0 16px 40px #0006,inset 0 1px #fff2;padding:clamp(20px,3vw,34px);position:relative;overflow:hidden}
+.heroMain:after{content:"";position:absolute;width:260px;height:260px;right:-70px;top:-100px;border-radius:50%;background:radial-gradient(circle,#ffca6555,transparent 70%)}
+.eyebrow{font-size:11px;letter-spacing:3px;color:var(--cyan);font-weight:900}.hero h1{font-size:clamp(28px,5vw,52px);line-height:1.02;margin:10px 0;color:#fff1cf;text-shadow:0 4px 0 #713c26,0 0 28px #ffb64a55}.hero p{max-width:650px;color:#d4c6e6;line-height:1.55}.goldbtn{background:linear-gradient(110deg,#ffe58b,#e99a35 52%,#ff54b8);color:#32143c;font-weight:1000;border:1px solid #fff0b8}
+.profile{display:flex;flex-direction:column;justify-content:space-between;gap:15px}.profileHead{display:flex;justify-content:space-between;align-items:center}.avatar{width:45px;height:45px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ffdb78,#9d43d9);font-size:23px}.level{font-weight:900;color:var(--gold)}.muted{color:var(--muted);font-size:12px}.xp{height:9px;background:#080611;border-radius:99px;overflow:hidden;border:1px solid #ffffff2b}.xp span{display:block;height:100%;width:34%;background:linear-gradient(90deg,var(--violet),var(--cyan));box-shadow:0 0 15px var(--cyan)}
+.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:27px 2px 14px}.sectionhead h2{margin:0;font-size:22px}.sectionhead p{margin:4px 0 0;color:var(--muted);font-size:12px}
+.games{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.gamecard{position:relative;overflow:hidden;min-height:225px;border-radius:18px;border:1px solid #ffffff2b;background:#140e27;box-shadow:0 12px 28px #0006;cursor:pointer;transition:.22s}.gamecard:hover{transform:translateY(-5px);border-color:var(--gold);box-shadow:0 16px 34px #0009,0 0 22px #b77aff35}
+.art{height:142px;display:grid;place-items:center;position:relative;overflow:hidden;font-size:65px}.art:before,.art:after{content:"";position:absolute;border-radius:50%;filter:blur(1px)}.art:before{width:210px;height:210px;border:1px solid #ffffff55;box-shadow:0 0 35px currentColor}.art:after{width:130px;height:130px;background:radial-gradient(circle,#ffffff25,transparent 70%)}
+.art span{z-index:1;filter:drop-shadow(0 8px 10px #0009);animation:float 3s ease-in-out infinite}.art.aztec{background:radial-gradient(circle at 50% 55%,#b77a20,#43220e 68%,#100c18);color:#ffc45a}.art.cyber{background:radial-gradient(circle,#2448a7,#14102e 70%);color:#50eaff}.art.dragon{background:radial-gradient(circle,#8f2d22,#291024 70%);color:#ff9b4c}.art.cosmic{background:radial-gradient(circle,#442080,#0b1537 70%);color:#ff79d5}.art.phoenix{background:radial-gradient(circle,#a83c24,#2a1027 70%);color:#ffc56c}.art.ocean{background:radial-gradient(circle,#126d83,#101c40 70%);color:#6df5ff}.art.wildwest{background:radial-gradient(circle,#96602b,#2a1720 70%);color:#ffd078}.art.moon{background:radial-gradient(circle,#3d4e91,#17112f 70%);color:#d8d9ff}
+.gameinfo{padding:12px 14px 14px}.gameinfo strong{display:block;font-size:14px}.gameinfo small{display:block;color:#bdb0d0;margin-top:5px}.tag{position:absolute;top:10px;left:10px;padding:5px 8px;border-radius:99px;background:#090713bb;border:1px solid #fff4;font-size:9px;font-weight:900;letter-spacing:1px;z-index:2}
+.infoStrip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.infoBox{border:1px solid var(--line);background:#160f29c9;border-radius:15px;padding:15px}.infoBox b{display:block;color:var(--gold);margin-bottom:5px}.infoBox span{font-size:12px;color:#c9bdd8}
+.view{display:none}.view.active{display:block}.lobby.active{display:block}
+.back{margin:2px 0 16px}.gamehead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:15px}.gamehead h2{margin:0;color:#ffe5a0;font-size:clamp(23px,3vw,34px)}.machine{max-width:980px;margin:0 auto;border-radius:25px;padding:13px;background:linear-gradient(145deg,#a95c22,#4a1d52 35%,#160e2c 75%);border:2px solid #eac16b;box-shadow:0 0 0 4px #3d1a52,0 18px 45px #000a,inset 0 0 20px #ffd47a55}
+.machineInner{border:2px solid #ffe18a;border-radius:17px;background:radial-gradient(ellipse at 50% 20%,#251947,#090713 80%);padding:13px}
+.reels{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;min-height:390px}
+.reel{display:grid;grid-template-rows:repeat(5,minmax(0,1fr));gap:7px;padding:7px;border-radius:12px;background:linear-gradient(180deg,#0d0a1b,#1b1030 50%,#0b0916);border:1px solid #ffffff25;overflow:hidden}
+.symbol{display:grid;place-items:center;min-height:60px;border-radius:9px;background:linear-gradient(145deg,#ffffff0d,#ffffff03);font-size:clamp(27px,4vw,46px);text-shadow:0 4px 12px #000;box-shadow:inset 0 1px #fff1;transition:.2s}.symbol.win{outline:2px solid var(--gold);background:#ffcb4b28;filter:brightness(1.4);box-shadow:0 0 18px #ffca58aa}
+.machineFoot{text-align:center;color:#f4d68c;font-size:10px;letter-spacing:2px;font-weight:900;padding:10px 0 2px}
+.controls{max-width:980px;margin:15px auto;display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.controlPanel{border:1px solid #d8ad5d66;background:#170f2b;border-radius:15px;padding:12px;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}.controlPanel label{font-size:10px;color:#e9d49b;font-weight:900;letter-spacing:1px}.betval{min-width:100px;text-align:center;font-weight:1000;color:var(--gold);font-size:20px;border:1px solid #bd9a56;border-radius:9px;padding:8px;background:#0b0916}.controlPanel select{background:#0b0916;color:#fff;border:1px solid #9474ba;border-radius:9px;padding:10px}.spinrow{max-width:980px;margin:12px auto;display:grid;grid-template-columns:1fr 2fr 1fr;gap:10px}.spinbtn{font-size:clamp(18px,3vw,27px);letter-spacing:2px;padding:17px;background:linear-gradient(100deg,#ffe58c,#f4a23f,#f04eaa);color:#34113f;border:2px solid #fff0ad;font-weight:1000}.status{text-align:center;color:#6deaff;font-weight:800;min-height:25px;margin:10px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#21143b;border:1px solid var(--gold);padding:12px 18px;border-radius:12px;box-shadow:0 10px 35px #000b;display:none;z-index:10}
+footer{text-align:center;color:#867b9a;font-size:10px;padding:30px 10px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes roll{0%{filter:blur(2px);transform:translateY(-8px)}100%{filter:blur(0);transform:translateY(0)}}
+.spinning .symbol{animation:roll .16s linear infinite alternate}
+
+.questComplete{color:#8fffdc!important}.resultWin{animation:winPulse .65s ease 2}
+@keyframes winPulse{50%{filter:brightness(1.65);transform:scale(1.035)}}
+#rulesPanel span{line-height:1.6}
+@media(max-width:600px){#paytable{grid-template-columns:repeat(2,1fr)!important}}
+\n
+.questHub{padding:16px}.questGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.questCard{background:#0e0a1d;border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}
+.questCard b{display:block;color:#fff;margin-bottom:5px}.questCard small{color:var(--muted);display:block;line-height:1.45}
+.questTrack{height:7px;background:#05040b;border-radius:9px;overflow:hidden;margin:10px 0}
+.questTrack span{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan))}
+.questClaim{padding:7px 10px;font-size:11px;margin-top:3px}.questClaim:disabled{opacity:.45}
+.levelToast{position:fixed;z-index:30;left:50%;top:18%;transform:translateX(-50%);background:linear-gradient(120deg,#442078,#111027);border:2px solid var(--gold);border-radius:18px;padding:18px 26px;text-align:center;box-shadow:0 0 35px #ffcf6680;animation:levelPop .5s ease}
+@keyframes levelPop{from{opacity:0;transform:translate(-50%,-20px) scale(.85)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@media(max-width:760px){.questGrid{grid-template-columns:1fr}.top{align-items:flex-start;flex-wrap:wrap}.topright{justify-content:flex-start}.backupBtn{font-size:11px;padding:7px 9px}}
+@media(max-width:1000px){.games{grid-template-columns:repeat(2,minmax(0,1fr))}.hero{grid-template-columns:1fr}.reels{min-height:340px}.symbol{min-height:50px}}
+@media(max-width:600px){.top{padding:10px}.topright .pill:first-child{display:none}main{padding:16px 10px 35px}.games{gap:9px}.gamecard{min-height:185px}.art{height:110px;font-size:52px}.gameinfo{padding:10px}.gameinfo strong{font-size:12px}.reels{gap:4px;min-height:280px}.reel{gap:4px;padding:4px}.symbol{min-height:43px;font-size:26px}.machine{padding:7px}.machineInner{padding:7px}.controls{grid-template-columns:1fr}.spinrow{grid-template-columns:1fr 1.5fr 1fr}.spinrow button{padding:12px 5px;font-size:13px}.heroMain,.profile{padding:20px}}
+
+/* V3 royal cabinet + viewport-fit pass */
+html,body{height:100%;overflow-x:hidden}
+main{padding:clamp(8px,1.4vh,16px) clamp(10px,2.4vw,36px) 12px}
+#gameView.active{height:calc(100dvh - 68px);min-height:560px;display:flex;flex-direction:column;gap:clamp(4px,.8vh,9px);overflow:auto;scrollbar-width:thin}
+#gameView .back{align-self:flex-start;margin:0;padding:8px 13px;font-size:12px}
+#gameView .gamehead{margin:0;min-height:48px}
+#gameView .gamehead h2{font-size:clamp(20px,2.2vw,29px)}
+#gameView .eyebrow{font-size:9px;letter-spacing:2px}
+#gameView .machine{width:min(100%,1120px);max-width:none;flex:1;min-height:0;margin:0 auto;padding:8px;border-radius:22px;display:flex;box-shadow:0 0 0 3px #3d1a52,0 12px 30px #000a,inset 0 0 22px #ffd47a55}
+#gameView .machineInner{width:100%;min-height:0;padding:8px;display:flex;flex-direction:column;border-radius:16px}
+#gameView .reels{flex:1;min-height:220px;height:clamp(220px,calc(100dvh - 480px),440px);gap:7px;perspective:1000px}
+#gameView .reel{position:relative;display:block;min-height:0;padding:0;border-radius:11px;border:1px solid #c9a66a55;background:linear-gradient(90deg,#05040d,#1b1230 18%,#0b0817 50%,#211533 82%,#05040d);box-shadow:inset 0 0 18px #000,0 2px 9px #0009;overflow:hidden}
+#gameView .reel:before,#gameView .reel:after{content:"";position:absolute;left:0;right:0;height:13%;z-index:2;pointer-events:none}
+#gameView .reel:before{top:0;background:linear-gradient(#080512,transparent)}
+#gameView .reel:after{bottom:0;background:linear-gradient(transparent,#080512)}
+#gameView .reelTrack{position:absolute;inset:0;display:flex;flex-direction:column;gap:5px;padding:5px;will-change:transform}
+#gameView .symbol{flex:1 0 calc((100% - 20px)/5);min-height:0;font-size:clamp(26px,3.2vw,46px);border-radius:9px;background:radial-gradient(ellipse at 50% 22%,#ffffff13,#ffffff02 65%);border:1px solid #ffffff0d;box-shadow:inset 0 1px #fff2,0 3px 8px #0008;display:grid;place-items:center;overflow:hidden}
+#gameView .symbol svg{width:clamp(30px,4vw,58px);height:clamp(30px,4vw,58px);overflow:visible;filter:drop-shadow(0 4px 5px #000b)}
+#gameView .symbol.win{outline:2px solid #ffe59a;background:radial-gradient(circle,#ffe17b4d,#d18c2520 65%,transparent);filter:brightness(1.5);box-shadow:0 0 18px #ffd66e, inset 0 0 12px #fff7}
+#gameView .machineFoot{padding:6px 0 0;font-size:9px}
+#gameView .controls{width:min(100%,1120px);max-width:none;margin:0 auto;grid-template-columns:1.15fr .85fr;gap:8px}
+#gameView .controlPanel{padding:7px 10px;min-height:52px;gap:7px}
+#gameView .controlPanel button{padding:7px 12px}
+#gameView .betval{font-size:16px;padding:6px;min-width:90px}
+#gameView .controlPanel select{padding:7px}
+#gameView .spinrow{width:min(100%,1120px);max-width:none;margin:0 auto;gap:8px}
+#gameView .spinrow button{padding:10px 12px}
+#gameView .spinbtn{padding:10px;font-size:clamp(17px,2vw,24px)}
+#gameView .status{min-height:18px;margin:0;font-size:12px}
+#gameView .infoStrip{width:min(100%,1120px);margin:0 auto!important;gap:8px}
+#gameView .infoBox{padding:8px 11px}
+#gameView .infoBox b{font-size:11px;margin-bottom:2px}
+#gameView .infoBox span{font-size:10px}
+#gameView footer{padding:5px}
+.reel.spinning .reelTrack{filter:blur(2.8px) brightness(1.25);transition:none}
+.reel.stopping .reelTrack{filter:blur(0);transition:filter .25s}
+.reel .symbol{transform:translateZ(0)}
+.reel.stopping{box-shadow:inset 0 0 22px #ffd66e66,0 0 12px #ffcf5b66}
+@media(max-height:760px) and (min-width:700px){
+ #gameView.active{gap:4px;min-height:0}
+ #gameView .back{padding:5px 10px}
+ #gameView .gamehead{min-height:40px}
+ #gameView .machine{padding:6px}
+ #gameView .machineInner{padding:6px}
+ #gameView .reels{height:clamp(190px,calc(100dvh - 430px),310px);min-height:190px}
+ #gameView .machineFoot{padding-top:4px}
+ #gameView .controls .controlPanel{min-height:44px}
+ #gameView .spinrow button{padding:8px}
+ #gameView .infoBox{padding:6px 9px}
+}
+@media(max-width:700px){
+ #gameView.active{height:auto;min-height:calc(100dvh - 65px);overflow:visible}
+ #gameView .machine{flex:none}
+ #gameView .reels{height:clamp(270px,62vw,390px);min-height:270px}
+ #gameView .controls{grid-template-columns:1fr}
+ #gameView .controlPanel{min-height:48px}
+ #gameView .infoStrip{grid-template-columns:1fr 1fr}
+ #gameView .infoStrip .infoBox:last-child{grid-column:1/-1}
+}
+@media(prefers-reduced-motion:reduce){#gameView .reelTrack{transition:none!important;animation:none!important}}
+
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="brand">✦ LUCKY SPIN ROYAL <small>THE ROYAL NEON ARCADE</small></div>
+ <div class="topright"><div class="pill">LEVEL <b id="topLevel">1</b></div><div class="pill">🪙 <b id="balance">5,000,000</b></div><button class="backupBtn" onclick="exportPlayerData()">⬇ BACK UP</button><button class="backupBtn" onclick="document.getElementById('importSaveFile').click()">⬆ RESTORE</button><input id="importSaveFile" type="file" accept="application/json,.json" hidden onchange="importPlayerData(event)"><button id="soundBtn" onclick="toggleSound()">🔊 SOUND ON</button></div>
+</header>
+<main>
+<section id="lobby" class="view lobby active">
+ <div class="hero">
+  <div class="heroMain"><div class="eyebrow">WELCOME TO YOUR PRIVATE ARCADE</div><h1>PLAY BOLD.<br><span style="color:#f7bd65">WIN IN STYLE.</span></h1><p>Eight original slot worlds. One player profile. A royal arcade experience with glowing reels, themed bonus rounds and a shared virtual coin balance.</p><button class="goldbtn" onclick="document.getElementById('gamesTitle').scrollIntoView({behavior:'smooth'})">EXPLORE THE GAMES　→</button></div>
+  <div class="profile"><div class="profileHead"><div><div class="muted">PLAYER PROFILE</div><div class="level">LEVEL <span id="profileLevel">1</span> · ROOKIE</div></div><div class="avatar">👑</div></div><div><div style="display:flex;justify-content:space-between;margin-bottom:7px"><b id="xpText">120 / 500 XP</b><span class="muted">NEXT LEVEL</span></div><div class="xp"><span id="xpBar"></span></div></div><div style="display:flex;justify-content:space-between"><div><div class="muted">TOTAL SPINS</div><b id="spinCount">0</b></div><div><div class="muted">TOTAL WINS</div><b id="winCount">0</b></div><div><div class="muted">BEST WIN</div><b id="bestWin">0</b></div></div></div>
+ </div>
+ <div class="sectionhead" id="gamesTitle"><div><h2>✦ THE GAME COLLECTION</h2><p>Choose a world. Enter its machine. Make it yours.</p></div><span class="muted">8 GAMES · 1 ARCADE</span></div>
+ <div class="games" id="gameGrid"></div>
+ <div class="infoStrip">
+ <div class="infoBox"><b>🎁 DAILY TREASURE</b><span>One modest daily virtual gift. No purchase required.</span><br><button style="margin-top:10px" onclick="claimDaily()">CLAIM DAILY GIFT</button></div>
+ <div class="infoBox"><b>🧭 DAILY QUEST</b><span id="questText">Play 5 spins to complete today's relaxed quest.</span><div class="xp" style="margin-top:10px"><span id="questBar" style="width:0%"></span></div></div>
+ <div class="infoBox"><b>📖 HOW TO PLAY</b><span>Match symbols from the leftmost reel across adjacent reels. Wilds substitute; 3 scatters award free spins.</span><br><button style="margin-top:10px" onclick="showRules()">VIEW PAYTABLE & RULES</button></div>
+ </div>
+ <section class="infoBox questHub" style="margin-top:14px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+   <div><b style="color:var(--gold);font-size:17px">🏆 ROYAL DAILY QUESTS</b><div class="muted">Optional daily challenges · claim each reward when ready</div></div>
+   <span class="muted" id="questResetLabel">Refreshes daily</span>
+  </div>
+  <div id="questList" class="questGrid"></div>
+ </section>
+</section>
+<section id="gameView" class="view">
+ <button class="back" onclick="showLobby()">← BACK TO GAME LOBBY</button>
+ <div class="gamehead"><div><div class="eyebrow">ROYAL ARCADE · FEATURED MACHINE</div><h2 id="gameTitle">AZTEC GOLD RICHES</h2><div class="muted" id="gameSubtitle">TEMPLE TREASURE · 5 REELS × 5 ROWS</div></div><div class="pill">🪙 <b id="gameBalance">5,000,000</b></div></div>
+ <div class="machine"><div class="machineInner"><div class="reels" id="reels"></div><div class="machineFoot" id="machineFoot">5 REELS · 5 ROWS · VIRTUAL COINS ONLY</div></div></div>
+ <div class="controls">
+  <div class="controlPanel"><label>TOTAL BET</label><button onclick="changeBet(-1)">−</button><div class="betval" id="betValue">5,000</div><button onclick="changeBet(1)">+</button><label>PER SPIN</label></div>
+  <div class="controlPanel"><label>AUTO SPINS</label><select id="autoCount"><option value="10">10 spins</option><option value="20" selected>20 spins</option><option value="30">30 spins</option><option value="100">100 spins</option></select><button onclick="autoPlay()" id="autoBtn">▶ AUTO PLAY</button><button onclick="stopAuto()" id="stopBtn" disabled>■ STOP</button></div>
+ </div>
+ <div class="spinrow"><button onclick="showRules()">📖 PAYTABLE</button><button class="spinbtn" id="spinBtn" onclick="spin()">⚡ SPIN ⚡</button><button onclick="resetDemo()">↻ RESET DEMO</button></div>
+ <div class="status" id="status">Welcome to the temple. Every spin is virtual entertainment.</div>
+ <div class="infoStrip" style="max-width:980px;margin:12px auto">
+  <div class="infoBox"><b>🎁 FREE SPINS</b><span id="freeSpinInfo">No free spins active</span></div>
+  <div class="infoBox"><b>🪙 TREASURE BONUS</b><span id="bonusInfo">3 or more scatter symbols unlock a bonus</span></div>
+  <div class="infoBox"><b>📊 LAST RESULT</b><span id="lastResult">No spins yet</span></div>
+ </div>
+ <div id="rulesPanel" class="infoBox" style="display:none;max-width:980px;margin:12px auto">
+  <b>AZTEC GOLD RICHES · HOW TO PLAY</b>
+  <span>5 reels × 5 rows. Wins are evaluated left-to-right across adjacent reels. Any position on a reel can contribute. Wild 🗿 substitutes for regular symbols. Three or more 🌞 scatters anywhere award 3 free spins. Free spins do not deduct a bet. Virtual coins have no cash value.</span>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px" id="paytable"></div>
+ </div>
+ <div id="bonusModal" style="display:none;position:fixed;inset:0;background:#05030ddd;z-index:20;place-items:center;padding:20px">
+  <div class="infoBox" style="max-width:480px;width:100%;text-align:center;border-color:var(--gold);padding:25px">
+   <div style="font-size:38px">🏺 ✨ 🏺</div><h2 style="color:var(--gold)">TEMPLE TREASURE!</h2><p>Choose one sealed chest for a virtual coin surprise.</p>
+   <div style="display:flex;gap:10px;justify-content:center"><button onclick="chooseChest(0)">🎁 CHEST 1</button><button onclick="chooseChest(1)">🎁 CHEST 2</button><button onclick="chooseChest(2)">🎁 CHEST 3</button></div>
+   <p class="muted">One choice · one reveal · no purchase needed.</p>
+  </div>
+ </div>
+</section>
+<footer>LUCKY SPIN ROYAL · ORIGINAL VIRTUAL-COIN ENTERTAINMENT · NO CASH VALUE · NO PURCHASE OR CASH-OUT</footer>
+</main><div class="toast" id="toast"></div>
+<script>
+const games=[
+ {id:'aztec',name:'Aztec Gold Riches',sub:'Temple treasure · Golden wilds',emoji:'🗿',art:'aztec',symbol:['🗿','🐍','🏺','💎','👑','🪙','🦜','🌞'],desc:'Explore a forgotten temple and uncover golden treasures.'},
+ {id:'cyber',name:'Neon Cyber Quest',sub:'Neon city · Digital wilds',emoji:'🤖',art:'cyber',symbol:['💠','🤖','🛸','🔮','⚡','👾','💿','🌐'],desc:'Enter a neon city of digital treasures and electric symbols.'},
+ {id:'dragon',name:"Mystic Dragon's Lair",sub:'Fantasy cave · Dragon treasures',emoji:'🐉',art:'dragon',symbol:['🐉','🔥','🥚','🛡️','💰','👑','💎','🗝️'],desc:'Discover the dragon’s vault and its enchanted treasures.'},
+ {id:'cosmic',name:'Cosmic Fruits',sub:'Galaxy fruits · Star multipliers',emoji:'🍒',art:'cosmic',symbol:['🍒','🍋','🍇','🔔','⭐','7️⃣','💫','🌙'],desc:'A colourful cosmic fruit machine among the stars.'},
+ {id:'phoenix',name:'Phoenix Empire',sub:'Fire kingdom · Rising fortunes',emoji:'🦅',art:'phoenix',symbol:['🦅','🔥','🌺','💎','👑','☀️','🪶','🏆'],desc:'Rise from the ashes in a glowing fire kingdom.'},
+ {id:'ocean',name:'Ocean Treasure',sub:'Deep sea · Pearl discoveries',emoji:'🐬',art:'ocean',symbol:['🐬','🐚','🪸','🦈','💎','⚓','🫧','👑'],desc:'Dive into a deep-sea world of pearls and lost treasure.'},
+ {id:'wildwest',name:'Wild West Gold',sub:'Frontier town · Lucky legends',emoji:'🤠',art:'wildwest',symbol:['🤠','🐎','🌵','⭐','🔔','💰','🃏','🏜️'],desc:'Ride into a frontier adventure filled with lucky legends.'},
+ {id:'moon',name:'Moonlight Fortune',sub:'Celestial realm · Lunar magic',emoji:'🌙',art:'moon',symbol:['🌙','✨','🪐','🌟','🔮','🦉','💎','👑'],desc:'A celestial night journey through a realm of lunar magic.'}
+];
+const SYMBOLS=[
+ {id:'idol',e:'🗿',name:'Idol',weight:10,pay:[0,0,1.1,2.2,5]},
+ {id:'snake',e:'🐍',name:'Serpent',weight:12,pay:[0,0,.9,1.8,4]},
+ {id:'vase',e:'🏺',name:'Vase',weight:14,pay:[0,0,.75,1.5,3.5]},
+ {id:'gem',e:'💎',name:'Gem',weight:16,pay:[0,0,.6,1.2,3]},
+ {id:'crown',e:'👑',name:'Crown',weight:18,pay:[0,0,.5,1,2.5]},
+ {id:'coin',e:'🪙',name:'Coin',weight:20,pay:[0,0,.4,.8,2]},
+ {id:'parrot',e:'🦜',name:'Parrot',weight:22,pay:[0,0,.35,.7,1.8]},
+ {id:'wild',e:'🌞',name:'Wild',weight:7,pay:[0,0,0,0,0]},
+ {id:'scatter',e:'✨',name:'Scatter',weight:5,pay:[0,0,0,0,0]}
+];
+const money=n=>Math.floor(n).toLocaleString('en-US');
+const STORE='lsRoyalDemoV2';
+const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[]};
+let state;
+try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
+function xpNeeded(level){return 250+Math.max(0,level-1)*50}
+function levelReward(level){return 100000+level*25000}
+function migrateProgression(){
+ if((state.progressionVersion||0)<1){
+  let leveled=[];
+  while(state.xp>=xpNeeded(state.level)&&leveled.length<100){state.xp-=xpNeeded(state.level);state.level++;let prize=levelReward(state.level);state.balance+=prize;leveled.push({level:state.level,prize})}
+  state.progressionVersion=1;
+  if(leveled.length)state.pendingLevelRewards=leveled;
+ }
+}
+function localDay(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function resetQuestDayIfNeeded(){let today=localDay();if(state.questDate!==today){state.questDate=today;state.questSpinCount=0;state.questWinCount=0;state.questClaims=[]}}
+migrateProgression();resetQuestDayIfNeeded();
+let current=games[0],sound=true,autoTimer=null,autoRemaining=0,spinning=false,bonusPending=false;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(STORE,JSON.stringify(state));updateHUD()}
+function showLevelUp(level,reward){
+ let old=document.getElementById('levelCelebration');if(old)old.remove();
+ let el=document.createElement('div');el.id='levelCelebration';el.className='levelToast';
+ el.innerHTML='<div style="font-size:30px">👑 ✨ 👑</div><b style="color:var(--gold);font-size:22px">LEVEL '+level+' UNLOCKED!</b><div style="margin-top:6px">+'+money(reward)+' VIRTUAL COINS</div><small>Keep exploring at your own pace.</small>';
+ document.body.appendChild(el);setTimeout(()=>el.remove(),3200);
+}
+function addXP(amount){
+ state.xp+=amount;let ups=0;
+ while(state.xp>=xpNeeded(state.level)&&ups<100){
+  state.xp-=xpNeeded(state.level);state.level++;let reward=levelReward(state.level);state.balance+=reward;ups++;showLevelUp(state.level,reward);
+ }
+ return ups;
+}
+function updateQuestPanel(){
+ const list=$('questList');if(!list)return;
+ const defs=[
+  {id:'spins5',title:'Warm-up Explorer',desc:'Play 5 spins',progress:Math.min(state.questSpinCount,5),goal:5,coins:75000,xp:60},
+  {id:'wins3',title:'Lucky Moments',desc:'Get 3 winning spins',progress:Math.min(state.questWinCount,3),goal:3,coins:100000,xp:75},
+  {id:'spins10',title:'Temple Regular',desc:'Play 10 spins',progress:Math.min(state.questSpinCount,10),goal:10,coins:150000,xp:100}
+ ];
+ list.innerHTML=defs.map(q=>{
+  let claimed=(state.questClaims||[]).includes(q.id),ready=q.progress>=q.goal;
+  return '<div class="questCard"><b>✨ '+q.title+'</b><small>'+q.desc+' · '+q.progress+'/'+q.goal+'</small><div class="questTrack"><span style="width:'+(q.progress/q.goal*100)+'%"></span></div><small>Reward: '+money(q.coins)+' coins + '+q.xp+' XP</small><button class="questClaim" '+(!ready||claimed?'disabled':'')+' onclick="claimQuest(\''+q.id+'\')">'+(claimed?'✓ CLAIMED':ready?'CLAIM REWARD':'IN PROGRESS')+'</button></div>';
+ }).join('');
+}
+function claimQuest(id){
+ resetQuestDayIfNeeded();const defs={spins5:{goal:5,coins:75000,xp:60},wins3:{goal:3,coins:100000,xp:75},spins10:{goal:10,coins:150000,xp:100}};
+ let q=defs[id];if(!q||(state.questClaims||[]).includes(id))return;
+ let progress=id==='wins3'?state.questWinCount:state.questSpinCount;
+ if(progress<q.goal)return;
+ state.questClaims.push(id);state.balance+=q.coins;addXP(q.xp);save();updateQuestPanel();toast('Quest claimed: +'+money(q.coins)+' coins and '+q.xp+' XP');
+}
+function updateHUD(){
+ ['balance','gameBalance'].forEach(id=>{if($(id))$(id).textContent=money(state.balance)});
+ $('topLevel').textContent=state.level;$('profileLevel').textContent=state.level;
+ $('xpText').textContent=state.xp+' / '+xpNeeded(state.level)+' XP';$('xpBar').style.width=(state.xp/xpNeeded(state.level)*100)+'%';
+ $('spinCount').textContent=money(state.spins);$('winCount').textContent=money(state.wins);$('bestWin').textContent=money(state.best);$('betValue').textContent=money(state.bet);
+ $('freeSpinInfo').textContent=state.freeSpins?state.freeSpins+' free spins remaining':'No free spins active';
+ $('questText').textContent=state.questSpins>=5?'Quest complete — well played!':Math.min(state.questSpins,5)+' / 5 spins completed today';
+ $('questBar').style.width=(Math.min(state.questSpins,5)/5*100)+'%';
+ if(state.questSpins>=5)$('questText').classList.add('questComplete');
+ updateQuestPanel();
+}
+function renderLobby(){$('gameGrid').innerHTML=games.map((g,i)=>`<article class="gamecard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ PLAYABLE DEMO':'✦ COMING SOON'}</span><div class="art ${g.art}"><span>${g.emoji}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small></div></article>`).join('')}
+function showLobby(){stopAuto();$('gameView').classList.remove('active');$('lobby').classList.add('active')}
+function openGame(id){current=games.find(g=>g.id===id);$('lobby').classList.remove('active');$('gameView').classList.add('active');$('gameTitle').textContent=current.name.toUpperCase();$('gameSubtitle').textContent=current.sub.toUpperCase()+' · 5 REELS × 5 ROWS';$('machineFoot').textContent=current.name.toUpperCase()+' · 5 REELS × 5 ROWS · 3,125 WAYS';buildReels();updateHUD();$('status').textContent=id==='aztec'?'Featured playable demo — every result is virtual and random.':'Preview only — this machine will be developed in a later phase.';$('spinBtn').disabled=id!=='aztec';$('autoBtn').disabled=id!=='aztec'}
+function weightedSymbol(){let total=SYMBOLS.reduce((a,s)=>a+s.weight,0),n=Math.random()*total;for(const s of SYMBOLS){n-=s.weight;if(n<=0)return s}return SYMBOLS[0]}
+function symbolSvg(id){
+ const defs=`<defs><linearGradient id="goldG" x2="0" y2="1"><stop stop-color="#fff3ae"/><stop offset=".42" stop-color="#f8bd45"/><stop offset="1" stop-color="#8b4214"/></linearGradient><linearGradient id="blueG" x2="0" y2="1"><stop stop-color="#d8fbff"/><stop offset=".42" stop-color="#36bfff"/><stop offset="1" stop-color="#123b9c"/></linearGradient><linearGradient id="redG" x2="0" y2="1"><stop stop-color="#ffdf9a"/><stop offset=".45" stop-color="#ef8c37"/><stop offset="1" stop-color="#7d281c"/></linearGradient><radialGradient id="sunG"><stop stop-color="#fffbd0"/><stop offset=".55" stop-color="#ffcf4e"/><stop offset="1" stop-color="#bd5c17"/></radialGradient></defs>`;
+ const paths={
+ idol:`<path d="M25 17 Q50 2 75 17 L70 75 Q50 92 30 75Z" fill="url(#goldG)" stroke="#fff0a0" stroke-width="3"/><path d="M35 34 L65 34 L60 61 L40 61Z" fill="#51301b"/><circle cx="42" cy="44" r="4" fill="#ffdf72"/><circle cx="58" cy="44" r="4" fill="#ffdf72"/><path d="M42 55 Q50 62 58 55" fill="none" stroke="#ffd76a" stroke-width="4"/>`,
+ snake:`<path d="M18 68 C12 30 45 13 70 30 C91 45 72 76 48 66 C29 59 39 38 55 42" fill="none" stroke="url(#goldG)" stroke-width="13" stroke-linecap="round"/><path d="M70 26 L86 17 L81 37Z" fill="#42d58a"/><circle cx="73" cy="29" r="2.5" fill="#21102a"/>`,
+ vase:`<path d="M35 12 L65 12 L60 29 Q83 43 73 79 Q50 94 27 79 Q17 43 40 29Z" fill="url(#redG)" stroke="#ffd77a" stroke-width="3"/><path d="M33 53 Q50 61 67 53 M29 69 Q50 77 71 69" stroke="#ffe4a2" stroke-width="4" fill="none"/>`,
+ gem:`<path d="M16 34 L34 12 L68 12 L86 34 L50 87Z" fill="url(#blueG)" stroke="#d6f8ff" stroke-width="3"/><path d="M16 34 L50 34 L50 87Z" fill="#1476cf"/><path d="M34 12 L50 34 L68 12Z" fill="#d4faff"/><path d="M50 34 L86 34 L50 87Z" fill="#1852b5"/>`,
+ crown:`<path d="M15 31 L33 46 L50 15 L67 46 L85 31 L77 76 L23 76Z" fill="url(#goldG)" stroke="#fff0a5" stroke-width="3"/><path d="M22 76 L78 76 L73 88 L27 88Z" fill="#b95b1a"/><circle cx="33" cy="50" r="5" fill="#e94b93"/><circle cx="50" cy="30" r="5" fill="#48cfff"/><circle cx="67" cy="50" r="5" fill="#e94b93"/>`,
+ coin:`<circle cx="50" cy="50" r="37" fill="url(#goldG)" stroke="#fff0a3" stroke-width="4"/><circle cx="50" cy="50" r="27" fill="none" stroke="#a95a17" stroke-width="3"/><path d="M39 34 H61 M50 34 V66 M39 66 H61" stroke="#9a5017" stroke-width="5" stroke-linecap="round"/>`,
+ parrot:`<path d="M49 15 Q72 8 76 34 Q82 57 57 65 L54 86 L40 86 L43 62 Q20 48 31 27 Q37 17 49 15Z" fill="#e53e91" stroke="#ffc56b" stroke-width="3"/><path d="M62 32 L88 40 L67 49Z" fill="url(#goldG)"/><circle cx="58" cy="29" r="4" fill="#fff"/><circle cx="59" cy="29" r="2" fill="#17102a"/><path d="M35 56 L15 72 L44 67Z" fill="#35d6c2"/>`,
+ wild:`<circle cx="50" cy="50" r="25" fill="url(#sunG)" stroke="#fff1a8" stroke-width="4"/><path d="M50 4 L58 22 L78 12 L75 34 L96 39 L79 54 L91 73 L68 72 L62 95 L47 77 L29 91 L30 68 L7 62 L24 47 L11 28 L34 30Z" fill="url(#goldG)" stroke="#ffeb9d" stroke-width="2"/><circle cx="50" cy="50" r="13" fill="#fff0a5"/>`,
+ scatter:`<circle cx="50" cy="50" r="34" fill="none" stroke="#b66bff" stroke-width="8"/><circle cx="50" cy="50" r="23" fill="url(#blueG)" stroke="#e8c7ff" stroke-width="3"/><path d="M50 26 L56 44 L75 50 L56 56 L50 75 L44 56 L25 50 L44 44Z" fill="#fff4ba"/>`
+ };
+ return `<svg viewBox="0 0 100 100" aria-hidden="true">${defs}${paths[id]||paths.coin}</svg>`;
+}
+function symbolMarkup(id){return `<div class="symbol" data-symbol="${id}">${symbolSvg(id)}</div>`}
+function buildReels(){
+ const root=$('reels');root.innerHTML='';
+ for(let c=0;c<5;c++){let reel=document.createElement('div');reel.className='reel';let track=document.createElement('div');track.className='reelTrack';
+  for(let r=0;r<5;r++){let id=weightedSymbol().id;track.insertAdjacentHTML('beforeend',symbolMarkup(id))}
+  reel.appendChild(track);root.appendChild(reel)
+ }
+}
+function changeBet(dir){let steps=[5000,10000,20000,50000,100000,250000,500000,1000000],i=steps.indexOf(state.bet);if(i<0)i=0;state.bet=steps[Math.max(0,Math.min(steps.length-1,i+dir))];save()}
+function playTone(freq=440,duration=.09,type='sine'){if(!sound)return;try{let ctx=new(window.AudioContext||window.webkitAudioContext)(),o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.035,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration);o.connect(g);g.connect(ctx.destination);o.start();o.stop(ctx.currentTime+duration);o.onended=()=>ctx.close()}catch(e){}}
+function evaluateWays(grid){
+ let total=0,highlight=new Set(),waysWon=0,details=[];
+ const regular=SYMBOLS.filter(s=>!['wild','scatter'].includes(s.id));
+ for(const sym of regular){
+  let counts=[],positions=[],run=0,ways=1;
+  for(let c=0;c<5;c++){
+   let hits=[];for(let r=0;r<5;r++)if(grid[c][r]===sym.id||grid[c][r]==='wild')hits.push(r);
+   if(!hits.length)break;counts.push(hits.length);positions.push(hits);run++;ways*=hits.length;
+  }
+  if(run>=3){let mult=sym.pay[run-1];let win=Math.floor(state.bet*mult*ways/5);if(win>0){total+=win;waysWon+=ways;details.push({sym:sym.id,run,ways,win});positions.forEach((rows,c)=>rows.forEach(r=>highlight.add(c*5+r)))}}
+ }
+ let scatters=grid.flat().filter(x=>x==='scatter').length;
+ return {total,waysWon,highlight,details,scatters};
+}
+function spin(){
+ if(current.id!=='aztec'||spinning)return;
+ let usingFree=state.freeSpins>0,bet=usingFree?0:state.bet;
+ if(!usingFree&&state.balance<bet){$('status').textContent='Not enough virtual coins. Lower the bet or claim your daily gift.';stopAuto();return}
+ if(!usingFree)state.balance-=bet;else state.freeSpins--;
+ state.spins++;state.questSpins++;state.questSpinCount++;
+ // XP is awarded once after the result via addXP(): 25 paid / 10 free, plus 10 for a win.
+ spinning=true;$('spinBtn').disabled=true;$('autoBtn').disabled=true;
+ const root=$('reels'),reels=[...root.querySelectorAll('.reel')];
+ // Determine the final 5×5 result before constructing the moving reel strips.
+ // V3 previously referenced grid before it existed, which stopped the first spin.
+ const grid=Array.from({length:5},()=>Array.from({length:5},()=>weightedSymbol().id));
+ const result=evaluateWays(grid);
+ reels.forEach((reel,c)=>{
+  const track=reel.querySelector('.reelTrack');reel.classList.remove('stopping');
+  const strip=[...Array.from({length:17},()=>weightedSymbol().id),...grid[c]];
+  track.innerHTML=strip.map(symbolMarkup).join('');
+  track.style.transition='none';track.style.transform='translateY(0)';
+  reel.classList.add('spinning');
+  // Each reel runs its own vertical strip and settles at a different time.
+  requestAnimationFrame(()=>{const distance=Math.max(0,track.scrollHeight-reel.clientHeight);track.style.transition=`transform ${1.05+c*.24}s cubic-bezier(.08,.72,.14,1)`;track.style.transform=`translateY(-${distance}px)`});
+ });
+ playTone(150,.22,'sawtooth');
+ const stopTimes=reels.map((_,i)=>1250+i*260);
+ stopTimes.forEach((delay,c)=>setTimeout(()=>{
+  const reel=reels[c],track=reel.querySelector('.reelTrack');
+  reel.classList.remove('spinning');reel.classList.add('stopping');
+  // Replace moving strip with the final five symbols only after this reel has stopped.
+  track.style.transition='none';track.style.transform='translateY(0)';
+  track.innerHTML=grid[c].map(symbolMarkup).join('');
+  playTone(260+c*75,.12,'triangle');
+ },delay));
+ const totalDelay=stopTimes[4]+180;
+ setTimeout(()=>{
+  const cells=[...root.querySelectorAll('.symbol')];
+  result.highlight.forEach(i=>cells[i]?.classList.add('win'));
+  let message='';
+  if(result.total>0){state.balance+=result.total;state.wins++;state.questWinCount++;state.best=Math.max(state.best,result.total);message='✦ '+money(result.total)+' VIRTUAL COINS · '+result.waysWon+' WAYS';playTone(680,.3,'sine');}
+  else message='No ways win this spin — enjoy the next round.';
+  addXP(usingFree?10:25);if(result.total>0)addXP(10);
+  if(result.scatters>=3){state.freeSpins+=3;message+=' · 3 FREE SPINS AWARDED!';playTone(920,.35,'triangle');}
+  $('lastResult').textContent=result.total?('+'+money(result.total)+' · '+result.waysWon+' ways'):'No win';
+  $('status').textContent=(usingFree?'FREE SPIN · ':'')+message;
+  $('freeSpinInfo').textContent=state.freeSpins?state.freeSpins+' free spins remaining':'No free spins active';
+  save();updateQuestPanel();spinning=false;$('spinBtn').disabled=false;$('autoBtn').disabled=current.id!=='aztec';
+  if(autoTimer!==null){if(autoRemaining>0)autoRemaining--;if(autoRemaining===0){stopAuto();$('status').textContent+=' · AUTO PLAY COMPLETE'}else{autoTimer=setTimeout(spin,1050)}}
+ },totalDelay);
+}
+function autoPlay(){if(autoTimer!==null||spinning)return;autoRemaining=Number($('autoCount').value);autoTimer=-1;$('autoBtn').disabled=true;$('stopBtn').disabled=false;spin()}
+function stopAuto(){if(autoTimer!==null)clearTimeout(autoTimer);autoTimer=null;autoRemaining=0;if($('autoBtn'))$('autoBtn').disabled=current.id!=='aztec';if($('stopBtn'))$('stopBtn').disabled=true}
+function claimDaily(){
+ let today=localDay();
+ if(state.dailyDate===today){toast('Your daily virtual gift has already been claimed.');return}
+ state.dailyDate=today;state.balance+=25000;save();toast('Daily gift claimed: +25,000 virtual coins')
+}
+function showRules(){$('rulesPanel').style.display=$('rulesPanel').style.display==='none'?'block':'none'}
+function resetDemo(){if(!confirm('Reset this prototype profile and virtual coins?'))return;stopAuto();state={...defaults};save();buildReels();$('status').textContent='Demo profile reset. Have fun exploring.'}
+function toast(msg){let t=$('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2500)}
+function toggleSound(){sound=!sound;$('soundBtn').textContent=sound?'🔊 SOUND ON':'🔇 SOUND OFF';if(sound)playTone(520,.1);toast(sound?'Sound enabled':'Sound muted')}
+function claimDemoGift(){claimDaily()}
+function exportPlayerData(){
+ const payload={app:'LUCKY SPIN ROYAL',formatVersion:1,exportedAt:new Date().toISOString(),state:state};
+ const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+ const url=URL.createObjectURL(blob),a=document.createElement('a');
+ a.href=url;a.download='lucky-spin-royal-player-backup-'+localDay()+'.json';
+ document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ toast('Player backup downloaded. Keep it somewhere safe.');
+}
+async function importPlayerData(event){
+ const file=event.target.files&&event.target.files[0];if(!file)return;
+ try{
+  const payload=JSON.parse(await file.text());
+  if(!payload||payload.app!=='LUCKY SPIN ROYAL'||!payload.state||typeof payload.state!=='object')throw new Error('This is not a LUCKY SPIN ROYAL backup.');
+  if(!confirm('Restore this backup? It will replace the player progress currently saved in this browser.')){event.target.value='';return}
+  const allowed=Object.keys(defaults),restored={...defaults};
+  for(const key of allowed)if(Object.prototype.hasOwnProperty.call(payload.state,key))restored[key]=payload.state[key];
+  const numeric=['balance','level','xp','spins','wins','best','bet','freeSpins','questSpins','questSpinCount','questWinCount'];
+  for(const key of numeric){if(!Number.isFinite(Number(restored[key]))||Number(restored[key])<0)throw new Error('The backup contains an invalid '+key+' value.')}
+  if(!Array.isArray(restored.questClaims))restored.questClaims=[];
+  if(![5000,10000,20000,50000,100000,250000,500000,1000000].includes(restored.bet))restored.bet=5000;
+  state=restored;resetQuestDayIfNeeded();save();toast('Backup restored. Reloading your arcade…');
+  setTimeout(()=>location.reload(),700);
+ }catch(err){alert('Could not restore backup: '+err.message)}
+ finally{event.target.value=''}
+}
+function chooseChest(index){$('bonusModal').style.display='none';let prizes=[state.bet*2,state.bet*3,state.bet*5],prize=prizes[index];state.balance+=prize;save();toast('Chest revealed: +'+money(prize)+' virtual coins!')}
+$('paytable').innerHTML=SYMBOLS.filter(s=>!['wild','scatter'].includes(s.id)).map(s=>`<div class="infoBox" style="padding:8px"><b>${s.e} ${s.name}</b><span>3: ${s.pay[2]}× · 4: ${s.pay[3]}× · 5: ${s.pay[4]}× (ways factor)</span></div>`).join('');
+// Reset per-day quest progress gently; it is a simple local demo counter.
+renderLobby();updateHUD();buildReels();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
+</script>
+</body></html>
