@@ -482,7 +482,54 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 @media(max-width:760px){.v54PlayMilestones{grid-template-columns:repeat(2,minmax(0,1fr))}.v54PlayRewards{margin:8px 10px}}
 
 </style>
-</head>
+<style>
+/* V6.0 — realistic jewel atelier / premium fantasy pass */
+:root{--v6-gold:#f4d38b;--v6-ice:#b9e8f5;--v6-ink:#080d17;--v6-panel:#101b2b}
+body{background:radial-gradient(ellipse at 15% 5%,#183044 0,transparent 35%),radial-gradient(ellipse at 85% 18%,#30203c 0,transparent 38%),linear-gradient(145deg,#070c14,#0b1421 55%,#090d17);color:#edf3fb}
+.top{background:rgba(7,13,22,.94);border-bottom:1px solid #b69a6855}
+.brand{color:#f2d9a3;text-shadow:0 2px 16px #d7b66a35}
+.heroMain,.profile,.infoBox,.questCard,.v5Panel,.v53Jackpot{background:linear-gradient(145deg,rgba(23,37,55,.97),rgba(10,18,30,.98));border-color:#7892aa55;box-shadow:0 16px 38px #0005,inset 0 1px #ffffff12}
+button{background:linear-gradient(145deg,#263d55,#111e30);border-color:#91a9bf66;color:#f2f5fa}
+button:hover{border-color:#e8c987;box-shadow:0 0 18px #d4b36b33}
+.goldbtn,.spinbtn{background:linear-gradient(105deg,#d6bd85,#f3dfad 42%,#a9783e);color:#171b22;border-color:#fff0c8}
+.gamecard{background:linear-gradient(145deg,#17263a,#0b1422);border-color:#7d94aa55}
+.gamecard:hover{border-color:#e5c989;box-shadow:0 15px 36px #0009,0 0 24px #d5b66a25}
+.art{background:radial-gradient(circle at 50% 42%,#34485d,#101a2a 68%,#080f19)!important;color:#e8d2a0}
+.art:before{border-color:#d9c18c55;box-shadow:0 0 30px #d4bc8230}
+.gameinfo small,.muted{color:#aebdcd}
+.machine{background:linear-gradient(145deg,#c6a56c,#435d75 23%,#111e30 72%);border-color:#d8c18d;box-shadow:0 0 0 3px #243b51,0 18px 45px #000b,inset 0 0 24px #f8df9a40}
+.machineInner{background:radial-gradient(ellipse at 50% 0,#263b50,#0a1421 78%);border-color:#9cb7c9}
+.reel{background:linear-gradient(90deg,#07111d,#1a2b3e 50%,#07111d);border-color:#718ba2}
+.symbol{background:linear-gradient(145deg,#1c3043,#0c1725);border:1px solid #7891a8;box-shadow:inset 0 1px #ffffff22,inset 0 -5px 12px #0005}
+.symbol.win{outline:2px solid #f2d58f;background:linear-gradient(145deg,#4a432f,#17283a);box-shadow:0 0 24px #f5d98c99,inset 0 0 12px #fff5}
+.v6Glyph{width:min(76%,64px);height:min(76%,64px);display:block;filter:drop-shadow(0 7px 8px #0009);overflow:visible}
+.v6Glyph .metal{stroke:#fff3c4;stroke-width:1.8}
+.v6BonusRail{max-width:1100px;margin:8px auto 10px;display:grid;grid-template-columns:1.15fr 1fr;gap:10px}
+.v6RailCard{position:relative;overflow:hidden;border:1px solid #b8a16c77;border-radius:15px;padding:12px 15px;background:linear-gradient(120deg,#172b3d,#101a2a 65%,#211b2c);box-shadow:inset 0 1px #fff2,0 10px 25px #0005}
+.v6RailCard:after{content:"";position:absolute;right:-30px;top:-55px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#d7bd7940,transparent 70%);pointer-events:none}
+.v6RailTitle{font-size:10px;letter-spacing:1.6px;color:#e8d29b;font-weight:900}
+.v6RailMain{font-size:15px;font-weight:900;margin:5px 0;color:#f4f6f8}
+.v6RailSub{font-size:11px;color:#afc0d0}
+.v6RailTrack{height:7px;background:#060d16;border:1px solid #52677c;border-radius:99px;overflow:hidden;margin-top:9px}
+.v6RailTrack span{display:block;height:100%;width:0;background:linear-gradient(90deg,#5cc9c0,#e3c27d);box-shadow:0 0 12px #8ddbd0}
+.v6CollectionMini{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.v6CollectionMini span{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:9px;background:#091522;border:1px solid #52677c;color:#d8e3ed;font-size:10px}
+.v6CollectionMini .v6Glyph{width:20px;height:20px}
+.v6ToastLayer{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:18px;background:radial-gradient(circle,#15283bd9,#03070deF);animation:v6Fade .25s ease}
+.v6ToastPanel{position:relative;width:min(520px,94vw);padding:28px 24px;border-radius:24px;text-align:center;background:linear-gradient(145deg,#243a4d,#0c1625 68%,#211a2b);border:1px solid #e5ca8d;box-shadow:0 0 0 4px #263b50,0 25px 80px #000c,inset 0 1px #fff5;overflow:hidden}
+.v6ToastPanel:before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent,#f2d58c22,transparent,#a4e3ed22,transparent);animation:v6Rotate 8s linear infinite}
+.v6ToastPanel>*{position:relative}
+.v6ToastIcon{width:112px;height:112px;margin:0 auto 10px;filter:drop-shadow(0 0 20px #edcf8c88);animation:v6Float 2.5s ease-in-out infinite}
+.v6ToastTitle{font-size:clamp(26px,6vw,40px);font-weight:1000;letter-spacing:1px;color:#f4d99c;text-shadow:0 3px 0 #624b2c,0 0 20px #f0d18a66}
+.v6ToastText{color:#d6e1eb;line-height:1.5;margin:8px 0 18px}
+.v6ToastPanel button{min-width:160px;background:linear-gradient(110deg,#e9d39d,#b48b50);color:#171d25;font-weight:900}
+.v6CardBadge{font-size:9px;letter-spacing:2px;color:#c9b17b;text-transform:uppercase}
+@keyframes v6Fade{from{opacity:0}to{opacity:1}}
+@keyframes v6Rotate{to{transform:rotate(360deg)}}
+@keyframes v6Float{50%{transform:translateY(-7px) scale(1.035)}}
+@media(max-width:760px){.v6BonusRail{grid-template-columns:1fr;margin:8px 0}.v6RailCard{padding:10px}.v6ToastPanel{padding:22px 16px}}
+@media(prefers-reduced-motion:reduce){.v6ToastPanel:before,.v6ToastIcon{animation:none!important}}
+</style></head>
 <body>
 <header class="top">
  <div class="brand">✦ LUCKY SPIN ROYAL <small>THE ROYAL NEON ARCADE</small></div>
@@ -982,5 +1029,124 @@ setInterval(()=>{if($('gameView')?.classList.contains('active')&&!document.hidde
 
 // Reset per-day quest progress gently; it is a simple local demo counter.
 renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v52Render();v53Update();v54RenderPlayRewards();if(state.pendingLevelRewards&&state.pendingLevelRewards.length){let r=state.pendingLevelRewards[state.pendingLevelRewards.length-1];setTimeout(()=>showLevelUp(r.level,r.prize),500);delete state.pendingLevelRewards;save();}
+</script>
+
+<script>
+/* V6.0 realistic artifact renderer and world-specific presentation */
+(function(){
+ const palettes={
+  aztec:['#fff0b3','#e0a83e','#8c4c20','#3c271d'],
+  cyber:['#d9fbff','#54d5e8','#5868c8','#17284b'],
+  dragon:['#fff0c2','#d98b43','#9a342b','#351b22'],
+  cosmic:['#fff1c4','#ef91ca','#7a63d8','#251b4c'],
+  phoenix:['#fff0b4','#ed9b43','#b84a29','#421c20'],
+  ocean:['#e4ffff','#71d5d5','#347fbd','#142e4c'],
+  wildwest:['#fff0c2','#d8a35b','#93603a','#35231c'],
+  moon:['#f8f0ff','#c2b8ef','#777fc4','#272443']
+ };
+ const worldLabels={
+  aztec:['Sun Relic','Jaguar Crest','Warrior Eagle','Ceremonial Mask','Temple Idol','Gold Medallion','Jade Serpent','Solar Seal'],
+  cyber:['Quantum Core','Cyber Sentinel','Neon Drone','Holo Mask','Data Relic','Energy Coin','Circuit Serpent','Portal Sigil'],
+  dragon:['Dragon Eye','Dragon Crest','Fire Eagle','Scale Mask','Ancient Egg','Gold Hoard','Flame Serpent','Rune Seal'],
+  cosmic:['Nova Star','Comet Crest','Cosmic Bird','Nebula Mask','Planet Relic','Stardust Coin','Orbit Serpent','Galaxy Seal'],
+  phoenix:['Sun Ember','Phoenix Crest','Firebird','Ashen Mask','Flame Relic','Royal Coin','Phoenix Coil','Rebirth Sigil'],
+  ocean:['Pearl Core','Sea Guardian','Ocean Hawk','Coral Mask','Abyss Idol','Pearl Coin','Tidal Serpent','Tide Seal'],
+  wildwest:['Sheriff Star','Mustang Crest','Frontier Eagle','Outlaw Mask','Desert Totem','Gold Nugget','Rattlesnake','Wanted Seal'],
+  moon:['Moonstone','Lunar Crest','Night Eagle','Celestial Mask','Moon Idol','Silver Coin','Moon Serpent','Eclipse Seal']
+ };
+ const shapes={
+  sunstone:'<circle cx="50" cy="50" r="34" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="4"/><circle cx="50" cy="50" r="25" fill="url(#vDeep)" stroke="#fff0b6" stroke-width="2"/><path d="M50 8V20M50 80V92M8 50H20M80 50H92M20 20L29 29M71 71L80 80M80 20L71 29M29 71L20 80" stroke="#f9df9b" stroke-width="5" stroke-linecap="round"/><path d="M50 30L57 43L70 50L57 57L50 70L43 57L30 50L43 43Z" fill="#fff0bc" stroke="#a66c2d" stroke-width="2"/>',
+  jaguar:'<path d="M20 36L27 13L43 25Q50 21 57 25L73 13L80 36L76 68Q66 88 50 89Q34 88 24 68Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M29 44Q39 34 46 45L42 55H30ZM54 45Q63 34 72 44L70 55H58Z" fill="#171b25" stroke="#f9e7b1" stroke-width="2"/><path d="M42 65Q50 57 58 65L50 76Z" fill="#2a1820" stroke="#e7c67d" stroke-width="2"/><circle cx="38" cy="47" r="2.5" fill="#fff"/> <circle cx="62" cy="47" r="2.5" fill="#fff"/>',
+  eagle:'<path d="M12 30Q30 12 49 29Q68 12 88 30L75 46L63 43L55 61L50 82L45 61L37 43L25 46Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M43 35L57 35L50 54Z" fill="#f7e6b2"/><path d="M48 53L62 54L50 70L39 54Z" fill="url(#vDeep)"/>',
+  mask:'<path d="M22 18Q50 7 78 18L75 61Q67 84 50 89Q33 84 25 61Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M29 39Q39 30 46 40L43 51H30ZM54 40Q63 30 71 39L70 51H57Z" fill="#14202c"/><path d="M50 49L44 65L56 65Z" fill="url(#vDeep)"/><path d="M37 74Q50 81 63 74" fill="none" stroke="#fff0bc" stroke-width="3"/>',
+  idol:'<path d="M32 15H68L76 30V78Q50 94 24 78V30Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M36 39H45V50H36ZM55 39H64V50H55Z" fill="#202b35"/><path d="M40 64H60L50 75Z" fill="url(#vDeep)"/><path d="M28 29H72" stroke="#fff2c7" stroke-width="3"/>',
+  coin:'<circle cx="50" cy="50" r="36" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="4"/><circle cx="50" cy="50" r="28" fill="none" stroke="#815323" stroke-width="2"/><circle cx="50" cy="50" r="21" fill="url(#vDeep)" stroke="#fff0bc" stroke-width="2"/><path d="M50 31V69M59 39Q50 32 42 40Q37 48 51 51Q65 55 57 65Q49 73 40 64" fill="none" stroke="#fff0bc" stroke-width="4" stroke-linecap="round"/>',
+  serpent:'<path d="M23 72Q14 52 34 40Q48 32 62 43Q76 54 64 66Q55 75 43 66Q34 58 42 51Q48 46 54 52" fill="none" stroke="url(#vGold)" stroke-width="13" stroke-linecap="round"/><path d="M62 43L79 28L78 49Z" fill="url(#vGold)" stroke="#fff0bc" stroke-width="2"/><circle cx="72" cy="39" r="2.5" fill="#14202b"/>',
+  calendar:'<circle cx="50" cy="50" r="35" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="4"/><circle cx="50" cy="50" r="26" fill="url(#vDeep)" stroke="#fff0bc" stroke-width="2"/><path d="M50 27V73M27 50H73M34 34L66 66M66 34L34 66" stroke="#fff0bc" stroke-width="3"/><circle cx="50" cy="50" r="8" fill="#fff1c0"/>',
+  heart:'<path d="M50 82Q16 59 18 38Q20 18 39 20Q48 21 50 33Q56 18 72 21Q91 25 82 47Q76 63 50 82Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M29 36Q33 25 44 30" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".8"/>',
+  jewel:'<path d="M50 8L79 27L88 52L50 91L12 52L21 27Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M21 27H79L50 91ZM21 27L50 8L79 27L50 47Z" fill="url(#vDeep)" opacity=".8"/><path d="M50 8V47L88 52" fill="none" stroke="#fff" stroke-width="2" opacity=".65"/>',
+  crown:'<path d="M14 35L31 49L50 18L69 49L86 35L78 77H22Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M22 77H78V85H22Z" fill="url(#vDeep)" stroke="#fff0bc" stroke-width="2"/><circle cx="31" cy="50" r="5" fill="#d9f7ff"/><circle cx="50" cy="30" r="6" fill="#eaa7c6"/><circle cx="69" cy="50" r="5" fill="#9de4dc"/>',
+  ticket:'<path d="M18 27H82V42Q70 50 82 58V73H18V58Q30 50 18 42Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M50 31V69" stroke="#fff0bc" stroke-width="3" stroke-dasharray="4 4"/><path d="M29 42H41M29 58H41M59 42H71M59 58H71" stroke="#744d30" stroke-width="3"/>',
+  pearl:'<circle cx="50" cy="50" r="31" fill="url(#vPearl)" stroke="#fff" stroke-width="3"/><ellipse cx="39" cy="35" rx="11" ry="7" fill="#fff" opacity=".7"/>',
+  feather:'<path d="M76 12Q83 59 25 88Q17 47 76 12Z" fill="url(#vGold)" stroke="url(#vHi)" stroke-width="3"/><path d="M24 87Q48 55 72 21M42 65L34 49M54 52L48 36M65 39L62 28" stroke="#fff0bc" stroke-width="2" fill="none"/>'
+ };
+ function iconSvg(id,world){
+  const p=palettes[world]||palettes.aztec;
+  let shape=shapes[id]||shapes.jewel;
+  if(id==='free1'||id==='free2'||id==='free5')shape=shapes.ticket;
+  if(id==='bonus')shape=shapes.jewel;
+  if(id==='jackpot')shape=shapes.crown;
+  if(id==='respin')shape=shapes.pearl;
+  if(id==='calendar')shape=shapes.calendar;
+  if(id==='serpent')shape=shapes.serpent;
+  const label=(worldLabels[world]||worldLabels.aztec)[Math.max(0,['sunstone','jaguar','eagle','mask','idol','coin','serpent','calendar'].indexOf(id))]||id;
+  return '<svg class="v6Glyph" viewBox="0 0 100 100" role="img" aria-label="'+label+'"><defs><linearGradient id="vGold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+p[0]+'"/><stop offset=".34" stop-color="'+p[1]+'"/><stop offset=".7" stop-color="'+p[2]+'"/><stop offset="1" stop-color="'+p[3]+'"/></linearGradient><linearGradient id="vDeep" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+p[0]+'" stop-opacity=".9"/><stop offset="1" stop-color="'+p[3]+'"/></linearGradient><linearGradient id="vHi" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="'+p[0]+'"/><stop offset="1" stop-color="'+p[2]+'"/></linearGradient><radialGradient id="vPearl"><stop stop-color="#fff"/><stop offset=".5" stop-color="'+p[0]+'"/><stop offset="1" stop-color="'+p[2]+'"/></radialGradient></defs><ellipse cx="50" cy="91" rx="29" ry="5" fill="#000" opacity=".35"/><g filter="drop-shadow(0 4px 5px #0008)">'+shape+'</g><path d="M18 25Q31 9 49 13" stroke="#fff" stroke-width="2" opacity=".38" fill="none" stroke-linecap="round"/></svg>';
+ }
+ window.symbolMarkup=function(id){
+  const order=['sunstone','jaguar','eagle','mask','idol','coin','serpent','calendar'];
+  let key=id;
+  if(!order.includes(id)&&!['free1','free2','free5','bonus','jackpot','respin'].includes(id))key='jewel';
+  return '<div class="symbol" data-symbol="'+id+'"><span class="v6Artifact">'+iconSvg(key,current?.id||'aztec')+'</span></div>';
+ };
+ window.v6RenderWorldRail=function(){
+  const rail=document.getElementById('v6BonusRail');if(!rail||!current)return;
+  const cfg={
+   aztec:['GOLDEN TEMPLE','Recover ancient relics to reveal the temple vault.',['coin','idol','sunstone']],
+   cyber:['CYBER HEART','Gather energy cores and unlock the neon heart chamber.',['heart','jewel','calendar']],
+   dragon:['DRAGON HOARD','Discover dragon jewels, scales and the hidden hoard.',['jewel','serpent','crown']],
+   cosmic:['GALAXY BLAST','Collect cosmic fragments and power the supernova.',['calendar','jewel','pearl']],
+   phoenix:['PHOENIX REBIRTH','Gather sacred feathers to awaken the firebird.',['feather','heart','crown']],
+   ocean:['PEARL DISCOVERY','Collect rare pearls and open the deep-sea vault.',['pearl','jewel','coin']],
+   wildwest:['SHERIFF’S VAULT','Collect frontier badges and uncover the gold wagon.',['crown','coin','ticket']],
+   moon:['CELESTIAL HEART','Gather moon crystals and awaken the lunar heart.',['heart','pearl','jewel']]
+  }[current.id];
+  const icons=cfg[2].map(k=>'<span>'+iconSvg(k,current.id)+' '+({coin:'Treasure',idol:'Relic',sunstone:'Sunstone',heart:'Heart',jewel:'Jewel',calendar:'Sigil',serpent:'Scale',crown:'Crown',pearl:'Pearl',feather:'Feather',ticket:'Badge'}[k]||'Artifact')+'</span>').join('');
+  const counts=state.v6WorldCollections||{};const count=Number(counts[current.id]||0);const target=25;
+  rail.innerHTML='<div class="v6RailCard"><div class="v6RailTitle">✦ WORLD-SPECIFIC BONUS</div><div class="v6RailMain">'+cfg[0]+'</div><div class="v6RailSub">'+cfg[1]+'</div><div class="v6CollectionMini">'+icons+'</div></div><div class="v6RailCard"><div class="v6RailTitle">✧ ARTIFACT COLLECTION</div><div class="v6RailMain">'+count+' / '+target+' discoveries</div><div class="v6RailSub">Collect special symbols and bonus discoveries in this world.</div><div class="v6RailTrack"><span style="width:'+Math.min(100,count/target*100)+'%"></span></div></div>';
+ };
+ window.v6ShowCelebration=function(kind,title,detail,icon){
+  const old=document.getElementById('v6Celebration');if(old)old.remove();
+  const el=document.createElement('div');el.id='v6Celebration';el.className='v6ToastLayer';
+  el.innerHTML='<div class="v6ToastPanel"><div class="v6CardBadge">LUCKY SPIN ROYAL · '+kind+'</div><div class="v6ToastIcon">'+iconSvg(icon||'crown',current?.id||'aztec')+'</div><div class="v6ToastTitle">'+title+'</div><div class="v6ToastText">'+detail+'</div><button type="button" id="v6CelebrateClose">CONTINUE</button></div>';
+  document.body.appendChild(el);document.getElementById('v6CelebrateClose').onclick=()=>el.remove();el.addEventListener('click',e=>{if(e.target===el)el.remove()});
+  setTimeout(()=>{if(el.isConnected)el.remove()},6500);
+ };
+ window.v6RecordSpin=function(result,grid,adjustedTotal){
+  state.v6WorldCollections=state.v6WorldCollections||{};
+  const specials=result.scatters+result.respins+result.jackpots+result.bonuses+grid.flat().filter(x=>x==='serpent').length;
+  const artifacts=Math.min(3,specials);
+  if(artifacts>0)state.v6WorldCollections[current.id]=(Number(state.v6WorldCollections[current.id])||0)+artifacts;
+  window.v6RenderWorldRail();
+  if(result.jackpots>=3)window.v6ShowCelebration('ROYAL JACKPOT','JACKPOT DISCOVERED','Your reel revealed a '+result.jackpots+'-crown jackpot combination. +'+(typeof money==='function'?money(adjustedTotal||0):'')+' virtual coins.','crown');
+  else if(result.bonuses>=3)window.v6ShowCelebration('WORLD BONUS',({aztec:'TEMPLE VAULT OPENED',cyber:'CYBER HEART AWAKENED',dragon:'DRAGON HOARD FOUND',cosmic:'GALAXY BLAST',phoenix:'PHOENIX REBIRTH',ocean:'PEARL VAULT DISCOVERED',wildwest:'SHERIFF’S VAULT OPENED',moon:'CELESTIAL HEART AWAKENED'}[current.id]||'BONUS DISCOVERED'),'You discovered a special world bonus and added artifacts to your collection.','jewel');
+  else if(adjustedTotal>=Math.max(1000000,(state.bet||5000)*100))window.v6ShowCelebration('MEGA WIN','TREASURE REVEALED','A spectacular virtual-coin result in '+current.name+'.','heart');
+ };
+ const railHTML='<section class="v6BonusRail" id="v6BonusRail" aria-live="polite"></section>';
+ const marker=document.querySelector('#gameView .v54PlayRewards');
+ if(marker&&!document.getElementById('v6BonusRail'))marker.insertAdjacentHTML('afterend',railHTML);
+ const oldSpin=window.spin;
+ if(typeof oldSpin==='function'){
+  window.spin=function(){oldSpin()};
+ }
+ const originalOpen=window.openGameCore;
+ if(typeof originalOpen==='function'){
+  window.openGameCore=function(id){originalOpen(id);window.v6RenderWorldRail()};
+ }
+ const oldUpdate=window.updateHUD;
+ if(typeof oldUpdate==='function'){
+  window.updateHUD=function(){oldUpdate();window.v6RenderWorldRail()};
+ }
+ // Wrap the existing result renderer by observing the final status update after each spin.
+ const status=document.getElementById('status');
+ if(status){
+  const observer=new MutationObserver(()=>{
+   if(!current||!status.textContent||status.textContent==='Welcome to the temple. Every spin is virtual entertainment.')return;
+   const counts=state.v6WorldCollections||{};window.v6RenderWorldRail();
+  });
+  observer.observe(status,{childList:true,characterData:true,subtree:true});
+ }
+ state.v6WorldCollections=state.v6WorldCollections||{};
+ window.v6RenderWorldRail();
+})();
 </script>
 </body></html>
