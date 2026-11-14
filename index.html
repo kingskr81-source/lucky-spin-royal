@@ -235,6 +235,15 @@ button:hover{border-color:#8978e8!important;box-shadow:0 8px 20px #7b6ce644!impo
 .betUnlockNote{color:#6573a0!important}
 @media(max-width:760px){.hero{grid-template-columns:1fr!important}.games{grid-template-columns:repeat(2,minmax(0,1fr))!important}.reels{min-height:310px!important;gap:4px!important}.symbol{min-height:48px!important}}
 
+
+/* V3.7 explicit playable-card affordance */
+#gameGrid .gamecard{cursor:pointer;pointer-events:auto;position:relative;z-index:1}
+#gameGrid .gamecard:focus-visible{outline:4px solid #6b69e8;outline-offset:3px}
+#gameGrid .cardEnter{display:flex;justify-content:space-between;align-items:center}
+#gameView.active{display:block!important;visibility:visible!important;opacity:1}
+#gameView .machine,#gameView .controls,#gameView #status{visibility:visible}
+#gameView .spinbtn,#gameView #spinBtn{pointer-events:auto;cursor:pointer}
+
 </style>
 </head>
 <body>
@@ -402,7 +411,7 @@ function updateHUD(){
 }
 function renderLobby(){
  const artIds=['sunstone','jaguar','eagle','serpent','calendar','mask','idol','coin'];
- $('gameGrid').innerHTML=games.map((g,i)=>{let art='';try{art=symbolSvg(artIds[i]||'coin')}catch(e){art='<span style="font-size:76px">'+g.emoji+'</span>'}return `<article class="gamecard vipCard" onclick="openGame('${g.id}')"><span class="tag">${i===0?'✦ FEATURED EXPERIENCE':'✦ WORLD PREVIEW'}</span><div class="art ${g.art}"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">${art}</div><span class="artTitle">${g.name}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>`}).join('')
+ $('gameGrid').innerHTML=games.map((g,i)=>{let art='';try{art=symbolSvg(artIds[i]||'coin')}catch(e){art='<span style="font-size:76px">'+g.emoji+'</span>'}return `<article class="gamecard vipCard" data-game-id="${g.id}" tabindex="0" role="button" aria-label="Play ${g.name}"><span class="tag">${i===0?'✦ FEATURED EXPERIENCE':'✦ WORLD PREVIEW'}</span><div class="art ${g.art}"><div class="artHalo"></div><div class="artPedestal"></div><div class="vipArtifact">${art}</div><span class="artTitle">${g.name}</span></div><div class="gameinfo"><strong>${g.name}</strong><small>${g.sub}</small><span class="cardEnter">ENTER WORLD <b>↗</b></span></div></article>`}).join('')
 }
 function showLobby(){stopAuto();$('gameView').classList.remove('active');$('lobby').classList.add('active')}
 function openGame(id){
@@ -419,8 +428,10 @@ function openGame(id){
   window.scrollTo({top:0,behavior:'smooth'});
  }catch(err){console.error('Could not open game:',err);$('gameView').classList.remove('active');$('lobby').classList.add('active');toast('Could not open this game. Please refresh and try again.')}
 }
-window.openGame=openGame;
-document.addEventListener('click',function(event){const card=event.target.closest('#gameGrid .gamecard');if(card){const match=card.getAttribute('onclick')?.match(/openGame\(['"]([^'"]+)['"]\)/);if(match)openGame(match[1])}});
+window.openGame=openGame;window.spin=spin;window.autoPlay=autoPlay;window.showLobby=showLobby;
+function enterCard(card){if(card&&card.dataset.gameId)openGame(card.dataset.gameId)}
+document.addEventListener('click',function(event){const card=event.target.closest('#gameGrid .gamecard');if(card)enterCard(card)});
+document.addEventListener('keydown',function(event){if((event.key==='Enter'||event.key===' ')&&event.target.matches('#gameGrid .gamecard')){event.preventDefault();enterCard(event.target)}});
 function weightedSymbol(){let total=SYMBOLS.reduce((a,s)=>a+s.weight,0),n=Math.random()*total;for(const s of SYMBOLS){n-=s.weight;if(n<=0)return s}return SYMBOLS[0]}
 function symbolSvg(id){
  const defs=`<defs>
@@ -479,11 +490,13 @@ function spin(){
  // XP is awarded once after the result via addXP(): 25 paid / 10 free, plus 10 for a win.
  spinning=true;$('spinBtn').disabled=true;$('autoBtn').disabled=true;
  const root=$('reels'),reels=[...root.querySelectorAll('.reel')];
+ if(reels.length!==5){buildReels();}
+ const activeReels=[...root.querySelectorAll('.reel')];
  // Determine the final 5×5 result before constructing the moving reel strips.
  // V3 previously referenced grid before it existed, which stopped the first spin.
  const grid=Array.from({length:5},()=>Array.from({length:5},()=>weightedSymbol().id));
  const result=evaluateWays(grid);
- reels.forEach((reel,c)=>{
+ activeReels.forEach((reel,c)=>{
   const track=reel.querySelector('.reelTrack');reel.classList.remove('stopping');
   const strip=[...Array.from({length:17},()=>weightedSymbol().id),...grid[c]];
   track.innerHTML=strip.map(symbolMarkup).join('');
@@ -493,7 +506,7 @@ function spin(){
   requestAnimationFrame(()=>{const distance=Math.max(0,track.scrollHeight-reel.clientHeight);track.style.transition=`transform ${1.05+c*.24}s cubic-bezier(.08,.72,.14,1)`;track.style.transform=`translateY(-${distance}px)`});
  });
  playTone(150,.22,'sawtooth');
- const stopTimes=reels.map((_,i)=>1250+i*260);
+ const stopTimes=activeReels.map((_,i)=>1250+i*260);
  stopTimes.forEach((delay,c)=>setTimeout(()=>{
   const reel=reels[c],track=reel.querySelector('.reelTrack');
   reel.classList.remove('spinning');reel.classList.add('stopping');
