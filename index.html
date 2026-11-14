@@ -451,12 +451,13 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
 @media(max-width:560px){.v52Stages{grid-template-columns:repeat(2,minmax(0,1fr))}.v52BonusMeter{grid-template-columns:1fr}}
 
 
-#gameView .spinrow{grid-template-columns:1fr 1.35fr 1fr;max-width:1100px}#gameView .spinbtn{font-size:clamp(16px,2.4vw,22px);padding:11px 12px;letter-spacing:1px}#gameView .spinrow button:not(.spinbtn){padding:11px 9px}
+#gameView .spinrow{grid-template-columns:1fr 1.35fr 1fr 1fr;max-width:1100px}#gameView .spinbtn{font-size:clamp(16px,2.4vw,22px);padding:11px 12px;letter-spacing:1px}#gameView .spinrow button:not(.spinbtn){padding:11px 9px}
 #gameView .infoStrip{max-width:1100px!important;display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:10px}#gameView .infoStrip .infoBox:first-child{grid-column:1;grid-row:1}#gameView .infoStrip .infoBox:nth-child(2){grid-column:2;grid-row:1}#gameView .infoStrip .infoBox:nth-child(3){grid-column:3;grid-row:1}
 .v53Meter{height:9px;background:#050b14;border-radius:20px;overflow:hidden;margin:8px 0 5px}.v53Meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,#48d4c5,#f0c06b);transition:width .25s}.v53MeterText{font-size:10px;color:#c7d5e5}.v53MaxBet{font-size:10px!important;padding:7px 10px!important;border:1px solid #e4bc70!important;background:linear-gradient(120deg,#62459a,#a36b35)!important}
 .v53Jackpot{max-width:1100px;margin:14px auto;padding:16px;border:1px solid #c9a45f88;border-radius:16px;background:linear-gradient(145deg,#17283d,#0b1422)}.v53JackpotHead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.v53JackpotHead h3{margin:0;color:#f3d18b}.v53JackpotGrid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:12px}.v53JackpotCard{padding:10px 8px;text-align:center;border:1px solid #71849b66;border-radius:12px;background:#0b1727;min-width:0}.v53JackpotCard.ready{border-color:#e5bf70;box-shadow:0 0 15px #d9a94b24}.v53JackpotCard b{display:block;color:#f4d28a;font-size:11px}.v53JackpotCard strong{display:block;margin:6px 0;color:#fff;font-size:13px}.v53JackpotCard small{display:block;color:#bdcada;font-size:10px;line-height:1.45}.v53JackpotCard button{font-size:9px;padding:6px 5px;margin-top:8px}.v53Legend{font-size:10px;color:#afbed0;margin-top:10px;line-height:1.5}
 @media(max-width:900px){.v53JackpotGrid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:650px){#gameView .infoStrip{grid-template-columns:1fr 1fr}#gameView .infoStrip .infoBox:first-child{grid-column:1;grid-row:1}#gameView .infoStrip .infoBox:nth-child(2){grid-column:2;grid-row:1}#gameView .infoStrip .infoBox:nth-child(3){grid-column:1 / -1;grid-row:2}.v53JackpotGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
+@media(max-width:760px){#gameView .spinrow{grid-template-columns:1fr 1.2fr}#gameView .spinrow .infoBox{grid-column:1 / -1}}
 </style>
 </head>
 <body>
@@ -546,12 +547,12 @@ button:hover{border-color:#80b7bd!important;box-shadow:0 9px 22px #0008,0 0 16px
   <div class="controlPanel betControl"><label>BET TIER</label><button id="betDown" onclick="changeBet(-1)" aria-label="Lower bet">−</button><div class="betval" id="betValue">5,000</div><button id="betUp" onclick="changeBet(1)" aria-label="Raise bet">+</button><button class="v53MaxBet" id="maxBetBtn" onclick="setMaxBet()">MAX BET</button><label>PER SPIN</label><small id="betUnlockNote" class="betUnlockNote">LEVEL 1 · STARTER TIER</small></div>
   <div class="controlPanel"><label>AUTO SPINS</label><select id="autoCount"><option value="10">10 spins</option><option value="20" selected>20 spins</option><option value="30">30 spins</option><option value="100">100 spins</option></select><button onclick="autoPlay()" id="autoBtn">▶ AUTO PLAY</button><button onclick="stopAuto()" id="stopBtn" disabled>■ STOP</button></div>
  </div>
- <div class="spinrow"><button onclick="showRules()">📖 PAYTABLE</button><button class="spinbtn" id="spinBtn" onclick="spin()">⚡ SPIN ⚡</button><button onclick="resetDemo()">↻ RESET DEMO</button></div>
+ <div class="spinrow"><button onclick="showRules()">📖 PAYTABLE</button><button class="spinbtn" id="spinBtn" onclick="spin()">⚡ SPIN ⚡</button><button onclick="resetDemo()">↻ RESET DEMO</button><div class="infoBox" style="padding:10px;min-width:0"><b>📊 LAST RESULT</b><span id="lastResult">No spins yet</span></div></div>
  <div class="status" id="status">Welcome to the temple. Every spin is virtual entertainment.</div>
  <div class="infoStrip" style="max-width:980px;margin:12px auto">
   <div class="infoBox"><b>🎁 FREE GAMES & RESPINS</b><span id="freeSpinInfo">No bonus turns active</span><div class="v53Meter"><span id="v53FreeMeter"></span></div><div class="v53MeterText" id="v53FreeMeterText">Paid spins: 0 / 12 toward the next guaranteed free-spin drop</div></div>
   <div class="infoBox"><b>👑 ROYAL JACKPOT LADDER</b><span id="bonusInfo">Collect star tickets to unlock six jackpot tiers below.</span><div class="v53Meter"><span id="v53JackpotMeter"></span></div><div class="v53MeterText" id="v53JackpotMeterText">Star tickets collected: 0</div></div>
-  <div class="infoBox"><b>📊 LAST RESULT</b><span id="lastResult">No spins yet</span></div>
+  
  </div>
  <section class="v53Jackpot" id="v53JackpotLadder"><div class="v53JackpotHead"><h3>👑 ROYAL JACKPOT LADDER · SIX TIERS</h3><span class="v53MeterText">Redeem the matching star ticket to unlock each virtual jackpot</span></div><div class="v53JackpotGrid" id="v53JackpotGrid"></div><div class="v53Legend">⭐ Mini · ⭐ Minor · ⭐⭐ Major · ⭐⭐⭐ Grand · ⭐⭐⭐⭐ Super · ⭐⭐⭐⭐⭐ Legendary. Tickets are consumed when redeemed. All prizes are virtual coins with no cash value.</div></section>
 <div style="max-width:980px;margin:10px auto;text-align:center"><button id="collectionBtn" onclick="openAlbum()">✦ CARD ALBUM · COLLECTION <span id="cardCount">0/8</span></button></div>
