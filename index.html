@@ -1182,4 +1182,113 @@ renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v5
  const st=document.getElementById('status');if(st)new MutationObserver(celebrate).observe(st,{childList:true,characterData:true,subtree:true});setTimeout(refresh,100);
 })();
 </script>
+
+<style id="v62WorldSymbolsAndGrid">
+/* Each world has its own cabinet finish and compact 5×5 reel geometry */
+#gameView.active{min-height:0;height:calc(100dvh - 68px);overflow-y:auto;overflow-x:hidden}
+#gameView .machine{flex:0 0 auto;width:min(100%,1120px)}
+#gameView .machineInner{min-height:0}
+#gameView .reels{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:1fr;gap:clamp(3px,.55vw,8px);height:clamp(250px,46dvh,410px);min-height:250px;max-height:410px;flex:none}
+#gameView .reel{display:grid!important;grid-template-rows:repeat(5,minmax(0,1fr));gap:clamp(3px,.45vw,6px);padding:clamp(3px,.45vw,6px);min-width:0;min-height:0}
+#gameView .reelTrack{position:absolute!important;inset:0!important;display:flex!important;flex-direction:column!important;gap:4px!important;padding:4px!important;will-change:transform;min-height:0}
+#gameView .symbol{width:100%;height:auto;min-width:0;min-height:0!important;flex:1 0 calc((100% - 24px)/5)!important;overflow:hidden;border-radius:clamp(5px,.6vw,9px);padding:2px}
+#gameView .symbol .themedGlyph{display:grid;place-items:center;width:100%;height:100%;font-size:0!important}
+#gameView .symbol .themedGlyph svg{display:block;width:min(86%,66px);height:min(86%,66px);max-width:100%;max-height:100%;overflow:visible}
+#gameView .symbol.win .themedGlyph svg{filter:drop-shadow(0 0 8px var(--worldGlow,#ffe08a))}
+.theme-aztec{--worldGlow:#f5bf52}.theme-cyber{--worldGlow:#4beaff}.theme-dragon{--worldGlow:#ff7042}.theme-cosmic{--worldGlow:#e67cff}.theme-phoenix{--worldGlow:#ff9a3d}.theme-ocean{--worldGlow:#4de8ff}.theme-wildwest{--worldGlow:#f0bc62}.theme-moon{--worldGlow:#b5c8ff}
+.theme-aztec .machine{background:linear-gradient(145deg,#d8a747,#563514 28%,#18121a 80%)}
+.theme-cyber .machine{background:linear-gradient(145deg,#4beaff,#153b78 28%,#0a1029 80%)}
+.theme-dragon .machine{background:linear-gradient(145deg,#ff8a40,#6b1d24 28%,#1c0b1c 80%)}
+.theme-cosmic .machine{background:linear-gradient(145deg,#df75ff,#4a1a83 28%,#100d2d 80%)}
+.theme-phoenix .machine{background:linear-gradient(145deg,#ffc05c,#9a321e 28%,#21101a 80%)}
+.theme-ocean .machine{background:linear-gradient(145deg,#7cf4ed,#176b82 28%,#071b32 80%)}
+.theme-wildwest .machine{background:linear-gradient(145deg,#e5b56a,#704322 28%,#20131a 80%)}
+.theme-moon .machine{background:linear-gradient(145deg,#c4d4ff,#47558c 28%,#11152d 80%)}
+@media(max-width:700px){#gameView.active{height:auto;min-height:calc(100dvh - 65px)}#gameView .reels{height:clamp(270px,76vw,390px);min-height:270px;max-height:390px}}
+@media(max-width:420px){#gameView .reels{height:270px;min-height:270px;gap:3px}#gameView .reel{padding:2px;gap:2px}#gameView .reelTrack{gap:2px}#gameView .symbol .themedGlyph svg{width:92%;height:92%}}
+</style>
+<script id="v62WorldSpecificSymbols">
+(function(){
+ const worlds={
+ aztec:{name:'AZTEC',colors:['#fff2a5','#f7bd43','#b86a17','#5d2b0a'],bg:'#f3bb43',motifs:['sun','cat','eagle','mask','idol','coin','serpent','calendar']},
+ cyber:{name:'CYBER',colors:['#e3ffff','#59efff','#168cda','#172c82'],bg:'#42eaff',motifs:['chip','bot','ufo','orb','bolt','alien','disc','portal']},
+ dragon:{name:'DRAGON',colors:['#fff0bd','#ff9b46','#d94728','#641728'],bg:'#ff8141',motifs:['dragon','flame','egg','shield','sack','crown','gem','key']},
+ cosmic:{name:'COSMIC',colors:['#ffe9ff','#ed91ff','#8a45d9','#2c1b79'],bg:'#d47aff',motifs:['cherry','lemon','grape','bell','star','seven','comet','moon']},
+ phoenix:{name:'PHOENIX',colors:['#fff2b2','#ffb04a','#e94e23','#7b1e19'],bg:'#ff9a3d',motifs:['phoenix','flame','lotus','sapphire','crown','sun','feather','trophy']},
+ ocean:{name:'OCEAN',colors:['#e0ffff','#69e6e7','#1789a9','#10405c'],bg:'#55e5ed',motifs:['dolphin','shell','coral','shark','pearl','anchor','bubble','trident']},
+ wildwest:{name:'FRONTIER',colors:['#fff0bd','#e4b66a','#a65d2a','#552b1d'],bg:'#e7b65c',motifs:['hat','horse','cactus','star','bell','sack','card','wheel']},
+ moon:{name:'LUNAR',colors:['#f3f4ff','#c5d2ff','#7189d7','#303a83'],bg:'#b7caff',motifs:['crescent','stars','planet','moonstar','orb','owl','crystal','crown']}
+ };
+ const shape={
+ sun:'<circle cx="50" cy="50" r="25"/><circle cx="50" cy="50" r="14" fill="none"/><path d="M50 4V19M50 81v15M4 50h15M81 50h15M17 17l11 11m44 44 11 11M83 17 72 28M28 72 17 83"/>',
+ cat:'<path d="M19 41 15 13 39 27Q50 21 61 27L85 13 81 43Q91 63 75 79L50 92 25 79Q9 61 19 41Z"/><circle cx="37" cy="53" r="5" fill="#fff"/><circle cx="63" cy="53" r="5" fill="#fff"/><path d="M42 69Q50 77 58 69"/>',
+ eagle:'<path d="M50 16Q32 7 8 22L31 48 12 66 50 58 88 66 69 48 92 22Q68 7 50 16Z"/><path d="M50 28 39 53 50 83 61 53Z"/>',
+ mask:'<path d="M20 18Q50 3 80 18L76 68 50 91 24 68Z"/><path d="M28 42 45 38 42 55 28 53ZM72 42 55 38 58 55 72 53Z" fill="#fff"/><path d="M50 54 42 73 58 73Z"/>',
+ idol:'<path d="M31 14H69L79 35 72 84 50 96 28 84 21 35Z"/><path d="M36 38h10v12H36zm18 0h10v12H54zM39 66h22"/>',
+ coin:'<circle cx="50" cy="50" r="39"/><circle cx="50" cy="50" r="30" fill="none"/><path d="M50 25 57 43 76 43 61 55 67 75 50 63 33 75 39 55 24 43 43 43Z"/>',
+ serpent:'<path d="M19 70Q5 48 30 33T67 27Q91 29 83 48T47 51Q30 50 34 66T61 76Q76 76 82 63"/><path d="m70 15 17 9-16 9"/>',
+ calendar:'<rect x="16" y="22" width="68" height="63" rx="8"/><path d="M16 40h68M32 13v18M68 13v18M35 55h8m13 0h8m-29 15h8m13 0h8"/>',
+ chip:'<rect x="24" y="24" width="52" height="52" rx="8"/><path d="M38 38h44v44H38zM50 8v16m20-16v16M50 76v16m20-16v16M8 50h16m-16 20h16m52-20h16M76 70h16"/>',
+ bot:'<rect x="20" y="28" width="60" height="52" rx="14"/><path d="M50 28V13m-8 0h16M32 46h10m16 0h10M38 65h24"/>',
+ ufo:'<path d="M8 55Q50 17 92 55Q50 88 8 55Z"/><path d="M28 48Q50 5 72 48M18 64l-8 13m34-3-3 13m34-13 8 13"/>',
+ orb:'<circle cx="50" cy="50" r="34"/><path d="M50 8 59 39 91 50 59 61 50 92 41 61 9 50 41 39Z"/>',
+ bolt:'<path d="M58 6 21 56h25l-5 38 38-54H54Z"/>',
+ alien:'<path d="M50 8Q14 8 18 53q2 32 32 39 30-7 32-39Q86 8 50 8Z"/><ellipse cx="36" cy="48" rx="9" ry="14" fill="#fff"/><ellipse cx="64" cy="48" rx="9" ry="14" fill="#fff"/>',
+ disc:'<circle cx="50" cy="50" r="38"/><circle cx="50" cy="50" r="13" fill="none"/><path d="M50 12v25m0 26v25M12 50h25m26 0h25"/>',
+ portal:'<ellipse cx="50" cy="50" rx="30" ry="42"/><ellipse cx="50" cy="50" rx="17" ry="29" fill="none"/>',
+ dragon:'<path d="M18 78Q7 41 34 19L52 9 48 31 77 21 67 43 91 54 70 66 78 91 50 77 30 92Z"/><path d="M50 39 64 47 50 57 38 49Z" fill="#fff"/>',
+ flame:'<path d="M52 7Q78 35 65 51Q92 43 82 75Q71 99 45 93Q10 85 28 53Q36 38 40 20Q47 34 48 43Z"/>',
+ egg:'<path d="M50 8Q23 37 24 62a26 26 0 0 0 52 0Q76 37 50 8Z"/><path d="m34 58 16-10 16 10-16 13Z" fill="#fff"/>',
+ shield:'<path d="M50 8 86 22 80 66 50 92 20 66 14 22Z"/><path d="m50 24 20 9-4 28-16 14-16-14-4-28Z" fill="none"/>',
+ sack:'<path d="M38 21Q50 30 62 21L72 37Q92 75 50 91 8 75 28 37Z"/><path d="M37 19h26M50 43v28m-9-20q9-12 18 0-9 12-18 0Z"/>',
+ crown:'<path d="m12 30 24 19 14-35 14 35 24-19-9 58H21Z"/><circle cx="12" cy="28" r="6"/><circle cx="50" cy="12" r="6"/><circle cx="88" cy="28" r="6"/>',
+ gem:'<path d="M12 34 29 12h42l37 22-48 57Z"/><path d="m12 34 38 0 10 57M71 12 50 34 29 12"/>',
+ key:'<circle cx="31" cy="38" r="17"/><circle cx="31" cy="38" r="7" fill="none"/><path d="M45 50 88 91m-14-14 10-10m-20 0 10-10"/>',
+ cherry:'<path d="M50 39Q50 8 75 11M50 39Q31 6 16 19"/><circle cx="32" cy="67" r="22"/><circle cx="72" cy="67" r="22"/>',
+ lemon:'<path d="M12 50Q32 8 72 23Q111 37 87 68Q54 105 22 77Z"/><path d="M18 50Q48 42 82 62" fill="none"/>',
+ grape:'<circle cx="38" cy="42" r="14"/><circle cx="62" cy="42" r="14"/><circle cx="26" cy="64" r="14"/><circle cx="50" cy="64" r="14"/><circle cx="74" cy="64" r="14"/><path d="M50 29Q55 8 75 12"/>',
+ bell:'<path d="M22 72Q30 58 30 39Q30 13 50 13t20 26q0 19 8 33Z"/><path d="M14 77h72M43 88q7 12 14 0"/>',
+ star:'<path d="m50 5 13 30 32 3-24 21 7 33-28-17-28 17 7-33L5 38l32-3Z"/>',
+ seven:'<path d="M20 20h65L43 91H23l40-55H20Z"/>',
+ comet:'<path d="M69 18a28 28 0 1 0 27 36Q78 67 64 52 48 36 69 18Z"/><path d="M13 88 45 57M7 68l21-5M34 96l6-22"/>',
+ moon:'<path d="M72 12Q22 16 25 60q3 34 41 31 20-2 31-19Q53 79 72 12Z"/>',
+ phoenix:'<path d="M50 8Q73 31 66 48L92 36Q91 70 61 80L50 98 39 80Q9 70 8 36l26 12Q27 31 50 8Z"/>',
+ lotus:'<path d="M50 88Q6 68 20 33q22 4 30 35 8-31 30-35 14 35-30 55ZM50 88Q27 47 50 15q23 32 0 73Z"/>',
+ sapphire:'<path d="M12 35 30 12h40l38 23-58 54Z"/><path d="m30 12 20 23 20-23M12 35h76L50 89Z"/>',
+ sun:'<circle cx="50" cy="50" r="20"/><path d="M50 5v18m0 54v18M5 50h18m54 0h18M18 18l13 13m38 38 13 13M82 18 69 31M31 69 18 82"/>',
+ feather:'<path d="M18 91Q22 26 88 9q4 62-70 82Z"/><path d="M14 99 79 19M40 72l-3-23m19 5 1-23m-1 43 19-12"/>',
+ trophy:'<path d="M32 12h36v30q0 24-18 24T32 42Z"/><path d="M32 22H12v13q0 20 26 20m30-33h20v13q0 20-26 20M50 66v20m-20 8h40"/>',
+ dolphin:'<path d="M10 61Q34 20 72 37l22-16-8 27 12 17-35-5Q36 86 10 61Z"/><circle cx="64" cy="46" r="3" fill="#fff"/>',
+ shell:'<path d="M15 85Q7 25 50 14q43 11 35 71Z"/><path d="M50 14v71M50 18 28 85M50 18l22 67M50 18 15 85m35-67 35 67"/>',
+ coral:'<path d="M50 90V51m0 12L25 38m25 25 24-33M25 38 14 19m11 19 4-22m44 7-4 19m4-19 14-12M50 51 41 27"/>',
+ shark:'<path d="M8 54Q39 12 91 39l18 15-18 15Q39 96 8 54Z"/><path d="m50 32 12-20 11 29M50 75l12 17 11-29"/>',
+ pearl:'<circle cx="50" cy="50" r="34"/><ellipse cx="39" cy="35" rx="12" ry="7" fill="#fff" stroke="none"/>',
+ anchor:'<circle cx="50" cy="18" r="9" fill="none"/><path d="M50 27v60M28 48h44M15 66Q17 92 50 92t35-26"/>',
+ bubble:'<circle cx="50" cy="50" r="30"/><circle cx="39" cy="38" r="8" fill="#fff" stroke="none"/><circle cx="88" cy="25" r="8"/><circle cx="19" cy="82" r="6"/>',
+ trident:'<path d="M50 12v82M50 38Q15 55 18 18m32 20Q85 55 82 18M18 18 8 30m10-12 10 12m54-12L72 30m10-12 10 12"/>',
+ hat:'<path d="M20 52 27 20 73 20 80 52Q96 59 96 73H4Q4 59 20 52Z"/><path d="M27 38h46"/>',
+ horse:'<path d="M22 84 26 47 45 32 62 37 75 20 89 33 80 57 70 85H59L61 59 43 58 39 85Z"/><path d="m73 25 11-10"/>',
+ cactus:'<path d="M42 91V26Q42 9 52 9t10 17v65ZM42 46H29Q19 46 19 34V25m42 33h12q11 0 11-12V34"/>',
+ card:'<rect x="20" y="9" width="60" height="82" rx="7"/><path d="m30 27 8 10 8-10m-16 42 8-10 8 10"/>',
+ wheel:'<circle cx="50" cy="50" r="39"/><circle cx="50" cy="50" r="10"/><path d="M50 11v29m0 20v29M11 50h29m20 0h29M22 22l21 21m14 14 21 21m0-56L57 43M43 57 22 78"/>',
+ crescent:'<path d="M76 13Q25 18 25 56q0 37 42 40 22 2 35-18Q55 81 76 13Z"/>',
+ stars:'<path d="m27 18 7 16 17 2-13 11 4 18-15-9-15 9 4-18L3 36l17-2Z"/><path d="m78 51 7 13 14 2-11 9 3 15-13-8-13 8 3-15-11-9 14-2Z"/>',
+ planet:'<circle cx="50" cy="50" r="24"/><ellipse cx="50" cy="50" rx="45" ry="13" fill="none" transform="rotate(-25 50 50)"/>',
+ moonstar:'<path d="M72 13Q26 20 28 57q2 34 39 34 19-1 29-18Q57 77 72 13Z"/><path d="m80 8 5 12 13 2-10 9 2 13-10-7-11 7 3-13-10-9 13-2Z"/>',
+ owl:'<path d="M17 30 13 10 37 22Q50 15 63 22L87 10 83 30Q94 72 50 92 6 72 17 30Z"/><circle cx="36" cy="49" r="12" fill="none"/><circle cx="64" cy="49" r="12" fill="none"/><path d="m50 59-8 12h16Z"/>'
+ };
+ function svgArt(world,slot){
+  const w=worlds[world]||worlds.aztec,motif=w.motifs[slot%8],c=w.colors;
+  const grad='g'+world+slot, glow='f'+world+slot;
+  return '<svg viewBox="0 0 100 100" role="img" aria-label="'+w.name+' '+motif+' collectible"><defs><linearGradient id="'+grad+'" x1="0" y1="0" x2="1" y2="1"><stop stop-color="'+c[0]+'"/><stop offset=".32" stop-color="'+c[1]+'"/><stop offset=".72" stop-color="'+c[2]+'"/><stop offset="1" stop-color="'+c[3]+'"/></linearGradient><radialGradient id="'+glow+'"><stop stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><g fill="url(#'+grad+')" stroke="'+c[0]+'" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">'+(shape[motif]||shape.gem)+'</g><ellipse cx="34" cy="24" rx="22" ry="13" fill="url(#'+glow+')"/><path d="M17 84Q50 98 83 84" fill="none" stroke="'+c[0]+'" stroke-opacity=".35" stroke-width="2"/></svg>';
+ }
+ const slotFor={sunstone:0,jaguar:1,eagle:2,mask:3,idol:4,coin:5,serpent:6,calendar:7,respin:7,jackpot:7,free1:7,free2:7,free5:7,bonus:4};
+ window.symbolMarkup=function(id){
+  const world=current&&current.id||'aztec',slot=slotFor[id]??0,w=worlds[world]||worlds.aztec;
+  const special=id==='serpent'?'WILD':id==='calendar'?'SCATTER':id==='jackpot'?'JACKPOT':id==='free1'||id==='free2'||id==='free5'?'FREE SPIN':id==='respin'?'RESPIN':id==='bonus'?'BONUS':w.motifs[slot];
+  return '<div class="symbol worldSymbol" data-symbol="'+id+'" data-world="'+world+'" title="'+w.name+' · '+special+'"><span class="themedGlyph">'+svgArt(world,slot)+'</span></div>';
+ };
+ // Keep the original reel-strip animation engine intact; only the symbol artwork is themed.
+})();
+</script>
 </body></html>
