@@ -342,12 +342,12 @@ const money=n=>Math.floor(n).toLocaleString('en-US');
 const STORE='lsRoyalDemoV2';
 const defaults={balance:5000000,level:1,xp:120,spins:0,wins:0,best:0,bet:5000,freeSpins:0,respinSpins:0,questSpins:0,dailyDate:'',dailyClaimed:false,progressionVersion:0,questDate:'',questSpinCount:0,questWinCount:0,questClaims:[],winStreak:0};
 const BET_TIERS=[{level:1,bet:5000},{level:3,bet:10000},{level:5,bet:20000},{level:8,bet:50000},{level:12,bet:100000},{level:18,bet:250000},{level:25,bet:500000},{level:35,bet:1000000}];
+let state;
+try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
 function unlockedBets(){return BET_TIERS.filter(t=>state.level>=t.level).map(t=>t.bet)}
 function maxBetForLevel(level){const allowed=BET_TIERS.filter(t=>level>=t.level);return allowed.length?allowed[allowed.length-1].bet:5000}
 state.bet=Math.min(Number(state.bet)||5000,maxBetForLevel(state.level));
 if(!Number.isFinite(state.respinSpins))state.respinSpins=0;
-let state;
-try{state={...defaults,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){state={...defaults}}
 function xpNeeded(level){return 250+Math.max(0,level-1)*50}
 function levelReward(level){return 100000+level*25000}
 function migrateProgression(){
