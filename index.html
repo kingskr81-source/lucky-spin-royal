@@ -922,6 +922,7 @@ function spin(){
   if(result.jackpots>=3){const multiplier=result.jackpots>=5?1000:result.jackpots===4?250:50;const prize=Math.max(10000000,Math.floor(state.bet*multiplier));state.balance+=prize;state.best=Math.max(state.best,prize);bonusMessages.push('ROYAL JACKPOT +'+money(prize));playTone(1040,.45,'sine');}
   if(bonusMessages.length)message+=' · '+bonusMessages.join(' · ');
   if(result.total>0&&Math.random()<({easy:.001,medium:.002,hard:.004}[state.difficultyByGame[current.id]||'medium'])){const tier=1+Math.floor(Math.random()*3);v5AwardTicket(tier);message+=' · RARE TICKET DISCOVERY';}
+  if(window.v6RecordSpin)window.v6RecordSpin(result,grid, result.total>0?Math.floor(result.total*({easy:.8,medium:1,hard:1.5}[state.difficultyByGame[current.id]||'medium'])):0);
   v5Update();v52Render();v53Update();
   const wildCount=grid.flat().filter(x=>x==='serpent').length;
   let showCardDrop=wildCount>=2 && (state.cards||[]).length<CARD_POOL.length;
@@ -1088,6 +1089,10 @@ renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v5
   if(!order.includes(id)&&!['free1','free2','free5','bonus','jackpot','respin'].includes(id))key='jewel';
   return '<div class="symbol" data-symbol="'+id+'"><span class="v6Artifact">'+iconSvg(key,current?.id||'aztec')+'</span></div>';
  };
+
+ window.v6IconSvg=iconSvg;
+ const originalSymbolSvg=window.symbolSvg;
+ window.symbolSvg=function(id){const ids=['sunstone','jaguar','eagle','serpent','calendar','mask','idol','coin'];const world=ids.indexOf(id);return iconSvg(id==='serpent'?'serpent':id,current?.id||'aztec')};
  window.v6RenderWorldRail=function(){
   const rail=document.getElementById('v6BonusRail');if(!rail||!current)return;
   const cfg={
@@ -1147,6 +1152,7 @@ renderLobby();updateHUD();buildReels();updateCardCount();v5Reset();v5Update();v5
  }
  state.v6WorldCollections=state.v6WorldCollections||{};
  window.v6RenderWorldRail();
+ if(typeof renderLobby==='function')renderLobby();
 })();
 </script>
 </body></html>
